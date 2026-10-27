@@ -78,6 +78,36 @@ async function main() {
     assert.deepEqual(lines.slice(1).map((line) => Number(line.split(",")[cashIndex].replaceAll('"', ''))), [40, 50, 60]);
     assert(Math.abs(Number(lines[1].split(",")[gainIndex].replaceAll('"', '')) - 2.0205228724545194) < 1e-10);
   });
+  await check("three frequency tables contain nine computed strategies and export", async () => {
+    assert.equal(await page.locator(".frequency-group").count(), 3);
+    assert.equal(await page.locator(".frequency-table tbody tr").count(), 9);
+    assert.match(await page.locator("#frequency-context").innerText(), /模拟数据.*100,000.*25 个共同季度/);
+    for (const [months, target, count] of [[3, "9.00%", 24], [6, "18.81%", 12], [12, "41.16%", 6]]) {
+      const group = page.locator(`.frequency-group[data-months="${months}"]`);
+      assert((await group.locator(".frequency-heading").innerText()).includes(target));
+      assert((await group.locator(".frequency-description").innerText()).includes(`${count} 次规则检查`));
+      assert.equal(await group.locator("tbody tr").count(), 3);
+    }
+    assert.equal(await page.locator('.frequency-group[data-months="3"] tr[data-cash="40"] [data-metric="total_return"]').innerText(), "+202.05%");
+    assert.equal(await page.locator('.frequency-group[data-months="6"] tr[data-cash="60"] [data-metric="total_return"]').innerText(), "+238.96%");
+    assert.equal(await page.locator('.frequency-group[data-months="12"] tr[data-cash="60"] [data-metric="max_drawdown"]').innerText(), "-53.34%");
+    await page.locator("#frequency-comparison").screenshot({path: path.join(evidence, "frequency-comparison.png")});
+    if (process.env.CAPTURE_GUIDE === "1") { const dest = path.join(root, "web/assets/demo-frequency.png"); fs.copyFileSync(path.join(evidence, "frequency-comparison.png"), dest); fs.chmodSync(dest, 0o644); }
+    const annual = page.locator('.frequency-group[data-months="12"]');
+    await annual.locator(".frequency-dates summary").click();
+    assert.match(await annual.locator(".frequency-dates").innerText(), /2018-12-31.*2019-12-31.*2024-12-31/);
+    await annual.locator(".frequency-dates summary").click();
+    const pending = page.waitForEvent("download"); await page.locator("#frequency-export").click();
+    const download = await pending; assert.match(download.suggestedFilename(), /frequency-DEMO/);
+    const output = path.join(evidence, download.suggestedFilename()); await download.saveAs(output);
+    const lines = fs.readFileSync(output, "utf8").trim().split(/\r?\n/), headers = lines[0].split(",");
+    assert.equal(lines.length, 10);
+    const column = (name) => lines.slice(1).map((line) => line.split(",")[headers.indexOf(name)].replaceAll('"', ''));
+    assert.deepEqual(column("frequency_months").map(Number), [3, 3, 3, 6, 6, 6, 12, 12, 12]);
+    assert.deepEqual(column("cash_allocation_pct").map(Number), [40, 50, 60, 40, 50, 60, 40, 50, 60]);
+    assert(Math.abs(Number(column("period_growth_target_pct")[6]) - 41.158161) < 1e-8);
+    assert(headers.includes("incomplete_periods") && headers.includes("max_drawdown_sampling"));
+  });
   await check("chart switching and quarter selection", async () => {
     await page.locator("#show-drawdown").click();
     assert.equal(await page.locator("#show-drawdown").getAttribute("aria-pressed"), "true");
@@ -127,11 +157,14 @@ async function main() {
     assert(await page.locator("#export").isDisabled());
     assert(await page.locator("#comparison-export").isDisabled());
     assert(await page.locator("#comparison-stale").isVisible());
+    assert(await page.locator("#frequency-stale").isVisible());
+    assert(await page.locator("#frequency-export").isDisabled());
     await page.locator("#run").click(); await complete();
     assert.notEqual(await page.locator("#final-value").innerText(), old);
     assert.match(await page.locator("#chart-subtitle").innerText(), /40% ETF \/ 60% 现金/);
     assert.equal(await page.locator("#comparison-cards").innerText(), comparison);
     assert(!(await page.locator("#comparison-stale").isVisible()));
+    assert(!(await page.locator("#frequency-stale").isVisible()));
     await page.getByRole("button", {name: "30 Down 再平衡", exact: true}).click();
     assert.match(await page.locator("#weight-after").innerText(), /ETF 40.00% \/ 现金 60.00%/);
     await page.locator('[data-step="2"]').click();
@@ -144,6 +177,8 @@ async function main() {
     await page.locator("#run").click(); await complete();
     assert.match(await page.locator("#comparison-context").innerText(), /2023-03-31.*200,000.*8 个季度/);
     assert.match(await page.locator("#comparison-rules").innerText(), /季度目标 8%/);
+    assert.match(await page.locator('.frequency-group[data-months="6"] .frequency-heading').innerText(), /16.64%/);
+    assert.match(await page.locator('.frequency-group[data-months="12"] .frequency-heading').innerText(), /36.05%/);
     assert.match(await page.locator('.comparison-card[data-cash="50"]').innerText(), /初始现金 \$100,000/);
     assert.equal(await page.locator("#comparison-slider").getAttribute("max"), "7");
     const response = await page.request.post(`${baseURL}/api/compare`, {data: {start_date: "2023-01-01", config: {initial_capital: 200000, target_growth: 8}}});
@@ -200,6 +235,25 @@ async function main() {
     assert.equal(await page.locator("#detail-target").innerText(), "$38,760.00");
     assert.match(await page.locator("#rebalance-flow").innerText(), /现金 → ETF.*14,160.00/);
   });
+  await check("frequency tables retain between-check losses and disclose short periods", async () => {
+    await page.locator("#csv-file").setInputFiles({name: "frequency-check.csv", mimeType: "text/csv", buffer: Buffer.from("Date,ETF_Price\n2019-12-31,100\n2020-03-31,150\n2020-06-30,100\n2020-09-30,50\n2020-12-31,100")});
+    await page.waitForFunction(() => !document.getElementById("run").disabled);
+    await page.locator("#initial-capital").fill("100"); await page.locator("#target-growth").fill("0");
+    await page.locator(".advanced summary").click();
+    await page.locator("#lookback").fill("40"); await page.locator("#extreme-gain").fill("1000");
+    await page.locator("#run").click(); await complete();
+    assert.equal(await page.locator('.frequency-group[data-months="3"] tr[data-cash="40"] [data-metric="total_return"]').innerText(), "+40.00%");
+    assert.equal(await page.locator('.frequency-group[data-months="12"] tr[data-cash="40"] [data-metric="max_drawdown"]').innerText(), "-46.15%");
+    assert.equal(await page.locator('.frequency-group[data-months="12"] tr[data-cash="40"] [data-metric="trade_count"]').innerText(), "0 次");
+    await page.locator("#csv-file").setInputFiles({name: "short-frequency.csv", mimeType: "text/csv", buffer: Buffer.from("Date,ETF_Price\n2024-03-31,100\n2024-06-30,80")});
+    await page.waitForFunction(() => !document.getElementById("run").disabled);
+    await page.locator("#run").click(); await complete();
+    const annual = page.locator('.frequency-group[data-months="12"]');
+    assert.match(await annual.locator(".frequency-warning").innerText(), /只有一个.*明显早于/);
+    assert.equal(await annual.locator('tr[data-cash="40"] [data-metric="cagr"]').innerText(), "区间不足一年");
+    await annual.locator(".frequency-dates summary").click();
+    assert.match(await annual.locator(".frequency-dates").innerText(), /观测 2024-06-30 \/ 日历期末 2024-12-31/);
+  });
   await check("invalid CSV blocks computation and export", async () => {
     await page.locator("#csv-file").setInputFiles({name: "invalid.csv", mimeType: "text/csv", buffer: Buffer.from("Date,ETF_Price\n2024-03-31,0\n2024-06-30,50")});
     await page.locator("#error").waitFor({state: "visible"});
@@ -207,6 +261,7 @@ async function main() {
     assert(await page.locator("#run").isDisabled());
     assert(await page.locator("#export").isDisabled());
     assert(await page.locator("#comparison-export").isDisabled());
+    assert(await page.locator("#frequency-export").isDisabled());
   });
   await check("network failure is visible and cannot export stale results", async () => {
     await page.locator("#reset").click(); await complete();
@@ -218,14 +273,17 @@ async function main() {
     assert(await page.locator("#export").isDisabled());
     assert(await page.locator("#comparison-export").isDisabled());
     assert(await page.locator("#comparison-stale").isVisible());
+    assert(await page.locator("#frequency-export").isDisabled());
+    assert(await page.locator("#frequency-stale").isVisible());
     await page.unroute("**/api/backtest");
     await page.locator("#reset").click(); await complete();
   });
-  await check("full guide and all four real screenshots load", async () => {
+  await check("full guide and all five real screenshots load", async () => {
     await page.goto(`${baseURL}/guide`, {waitUntil: "networkidle"});
-    assert.equal(await page.locator(".guide-section").count(), 8);
+    assert.equal(await page.locator(".guide-section").count(), 9);
     assert.match(await page.locator("#rebalance").innerText(), /168.0619/);
     assert.match(await page.locator("#cash-comparison").innerText(), /60% 现金 \+ 40% ETF/);
+    assert.match(await page.locator("#frequency-comparison").innerText(), /41.158161%/);
     for (const image of await page.locator(".guide-section img").all()) {
       await image.scrollIntoViewIfNeeded();
       await image.evaluate((el) => el.decode());
@@ -241,6 +299,14 @@ async function main() {
     await phone.goto(baseURL, {waitUntil: "networkidle"}); await complete(phone);
     await noOverflow(phone);
     await phone.screenshot({path: path.join(evidence, "mobile.png"), fullPage: true});
+    await phone.goto(`${baseURL}/?frequency=1#frequency-comparison`, {waitUntil: "networkidle"}); await complete(phone);
+    assert.equal(await phone.locator(".frequency-table").count(), 3);
+    await noOverflow(phone);
+    await phone.locator("#frequency-comparison").screenshot({path: path.join(evidence, "mobile-frequency.png")});
+    const tableScroll = phone.locator('.frequency-group[data-months="12"] .table-scroll');
+    await tableScroll.evaluate((element) => { element.scrollLeft = element.scrollWidth; });
+    assert(await tableScroll.evaluate((element) => element.scrollLeft > 0));
+    await noOverflow(phone);
     await phone.goto(`${baseURL}/?compare=1#cash-comparison`, {waitUntil: "networkidle"}); await complete(phone);
     assert.equal(await phone.locator(".comparison-card").count(), 3);
     await noOverflow(phone);

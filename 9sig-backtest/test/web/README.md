@@ -30,6 +30,11 @@ Cash comparison tests verify cash/ETF mapping, independent-run parity, manual
 return and peak-drawdown calculations, initial-capital drawdown, common date and
 rule settings, input immutability, short-period CAGR, and both comparison APIs.
 
+Frequency cases cover all nine allocations/schedules, quarterly parity with and
+without cache, compounded period targets, calendar dates and converted lookbacks,
+manual returns, between-check drawdowns, no early trades, period-based extreme
+gains, annual 30 Down behavior, partial/short windows and atomic API validation.
+
 ## Browser acceptance
 
 Use Node 20+ and Playwright (`npm install --no-save --prefix test/web playwright@1.63.0`),
@@ -56,7 +61,8 @@ node test/web/test_browser.cjs
 
 `PLAYWRIGHT_MODULE` optionally points at an existing Playwright installation.
 `CAPTURE_GUIDE=1` explicitly refreshes `web/assets/demo-overview.png`,
-`demo-quarter.png`, `demo-rebalance.png` and `demo-cash-comparison.png` using only
+`demo-quarter.png`, `demo-rebalance.png`, `demo-cash-comparison.png` and
+`demo-frequency.png` using only
 the default synthetic dataset. Capture before
 building the production image. The default test mode only writes ignored
 evidence, never source assets.
@@ -68,6 +74,9 @@ verifies no-trade and buy-direction cases, opens the direct rebalance link,
 compares all three cash strategies on desktop/mobile, switches their charts,
 checks summary CSV values and stale-export protection, and changes the shared
 capital/date/growth settings while verifying against the API,
+checks all three frequency tables and nine-row CSV, uses a manual path to verify
+annual drawdown between checks, tests short-period warnings, and checks mobile
+table scrolling without page overflow,
 imports a valid fixture, rejects invalid data, verifies a failed request leaves
 export disabled, reads the guide, and checks the mobile layout at 390px. It saves
 screenshots and `browser-results.json`; errors yield a nonzero exit code.

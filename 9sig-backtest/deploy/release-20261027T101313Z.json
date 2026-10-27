@@ -1,0 +1,475 @@
+{
+  "release_id": "20261027T101313Z",
+  "image_tag": "9sig-backtest-web:20261027T101313Z",
+  "previous_image_tag": "9sig-backtest-web:20261027T094244Z",
+  "previous_image_id": "sha256:c7a058fb565041cb620d272f9afc96ab3ec888a8079c7f5dabb49558978c825e",
+  "outer_base_revision": "3cc9cc8b039b20d0986eca149357b3c55bc3236d",
+  "files": {
+    "Dockerfile.web": "697e88c0caac96d7362c2ada35b8137e2c22f34d732df50a6c5597c41660368d",
+    "compose.web.yaml": "eb32b23e18d30381f7ac1db99abaf6db13cddf8a9f6cf133abc02b0848cff399",
+    "requirements-web.txt": "23afab8153ff85ebb2089665ac1fcbc3b5d3e3a94d3703c7de9e7aabb7bb5ef4",
+    "src/backtester.py": "676962ef2d64a8976eaab7be67e0d0ce26b371aa2da7c40655c7633cdfebd5f3",
+    "src/web_app.py": "11f6db3125d3edcc292609e9143e6dbfa455ba8071b6042198bd6bde0b2531dc",
+    "data/demo_prices.csv": "675114d797b6160314ee1d3663a0deba336811a948072996c88bc0c30525f290",
+    "web/assets/app.js": "25ee810849f7e4b7f9ca9982febbfe2548aab9bf50c1c2851bc22471b47a4d04",
+    "web/assets/demo-cash-comparison.png": "02d017059e700b68e3ccfde468ca6611e83eb78ec77605501a3f1071d3f308b6",
+    "web/assets/demo-frequency.png": "acc88cec326f9ad17142c4c09eafe040111b8abd26f5f93a1ff4dc312169d34d",
+    "web/assets/demo-overview.png": "a9823f65de38f11318a46e6c0267629a37940d226ccd0c10be5f16e363168e18",
+    "web/assets/demo-quarter.png": "493ef531ae61488fa4ccfb86326ce5fbe1869867f598d39b10f1040813899abd",
+    "web/assets/demo-rebalance.png": "bccc19d58fa4d1a653ae579fc76ca973389e03c889c1468777abd0e18ecd7970",
+    "web/assets/favicon.svg": "52ecde4511f0f199ed6a4d974404538aab0e06517dd20e4f7ed281bf29f0e55d",
+    "web/assets/style.css": "9a8e78d917740ab2c303d818c367697dc0a37fc9fadc3398c02d0a8099ae964d",
+    "web/guide.html": "3e56e1772a855acafabbe86b640c5d80de329d291a49c8c130eb6c2ec3338935",
+    "web/index.html": "bc9220a4ab1fe71e1ec4d1b5ea24cbf92d44c1a6efe0bef2f6901776a5c82922"
+  },
+  "baseline": {
+    "vibe-trading-vibe-trading-1": "1f107df7e738b156e2d21b9c40d39db9264997697e0475899080f1a8fe1fec09 2026-10-26T14:28:20.528041199Z",
+    "nexa-data-om-kafka-1": "6b47a23be70dbc92edb6a1d4a9a85072640a9aa6a221d19573e7e865695aa203 2026-10-14T12:28:08.317895894Z",
+    "nexa-data-om-clickhouse-1": "fab29b999751c25539cfda2492cc9854772ccd19eb73e52396119b9a55787b32 2026-10-14T12:28:08.318484187Z"
+  },
+  "local_report": "test/web/reports/20261027T101122353402Z-local.md",
+  "image_id": "sha256:b9fc055dc3461adee3277001ae3f999cc509e48070caec5c498487a8ea7490ab",
+  "container_health": "healthy",
+  "container_started": "2026-10-27T10:14:00.059625496Z",
+  "runtime_sha256": {
+    "requirements-web.txt": "23afab8153ff85ebb2089665ac1fcbc3b5d3e3a94d3703c7de9e7aabb7bb5ef4",
+    "src/backtester.py": "676962ef2d64a8976eaab7be67e0d0ce26b371aa2da7c40655c7633cdfebd5f3",
+    "src/web_app.py": "11f6db3125d3edcc292609e9143e6dbfa455ba8071b6042198bd6bde0b2531dc",
+    "data/demo_prices.csv": "675114d797b6160314ee1d3663a0deba336811a948072996c88bc0c30525f290",
+    "web/assets/app.js": "25ee810849f7e4b7f9ca9982febbfe2548aab9bf50c1c2851bc22471b47a4d04",
+    "web/assets/demo-cash-comparison.png": "02d017059e700b68e3ccfde468ca6611e83eb78ec77605501a3f1071d3f308b6",
+    "web/assets/demo-frequency.png": "acc88cec326f9ad17142c4c09eafe040111b8abd26f5f93a1ff4dc312169d34d",
+    "web/assets/demo-overview.png": "a9823f65de38f11318a46e6c0267629a37940d226ccd0c10be5f16e363168e18",
+    "web/assets/demo-quarter.png": "493ef531ae61488fa4ccfb86326ce5fbe1869867f598d39b10f1040813899abd",
+    "web/assets/demo-rebalance.png": "bccc19d58fa4d1a653ae579fc76ca973389e03c889c1468777abd0e18ecd7970",
+    "web/assets/favicon.svg": "52ecde4511f0f199ed6a4d974404538aab0e06517dd20e4f7ed281bf29f0e55d",
+    "web/assets/style.css": "9a8e78d917740ab2c303d818c367697dc0a37fc9fadc3398c02d0a8099ae964d",
+    "web/guide.html": "3e56e1772a855acafabbe86b640c5d80de329d291a49c8c130eb6c2ec3338935",
+    "web/index.html": "bc9220a4ab1fe71e1ec4d1b5ea24cbf92d44c1a6efe0bef2f6901776a5c82922"
+  },
+  "shared_containers_unchanged": true,
+  "http": {
+    "http://192.168.124.107:8910": {
+      "/": {
+        "status": 200,
+        "sha256": "bc9220a4ab1fe71e1ec4d1b5ea24cbf92d44c1a6efe0bef2f6901776a5c82922"
+      },
+      "/guide": {
+        "status": 200,
+        "sha256": "3e56e1772a855acafabbe86b640c5d80de329d291a49c8c130eb6c2ec3338935"
+      },
+      "/api/sample.csv": {
+        "status": 200,
+        "sha256": "675114d797b6160314ee1d3663a0deba336811a948072996c88bc0c30525f290"
+      },
+      "/assets/app.js": {
+        "status": 200,
+        "sha256": "25ee810849f7e4b7f9ca9982febbfe2548aab9bf50c1c2851bc22471b47a4d04"
+      },
+      "/assets/demo-cash-comparison.png": {
+        "status": 200,
+        "sha256": "02d017059e700b68e3ccfde468ca6611e83eb78ec77605501a3f1071d3f308b6"
+      },
+      "/assets/demo-frequency.png": {
+        "status": 200,
+        "sha256": "acc88cec326f9ad17142c4c09eafe040111b8abd26f5f93a1ff4dc312169d34d"
+      },
+      "/assets/demo-overview.png": {
+        "status": 200,
+        "sha256": "a9823f65de38f11318a46e6c0267629a37940d226ccd0c10be5f16e363168e18"
+      },
+      "/assets/demo-quarter.png": {
+        "status": 200,
+        "sha256": "493ef531ae61488fa4ccfb86326ce5fbe1869867f598d39b10f1040813899abd"
+      },
+      "/assets/demo-rebalance.png": {
+        "status": 200,
+        "sha256": "bccc19d58fa4d1a653ae579fc76ca973389e03c889c1468777abd0e18ecd7970"
+      },
+      "/assets/favicon.svg": {
+        "status": 200,
+        "sha256": "52ecde4511f0f199ed6a4d974404538aab0e06517dd20e4f7ed281bf29f0e55d"
+      },
+      "/assets/style.css": {
+        "status": 200,
+        "sha256": "9a8e78d917740ab2c303d818c367697dc0a37fc9fadc3398c02d0a8099ae964d"
+      }
+    },
+    "http://183.23.140.51:8910": {
+      "/": {
+        "status": 200,
+        "sha256": "bc9220a4ab1fe71e1ec4d1b5ea24cbf92d44c1a6efe0bef2f6901776a5c82922"
+      },
+      "/guide": {
+        "status": 200,
+        "sha256": "3e56e1772a855acafabbe86b640c5d80de329d291a49c8c130eb6c2ec3338935"
+      },
+      "/api/sample.csv": {
+        "status": 200,
+        "sha256": "675114d797b6160314ee1d3663a0deba336811a948072996c88bc0c30525f290"
+      },
+      "/assets/app.js": {
+        "status": 200,
+        "sha256": "25ee810849f7e4b7f9ca9982febbfe2548aab9bf50c1c2851bc22471b47a4d04"
+      },
+      "/assets/demo-cash-comparison.png": {
+        "status": 200,
+        "sha256": "02d017059e700b68e3ccfde468ca6611e83eb78ec77605501a3f1071d3f308b6"
+      },
+      "/assets/demo-frequency.png": {
+        "status": 200,
+        "sha256": "acc88cec326f9ad17142c4c09eafe040111b8abd26f5f93a1ff4dc312169d34d"
+      },
+      "/assets/demo-overview.png": {
+        "status": 200,
+        "sha256": "a9823f65de38f11318a46e6c0267629a37940d226ccd0c10be5f16e363168e18"
+      },
+      "/assets/demo-quarter.png": {
+        "status": 200,
+        "sha256": "493ef531ae61488fa4ccfb86326ce5fbe1869867f598d39b10f1040813899abd"
+      },
+      "/assets/demo-rebalance.png": {
+        "status": 200,
+        "sha256": "bccc19d58fa4d1a653ae579fc76ca973389e03c889c1468777abd0e18ecd7970"
+      },
+      "/assets/favicon.svg": {
+        "status": 200,
+        "sha256": "52ecde4511f0f199ed6a4d974404538aab0e06517dd20e4f7ed281bf29f0e55d"
+      },
+      "/assets/style.css": {
+        "status": 200,
+        "sha256": "9a8e78d917740ab2c303d818c367697dc0a37fc9fadc3398c02d0a8099ae964d"
+      }
+    }
+  },
+  "remote_verification": {
+    "source_host": "coturn-OMEN-16L-Gaming-Desktop-TG03-0xxx",
+    "source_ip": "192.168.124.112",
+    "scope": "Second LAN host using LAN and public forwarded addresses; not off-LAN reachability evidence",
+    "checks": [
+      {
+        "base_url": "http://192.168.124.107:8910",
+        "http": {
+          "/healthz": {
+            "status": 200,
+            "sha256": "1cf6f61696a9a2c9255841237c4efe17dfc03dd464f896eeb4e0d6b60c6f9df2"
+          },
+          "/": {
+            "status": 200,
+            "sha256": "bc9220a4ab1fe71e1ec4d1b5ea24cbf92d44c1a6efe0bef2f6901776a5c82922"
+          },
+          "/guide": {
+            "status": 200,
+            "sha256": "3e56e1772a855acafabbe86b640c5d80de329d291a49c8c130eb6c2ec3338935"
+          },
+          "/assets/app.js": {
+            "status": 200,
+            "sha256": "25ee810849f7e4b7f9ca9982febbfe2548aab9bf50c1c2851bc22471b47a4d04"
+          },
+          "/assets/style.css": {
+            "status": 200,
+            "sha256": "9a8e78d917740ab2c303d818c367697dc0a37fc9fadc3398c02d0a8099ae964d"
+          },
+          "/assets/demo-frequency.png": {
+            "status": 200,
+            "sha256": "acc88cec326f9ad17142c4c09eafe040111b8abd26f5f93a1ff4dc312169d34d"
+          }
+        },
+        "period": {
+          "days": 2192,
+          "end": "2024-12-31",
+          "observations": 25,
+          "quarters": 25,
+          "start": "2018-12-31"
+        },
+        "groups": [
+          {
+            "months": 3,
+            "check_count": 24,
+            "strategies": [
+              {
+                "cash_allocation": 40,
+                "metrics": {
+                  "cagr": 0.20225180236004547,
+                  "final_value": 302052.28724545194,
+                  "max_drawdown": -0.4090727407827476,
+                  "total_return": 2.0205228724545194
+                },
+                "trade_count": 20
+              },
+              {
+                "cash_allocation": 50,
+                "metrics": {
+                  "cagr": 0.1718368691286638,
+                  "final_value": 258998.48382385372,
+                  "max_drawdown": -0.3613490617836721,
+                  "total_return": 1.589984838238537
+                },
+                "trade_count": 20
+              },
+              {
+                "cash_allocation": 60,
+                "metrics": {
+                  "cagr": 0.1403365390861988,
+                  "final_value": 219925.86875328276,
+                  "max_drawdown": -0.31118615525485405,
+                  "total_return": 1.1992586875328275
+                },
+                "trade_count": 20
+              }
+            ]
+          },
+          {
+            "months": 6,
+            "check_count": 12,
+            "strategies": [
+              {
+                "cash_allocation": 40,
+                "metrics": {
+                  "cagr": 0.1923641714503963,
+                  "final_value": 287447.21451791347,
+                  "max_drawdown": -0.4430037172162229,
+                  "total_return": 1.8744721451791349
+                },
+                "trade_count": 9
+              },
+              {
+                "cash_allocation": 50,
+                "metrics": {
+                  "cagr": 0.16467188251933962,
+                  "final_value": 249638.84984651947,
+                  "max_drawdown": -0.39604283225470716,
+                  "total_return": 1.4963884984651945
+                },
+                "trade_count": 9
+              },
+              {
+                "cash_allocation": 60,
+                "metrics": {
+                  "cagr": 0.22557205191383756,
+                  "final_value": 338964.3477159949,
+                  "max_drawdown": -0.3417083263163456,
+                  "total_return": 2.3896434771599493
+                },
+                "trade_count": 10
+              }
+            ]
+          },
+          {
+            "months": 12,
+            "check_count": 6,
+            "strategies": [
+              {
+                "cash_allocation": 40,
+                "metrics": {
+                  "cagr": 0.19987061180165755,
+                  "final_value": 298479.71912017954,
+                  "max_drawdown": -0.47603491860225866,
+                  "total_return": 1.9847971912017952
+                },
+                "trade_count": 4
+              },
+              {
+                "cash_allocation": 50,
+                "metrics": {
+                  "cagr": 0.1853043855151173,
+                  "final_value": 277383.36675828986,
+                  "max_drawdown": -0.42223520144822746,
+                  "total_return": 1.7738336675828985
+                },
+                "trade_count": 5
+              },
+              {
+                "cash_allocation": 60,
+                "metrics": {
+                  "cagr": 0.1838362311326054,
+                  "final_value": 275327.8192435374,
+                  "max_drawdown": -0.5334154645955693,
+                  "total_return": 1.7532781924353738
+                },
+                "trade_count": 4
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "base_url": "http://183.23.140.51:8910",
+        "http": {
+          "/healthz": {
+            "status": 200,
+            "sha256": "1cf6f61696a9a2c9255841237c4efe17dfc03dd464f896eeb4e0d6b60c6f9df2"
+          },
+          "/": {
+            "status": 200,
+            "sha256": "bc9220a4ab1fe71e1ec4d1b5ea24cbf92d44c1a6efe0bef2f6901776a5c82922"
+          },
+          "/guide": {
+            "status": 200,
+            "sha256": "3e56e1772a855acafabbe86b640c5d80de329d291a49c8c130eb6c2ec3338935"
+          },
+          "/assets/app.js": {
+            "status": 200,
+            "sha256": "25ee810849f7e4b7f9ca9982febbfe2548aab9bf50c1c2851bc22471b47a4d04"
+          },
+          "/assets/style.css": {
+            "status": 200,
+            "sha256": "9a8e78d917740ab2c303d818c367697dc0a37fc9fadc3398c02d0a8099ae964d"
+          },
+          "/assets/demo-frequency.png": {
+            "status": 200,
+            "sha256": "acc88cec326f9ad17142c4c09eafe040111b8abd26f5f93a1ff4dc312169d34d"
+          }
+        },
+        "period": {
+          "days": 2192,
+          "end": "2024-12-31",
+          "observations": 25,
+          "quarters": 25,
+          "start": "2018-12-31"
+        },
+        "groups": [
+          {
+            "months": 3,
+            "check_count": 24,
+            "strategies": [
+              {
+                "cash_allocation": 40,
+                "metrics": {
+                  "cagr": 0.20225180236004547,
+                  "final_value": 302052.28724545194,
+                  "max_drawdown": -0.4090727407827476,
+                  "total_return": 2.0205228724545194
+                },
+                "trade_count": 20
+              },
+              {
+                "cash_allocation": 50,
+                "metrics": {
+                  "cagr": 0.1718368691286638,
+                  "final_value": 258998.48382385372,
+                  "max_drawdown": -0.3613490617836721,
+                  "total_return": 1.589984838238537
+                },
+                "trade_count": 20
+              },
+              {
+                "cash_allocation": 60,
+                "metrics": {
+                  "cagr": 0.1403365390861988,
+                  "final_value": 219925.86875328276,
+                  "max_drawdown": -0.31118615525485405,
+                  "total_return": 1.1992586875328275
+                },
+                "trade_count": 20
+              }
+            ]
+          },
+          {
+            "months": 6,
+            "check_count": 12,
+            "strategies": [
+              {
+                "cash_allocation": 40,
+                "metrics": {
+                  "cagr": 0.1923641714503963,
+                  "final_value": 287447.21451791347,
+                  "max_drawdown": -0.4430037172162229,
+                  "total_return": 1.8744721451791349
+                },
+                "trade_count": 9
+              },
+              {
+                "cash_allocation": 50,
+                "metrics": {
+                  "cagr": 0.16467188251933962,
+                  "final_value": 249638.84984651947,
+                  "max_drawdown": -0.39604283225470716,
+                  "total_return": 1.4963884984651945
+                },
+                "trade_count": 9
+              },
+              {
+                "cash_allocation": 60,
+                "metrics": {
+                  "cagr": 0.22557205191383756,
+                  "final_value": 338964.3477159949,
+                  "max_drawdown": -0.3417083263163456,
+                  "total_return": 2.3896434771599493
+                },
+                "trade_count": 10
+              }
+            ]
+          },
+          {
+            "months": 12,
+            "check_count": 6,
+            "strategies": [
+              {
+                "cash_allocation": 40,
+                "metrics": {
+                  "cagr": 0.19987061180165755,
+                  "final_value": 298479.71912017954,
+                  "max_drawdown": -0.47603491860225866,
+                  "total_return": 1.9847971912017952
+                },
+                "trade_count": 4
+              },
+              {
+                "cash_allocation": 50,
+                "metrics": {
+                  "cagr": 0.1853043855151173,
+                  "final_value": 277383.36675828986,
+                  "max_drawdown": -0.42223520144822746,
+                  "total_return": 1.7738336675828985
+                },
+                "trade_count": 5
+              },
+              {
+                "cash_allocation": 60,
+                "metrics": {
+                  "cagr": 0.1838362311326054,
+                  "final_value": 275327.8192435374,
+                  "max_drawdown": -0.5334154645955693,
+                  "total_return": 1.7532781924353738
+                },
+                "trade_count": 4
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "test_report": "test/web/reports/20261027T101713550930Z-production.md",
+  "validation": {
+    "api_tests": 33,
+    "browser_flows": 16,
+    "browser": "151.0.7922.71",
+    "public_browser_target": "http://183.23.140.51:8910"
+  },
+  "verified_utc": "2026-10-27T10:18:48.236910+00:00",
+  "runtime_packages": [
+    "blinker==1.9.0",
+    "click==8.5.0",
+    "Flask==3.1.2",
+    "gunicorn==23.0.0",
+    "itsdangerous==2.2.0",
+    "Jinja2==3.1.6",
+    "markdown-it-py==4.2.0",
+    "MarkupSafe==3.0.4",
+    "mdurl==0.1.2",
+    "numpy==1.26.4",
+    "packaging==26.3",
+    "pandas==2.2.2",
+    "plotly==5.24.1",
+    "Pygments==2.21.0",
+    "python-dateutil==3.0.0",
+    "pytz==2026.5",
+    "rich==13.7.1",
+    "six==1.17.0",
+    "tenacity==9.2.1",
+    "tzdata==2026.5",
+    "Werkzeug==3.1.9"
+  ]
+}

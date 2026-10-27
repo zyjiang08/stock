@@ -42,6 +42,8 @@ function dirty() {
   $("export").disabled = true;
   $("comparison-export").disabled = true;
   $("comparison-stale").hidden = !state.result;
+  $("frequency-export").disabled = true;
+  $("frequency-stale").hidden = !state.result;
   if (state.result) $("result-status").textContent = "设置已更改 · 等待重新运行";
 }
 function sourcePayload() { return {source: state.source, ...(state.source === "upload" ? {csv: state.csv} : {})}; }
@@ -79,10 +81,11 @@ async function loadSource(source, text = null, filename = "") {
 async function runBacktest() {
   if (!state.ready || state.busy || !$("settings").reportValidity()) return false;
   const config = Object.fromEntries(Object.entries(parameterFields).map(([key, id]) => [key, Number($(id).value)]));
-  const payload = {...sourcePayload(), config, start_date: $("start-date").value, end_date: $("end-date").value, include_cash_comparison: true};
+  const payload = {...sourcePayload(), config, start_date: $("start-date").value, end_date: $("end-date").value, include_cash_comparison: true, include_frequency_comparison: true};
   const revision = state.revision;
   setBusy(true); showError(""); $("export").disabled = true;
   $("comparison-export").disabled = true; $("comparison-stale").hidden = !state.result;
+  $("frequency-export").disabled = true; $("frequency-stale").hidden = !state.result;
   $("result-status").textContent = "正在计算季度信号…";
   try {
     const result = await api("/api/backtest", payload);
@@ -93,6 +96,8 @@ async function runBacktest() {
     $("export").disabled = false;
     $("comparison-export").disabled = false;
     $("comparison-stale").hidden = true;
+    $("frequency-export").disabled = false;
+    $("frequency-stale").hidden = true;
     $("result-status").textContent = result.source.id === "demo" ? "演示回测已完成 · 模拟价格" : "CSV 回测已完成";
     return true;
   } catch (error) {
@@ -119,7 +124,74 @@ function renderResult() {
   $("strategy-allocation").textContent = `${r.config.etf_allocation}%`;
   $("quarter-slider").max = r.rows.length - 1;
   renderCashComparison();
+  renderFrequencyComparison();
   renderTable(); renderNotes(); renderScenarios(); selectQuarter(state.selected); drawChart();
+}
+function renderFrequencyComparison() {
+  const comparison = state.result.frequency_comparison, c = comparison.shared_config;
+  $("frequency-context").textContent = `${comparison.source.id === "demo" ? "模拟数据 · 非真实历史收益" : "用户上传 CSV"} · ${comparison.period.start} — ${comparison.period.end} · 本金 ${money(c.initial_capital)} · ${comparison.period.quarters} 个共同季度估值点`;
+  $("frequency-rules").textContent = `周期目标 = (1 + ${c.target_growth}% 季度目标)^(周期月数 ÷ 3) − 1。30 Down 阈值保持 ${c.drawdown_threshold}%，原回看 ${c.lookback_quarters} 季（${c.lookback_quarters * 3} 个月）换算成整数调仓周期并向上取整。忽略卖出仍按 ${c.ignore_sell_signals} 个信号计数。100 Up 阈值保持 ${c.extreme_gain}%，改在每次检查时比较相对上次检查后 ETF 市值的累计增长；期间不提前触发。`;
+  const container = $("frequency-tables"); container.replaceChildren();
+  for (const group of comparison.groups) {
+    const section = document.createElement("section"); section.className = "frequency-group"; section.dataset.months = group.months;
+    const heading = document.createElement("div"); heading.className = "frequency-heading";
+    const title = document.createElement("h3"); title.id = `frequency-${group.months}-title`; title.textContent = `${group.label}调仓一次`;
+    const badge = document.createElement("span"); badge.textContent = `周期目标 ${group.target_growth_pct.toFixed(2)}%`; heading.append(title, badge);
+    const description = document.createElement("p"); description.className = "hint frequency-description";
+    description.textContent = `共 ${group.check_count} 次规则检查 · 回看 ${group.lookback_periods} 个周期（${group.effective_lookback_months} 个月） · 每周期大涨 ${group.extreme_gain_pct}% 触发重置`;
+    const scroll = document.createElement("div"); scroll.className = "table-scroll"; scroll.tabIndex = 0; scroll.setAttribute("role", "region"); scroll.setAttribute("aria-labelledby", title.id);
+    const table = document.createElement("table"); table.className = "frequency-table"; table.setAttribute("aria-labelledby", title.id);
+    const thead = document.createElement("thead"), head = document.createElement("tr");
+    for (const label of ["现金 / ETF", "期末总资产", "累计收益", "年化收益", "最大回撤¹", "实际调仓"]) { const cell = document.createElement("th"); cell.scope = "col"; cell.textContent = label; head.append(cell); }
+    thead.append(head); const body = document.createElement("tbody");
+    for (const strategy of group.strategies) {
+      const row = document.createElement("tr"); row.dataset.cash = strategy.cash_allocation;
+      const cells = [
+        ["allocation", `${strategy.cash_allocation}% / ${strategy.etf_allocation}%`],
+        ["final_value", money(strategy.metrics.final_value, 2)],
+        ["total_return", percent(strategy.metrics.total_return)],
+        ["cagr", percent(strategy.metrics.cagr)],
+        ["max_drawdown", percent(strategy.metrics.max_drawdown)],
+        ["trade_count", `${strategy.trade_count} 次`],
+      ];
+      cells.forEach(([key, value], index) => { const cell = document.createElement(index === 0 ? "th" : "td"); if (index === 0) cell.scope = "row"; cell.dataset.metric = key; cell.textContent = value; row.append(cell); });
+      body.append(row);
+    }
+    table.append(thead, body); scroll.append(table); section.append(heading, description, scroll);
+    const note = document.createElement("p"); note.className = "hint frequency-footnote"; note.textContent = "¹ 统一使用初始本金与季度末总资产计算最大回撤；未调仓季度同样参与估值。"; section.append(note);
+    if (group.check_count === 0 || group.incomplete_periods.length) {
+      const warning = document.createElement("p"); warning.className = "frequency-warning";
+      warning.textContent = group.check_count === 0 ? "该区间只有一个本周期记录，仅持有，尚无后续规则检查。" : "";
+      if (group.incomplete_periods.length) warning.textContent += ` ${group.incomplete_periods.length} 个周期的末条观测明显早于日历期末，按该观测作为期末进行模拟；请展开日期核对。`;
+      section.append(warning);
+    }
+    const details = document.createElement("details"); details.className = "frequency-dates";
+    const summary = document.createElement("summary"); summary.textContent = "查看初始记录与每次检查日期";
+    const dates = document.createElement("p"); dates.textContent = `初始记录（不调仓）：${group.initial_record_date}。后续检查：${group.check_dates.join("、") || "无"}。`;
+    details.append(summary, dates);
+    if (group.incomplete_periods.length) { const incomplete = document.createElement("p"); incomplete.textContent = group.incomplete_periods.map((p) => `观测 ${p.observation} / 日历期末 ${p.calendar_end}`).join("；"); details.append(incomplete); }
+    section.append(details); container.append(section);
+  }
+}
+function exportFrequencyComparison() {
+  if (!state.result || $("frequency-export").disabled) return;
+  const comparison = state.result.frequency_comparison;
+  const rows = comparison.groups.flatMap((group) => group.strategies.map((strategy) => ({
+    source: comparison.source.id, start_date: comparison.period.start, end_date: comparison.period.end,
+    frequency_months: group.months, cash_allocation_pct: strategy.cash_allocation, etf_allocation_pct: strategy.etf_allocation,
+    ...comparison.shared_config, period_growth_target_pct: group.target_growth_pct,
+    lookback_periods: group.lookback_periods, effective_lookback_months: group.effective_lookback_months,
+    extreme_gain_measurement: "per decision period", ...strategy.metrics, trade_count: strategy.trade_count,
+    check_count: group.check_count, initial_record_date: group.initial_record_date, check_dates: group.check_dates.join(";"),
+    incomplete_periods: group.incomplete_periods.map((p) => `${p.observation}/${p.calendar_end}`).join(";"),
+    max_drawdown_sampling: "initial capital and common quarter-end total assets",
+  })));
+  const fields = Object.keys(rows[0]), quote = (value) => `"${String(value ?? "").replaceAll('"', '""')}"`;
+  const csv = "\ufeff" + [fields.join(","), ...rows.map((row) => fields.map((field) => quote(row[field])).join(","))].join("\r\n");
+  const url = URL.createObjectURL(new Blob([csv], {type: "text/csv;charset=utf-8"}));
+  const link = document.createElement("a"); link.href = url;
+  link.download = `9sig-frequency-${comparison.source.id === "demo" ? "DEMO-" : ""}${comparison.period.start}-${comparison.period.end}.csv`;
+  link.click(); setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 function renderCashComparison() {
   const comparison = state.result.cash_comparison, c = comparison.shared_config;
@@ -455,6 +527,7 @@ $("process-prev").addEventListener("click", () => { state.rebalanceStep = Math.m
 $("process-next").addEventListener("click", () => { state.rebalanceStep = Math.min(4, state.rebalanceStep + 1); renderRebalance(); });
 $("export").addEventListener("click", exportResults);
 $("comparison-export").addEventListener("click", exportCashComparison);
+$("frequency-export").addEventListener("click", exportFrequencyComparison);
 $("comparison-slider").addEventListener("input", (event) => selectComparisonQuarter(event.target.value));
 for (const [id, mode] of [["comparison-return", "total_return"], ["comparison-drawdown", "drawdown"]]) $(id).addEventListener("click", () => {
   state.comparisonChart = mode;
@@ -477,6 +550,7 @@ resetDefaults().then((ready) => {
   const query = new URLSearchParams(location.search);
   if (query.get("demo") === "1") showTour(0);
   else if (query.get("compare") === "1") $("cash-comparison").scrollIntoView({block: "start"});
+  else if (query.get("frequency") === "1") $("frequency-comparison").scrollIntoView({block: "start"});
   else if (query.get("rebalance") === "1") {
     const index = state.result.rows.findIndex((row) => row.action === "30-Down Complete & Rebalance");
     if (index >= 0) selectQuarter(index);

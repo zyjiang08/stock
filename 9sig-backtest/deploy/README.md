@@ -7,6 +7,7 @@
 - Application: `http://192.168.124.107:8910/`.
 - Public entry: `http://183.23.140.51:8910/`.
 - Cash allocation comparison: `http://183.23.140.51:8910/?compare=1#cash-comparison`.
+- Frequency comparison: `http://183.23.140.51:8910/?frequency=1#frequency-comparison`.
 - Rebalance walkthrough: `http://183.23.140.51:8910/?rebalance=1#rebalance-panel`.
 - Strategy details: `http://183.23.140.51:8910/guide#rebalance`.
 - Interactive walkthrough: `http://192.168.124.107:8910/?demo=1`.
@@ -36,6 +37,14 @@ metadata, local data, test evidence, private files and unrelated stock projects.
 dates, capital and rule settings. `POST /api/backtest` can include this comparison
 atomically with `include_cash_comparison: true`, as used by the browser. Each
 variant uses the original engine and its own initial/reset allocation and state.
+
+`POST /api/compare-frequency` computes 3/6/12-month decision schedules across
+the same three allocations. `include_frequency_comparison: true` adds it to
+the atomic backtest response. Period targets compound the quarterly target;
+lookbacks convert to whole periods (rounded up), and the extreme-gain percentage
+is measured per decision interval. All drawdowns use a common quarterly
+valuation grid, including quarters without trades. Incomplete calendar periods
+are returned explicitly; see the page guide for the simulation convention.
 
 ## Build and deploy
 

@@ -10,7 +10,7 @@ from pathlib import Path
 import pandas as pd
 
 from src.backtester import Backtester, DataHandler, Portfolio
-from src.web_app import ROOT, app, compare_cash_allocations, config_from_json, metrics, parse_csv, run_backtest
+from src.web_app import ROOT, app, compare_cash_allocations, compare_rebalance_frequencies, config_from_json, metrics, parse_csv, run_backtest
 
 
 class WebTests(unittest.TestCase):
@@ -156,6 +156,107 @@ class WebTests(unittest.TestCase):
         for payload in ([], {"config": None}, {"source": "upload", "csv": "bad"}, {"start_date": "2025-01-01"}):
             with self.subTest(payload=payload):
                 self.assertEqual(self.client.post("/api/compare", json=payload).status_code, 400)
+
+    def test_frequency_schedules_growth_and_lookback_windows(self):
+        result = compare_rebalance_frequencies({})
+        self.assertEqual(result["valuation_sampling"], "quarter_end")
+        self.assertEqual([g["months"] for g in result["groups"]], [3, 6, 12])
+        for group, target, lookback, checks in zip(result["groups"], (9, 18.81, 41.158161), (8, 4, 2), (24, 12, 6)):
+            self.assertAlmostEqual(group["target_growth_pct"], target)
+            self.assertEqual(group["lookback_periods"], lookback)
+            self.assertEqual(group["effective_lookback_months"], 24)
+            self.assertEqual(group["check_count"], checks)
+            self.assertEqual(group["initial_record_date"], "2018-12-31")
+            self.assertEqual(group["incomplete_periods"], [])
+            self.assertTrue(all(int(day[5:7]) % group["months"] == 0 for day in group["check_dates"]))
+            self.assertEqual([s["cash_allocation"] for s in group["strategies"]], [40, 50, 60])
+            self.assertTrue(all(len(s["series"]) == 25 for s in group["strategies"]))
+
+    def test_frequency_quarterly_parity_and_cache_do_not_change_results(self):
+        payload = {"config": {"initial_capital": 123456, "target_growth": 8, "etf_allocation": 97, "lookback_quarters": 7}}
+        original = deepcopy(payload)
+        cash = compare_cash_allocations(payload)
+        fresh = compare_rebalance_frequencies(payload)
+        self.assertEqual(fresh, compare_rebalance_frequencies(payload, cash))
+        self.assertEqual(payload, original)
+        for expected, actual in zip(cash["strategies"], fresh["groups"][0]["strategies"]):
+            for field in ("metrics", "series", "trade_count"):
+                self.assertEqual(actual[field], expected[field])
+        self.assertEqual([g["effective_lookback_months"] for g in fresh["groups"]], [21, 24, 24])
+
+    def test_frequency_manual_returns_and_unscheduled_drawdown(self):
+        payload = {"source": "upload", "csv": "Date,ETF_Price\n2019-12-31,100\n2020-03-31,150\n2020-06-30,100\n2020-09-30,50\n2020-12-31,100", "config": {"initial_capital": 100, "target_growth": 0, "lookback_quarters": 40, "extreme_gain": 1000}}
+        groups = compare_rebalance_frequencies(payload)["groups"]
+        # 60% ETF quarterly: NAV 100,130,110,80,140; four actual trades.
+        quarter = groups[0]["strategies"][0]
+        for row, nav in zip(quarter["series"], (100, 130, 110, 80, 140)):
+            self.assertAlmostEqual(row["total_value"], nav)
+        self.assertAlmostEqual(quarter["metrics"]["total_return"], .4)
+        self.assertAlmostEqual(quarter["metrics"]["max_drawdown"], 80 / 130 - 1)
+        self.assertEqual(quarter["trade_count"], 4)
+        # Half/year-end prices are unchanged, but quarter-end losses still count.
+        for group in groups[1:]:
+            result = group["strategies"][0]
+            for row, nav in zip(result["series"], (100, 130, 100, 70, 100)):
+                self.assertAlmostEqual(row["total_value"], nav)
+            self.assertEqual(result["trade_count"], 0)
+            self.assertAlmostEqual(result["metrics"]["max_drawdown"], 70 / 130 - 1)
+            self.assertAlmostEqual(result["metrics"]["total_return"], 0)
+
+    def test_frequency_compounded_targets_and_no_early_trades(self):
+        groups = compare_rebalance_frequencies({"source": "upload", "csv": "Date,ETF_Price\n2019-12-31,100\n2020-03-31,100\n2020-06-30,100\n2020-09-30,100\n2020-12-31,100", "config": {"initial_capital": 100}})["groups"]
+        for group, trades in zip(groups, (4, 2, 1)):
+            strategy = group["strategies"][0]
+            self.assertEqual(strategy["trade_count"], trades)
+            self.assertAlmostEqual(strategy["series"][-1]["etf_value"], 60 * 1.09 ** 4)
+            self.assertAlmostEqual(strategy["series"][-1]["cash_value"], 100 - 60 * 1.09 ** 4)
+            self.assertAlmostEqual(strategy["metrics"]["final_value"], 100)
+        self.assertAlmostEqual(groups[1]["strategies"][0]["series"][1]["cash_value"], 40)
+        self.assertAlmostEqual(groups[2]["strategies"][0]["series"][3]["cash_value"], 40)
+
+    def test_frequency_extreme_gain_only_at_scheduled_check(self):
+        result = compare_rebalance_frequencies({"source": "upload", "csv": "Date,ETF_Price\n2018-12-31,100\n2019-03-31,200\n2019-06-30,150\n2019-09-30,100\n2019-12-31,250", "config": {"initial_capital": 100, "lookback_quarters": 40}})
+        annual = result["groups"][2]["strategies"][0]
+        self.assertAlmostEqual(annual["series"][1]["etf_value"], 120)  # No March reset.
+        self.assertAlmostEqual(annual["series"][1]["cash_value"], 40)
+        self.assertAlmostEqual(annual["series"][-1]["etf_value"], 114)  # December 150% gain resets 190 to 60/40.
+        self.assertAlmostEqual(annual["series"][-1]["cash_value"], 76)
+        self.assertEqual(annual["trade_count"], 1)
+
+    def test_frequency_annual_drawdown_uses_converted_lookback(self):
+        annual = compare_rebalance_frequencies({"source": "upload", "csv": "Date,ETF_Price\n2018-12-31,100\n2019-12-31,100\n2020-12-31,50", "config": {"initial_capital": 100, "target_growth": 0}})["groups"][2]
+        self.assertEqual(annual["lookback_periods"], 2)
+        # Two prior annual records suffice to trigger 30 Down; the drop quarter holds.
+        strategy = annual["strategies"][0]
+        self.assertAlmostEqual(strategy["series"][-1]["etf_value"], 30)
+        self.assertAlmostEqual(strategy["series"][-1]["cash_value"], 40)
+        self.assertEqual(strategy["trade_count"], 0)
+
+    def test_frequency_incomplete_and_short_windows_are_explicit(self):
+        payload = {"source": "upload", "csv": "Date,ETF_Price\n2024-03-31,100\n2024-06-30,80"}
+        result = compare_rebalance_frequencies(payload)
+        annual = result["groups"][2]
+        self.assertEqual(annual["check_count"], 0)
+        self.assertEqual(annual["check_dates"], [])
+        self.assertEqual(annual["incomplete_periods"], [{"observation": "2024-06-30", "calendar_end": "2024-12-31"}])
+        for strategy in annual["strategies"]:
+            self.assertIsNone(strategy["metrics"]["cagr"])
+            self.assertEqual(strategy["trade_count"], 0)
+        self.assertAlmostEqual(annual["strategies"][0]["metrics"]["max_drawdown"], -.12)
+        partial = compare_rebalance_frequencies({"end_date": "2024-09-30"})["groups"][2]
+        self.assertEqual(partial["check_dates"][-1], "2024-09-30")
+        self.assertEqual(partial["incomplete_periods"][-1]["calendar_end"], "2024-12-31")
+
+    def test_frequency_api_atomic_response_and_validation(self):
+        response = self.client.post("/api/compare-frequency", json={})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.headers["Cache-Control"], "no-store")
+        together = self.client.post("/api/backtest", json={"include_cash_comparison": True, "include_frequency_comparison": True})
+        self.assertEqual(together.status_code, 200)
+        self.assertEqual(together.json["frequency_comparison"], response.json)
+        for payload in ([], {"config": None}, {"source": "upload", "csv": "bad"}, {"start_date": "2025-01-01"}):
+            self.assertEqual(self.client.post("/api/compare-frequency", json=payload).status_code, 400)
+        self.assertEqual(self.client.post("/api/backtest", json={"include_frequency_comparison": "true"}).status_code, 400)
 
     def test_web_matches_original_engine_for_two_allocations(self):
         frame, _, _ = parse_csv((ROOT / "data/demo_prices.csv").read_text())

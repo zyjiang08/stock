@@ -16,6 +16,7 @@
   <nav aria-label="主导航">
     <a class="nav-link active" href="/" aria-current="page"><span>▦</span> 回测工作台</a>
     <a class="nav-link" href="#cash-comparison"><span>◫</span> 现金比例对比</a>
+    <a class="nav-link" href="#frequency-comparison"><span>◷</span> 调仓周期对比</a>
     <button class="nav-link" type="button" data-tour><span>▷</span> 跟着演示</button>
     <a class="nav-link" href="/?rebalance=1#rebalance-panel"><span>⇄</span> 再平衡过程</a>
     <a class="nav-link" href="/guide"><span>☷</span> 完整操作指南</a>
@@ -87,6 +88,17 @@
               <p id="comparison-rules" class="hint"></p>
               <p class="hint">累计收益以初始本金计算；年化按实际天数计算，未满一年不显示。最大回撤仅取初始本金和季度末总资产采样，负值越接近 0，回撤越小。金额单位为 USD。</p>
               <div class="comparison-actions"><span>修改左侧设置并“运行回测”，三组结果会一起更新。</span><button id="comparison-export" class="button secondary small" type="button" disabled>↓ 导出对比 CSV</button></div>
+            </div>
+          </section>
+          <section id="frequency-comparison" class="panel frequency-comparison" aria-labelledby="frequency-title">
+            <div class="panel-title"><div><p class="eyebrow">THREE REBALANCING SCHEDULES</p><h2 id="frequency-title">调仓周期对比 · 三张表，九种组合</h2></div><a class="small-link" href="/guide#frequency-comparison">计算口径 ↗</a></div>
+            <div class="frequency-content">
+              <p id="frequency-context" class="comparison-context" role="status">正在计算每 3 个月、半年、一年的调仓方案…</p>
+              <p class="hint">沿用 9Sig 信号规则，在自然季度末、半年末或年末检查；每张表分别计算 40%、50%、60% 现金。最大回撤统一按季度估值，覆盖未调仓季度的波动。窄屏可左右滑动表格查看全部列。</p>
+              <div id="frequency-stale" class="stale-note" hidden>设置已更改或计算未完成，三张表仍是上一次结果。请重新运行；导出暂不可用。</div>
+              <div id="frequency-tables" class="frequency-tables"></div>
+              <details class="frequency-method"><summary>周期目标、特殊规则与不完整周期如何处理</summary><p id="frequency-rules"></p><p>首个周期只记录，之后才检查信号；相邻检查之间保持股数和现金。自然周期使用该周期最后一条观测作为期末；明显早于日历期末的记录会在对应表格中提示。实际买卖次数可能少于检查次数。</p><p>这是一组调仓间隔的模拟扩展；初始现金比例仅在建仓和特殊规则重置时恢复。现金无利息，不计税费与滑点，允许碎股。所有百分比按完整精度计算后再格式化显示。</p></details>
+              <div class="comparison-actions"><span>同额本金 · 同一数据区间 · 回撤统一按季度采样</span><button id="frequency-export" class="button secondary small" type="button" disabled>↓ 导出三张表 CSV</button></div>
             </div>
           </section>
           <section id="chart-panel" class="panel chart-panel">

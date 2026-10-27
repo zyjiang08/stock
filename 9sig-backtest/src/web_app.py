@@ -6,6 +6,7 @@ import logging
 import math
 import re
 from datetime import date
+from dataclasses import replace
 from pathlib import Path
 
 import pandas as pd
@@ -227,8 +228,8 @@ def rebalance_details(row, history, config, active, remaining):
     }
 
 
-def run_backtest(payload):
-    config, parameters = config_from_json(payload.get("config", {}))
+def prepare_prices(payload):
+    """Validate one shared price window before selecting decision dates."""
     frame, warnings, source = dataset(payload)
     start = parse_date(payload["start_date"], "开始日期") if payload.get("start_date") else frame.index[0].date()
     end = parse_date(payload["end_date"], "结束日期") if payload.get("end_date") else frame.index[-1].date()
@@ -244,6 +245,12 @@ def run_backtest(payload):
         warnings.append("末条价格明显早于日历季末；原引擎仍将它视为该季度最后价格，可能包含未完成季度。")
     if source["id"] == "demo":
         warnings.insert(0, "当前使用人工构造的模拟价格，仅用于演示操作与规则，不是 TQQQ 的历史收益。")
+    return frame, quarter_ends, warnings, source
+
+
+def run_backtest(payload):
+    config, parameters = config_from_json(payload.get("config", {}))
+    frame, quarter_ends, warnings, source = prepare_prices(payload)
     backtester = Backtester(config, Portfolio(config), DataHandler())
     result = backtester.run(frame, quarter_ends)
     initial_price = float(frame.iloc[0]["ETF_Price"])
@@ -324,6 +331,83 @@ def compare_cash_allocations(payload, current=None):
     }
 
 
+def compare_rebalance_frequencies(payload, quarterly=None):
+    """Compare 3/6/12-month signal checks on a common quarterly valuation grid.
+
+    The unchanged engine receives period end dates, a compounded growth target,
+    and a lookback rounded up to whole decision periods. The extreme-gain
+    threshold remains the configured percentage, measured per decision period.
+    As in the original adapter, the last observation represents each period end.
+    """
+    config, parameters = config_from_json(payload.get("config", {}))
+    frame, quarter_ends, warnings, source = prepare_prices(payload)
+    capital = config.initial_capital
+    elapsed = (frame.index[-1] - frame.index[0]).days
+    first_price = float(frame.iloc[0]["ETF_Price"])
+    groups = []
+    for months, label in ((3, "每 3 个月"), (6, "每半年"), (12, "每一年")):
+        period_ends = pd.DatetimeIndex(frame.groupby([frame.index.year, (frame.index.month - 1) // months]).apply(lambda rows: rows.index.max()).values)
+        growth = config.target_quarterly_growth if months == 3 else (1 + config.target_quarterly_growth) ** (months // 3) - 1
+        lookback = math.ceil(config.drawdown_lookback_quarters * 3 / months)
+        incomplete = []
+        for day in period_ends:
+            last_month = ((day.month - 1) // months + 1) * months
+            calendar_end = pd.Timestamp(year=day.year, month=last_month, day=1) + pd.offsets.MonthEnd(0)
+            if calendar_end - day > pd.Timedelta(days=6):
+                incomplete.append({"observation": day.strftime("%Y-%m-%d"), "calendar_end": calendar_end.strftime("%Y-%m-%d")})
+        strategies = []
+        for cash in (40, 50, 60):
+            allocation = (100 - cash) / 100
+            period_config = replace(config, etf_allocation=allocation, cash_allocation=1 - allocation,
+                                    target_quarterly_growth=growth, drawdown_lookback_quarters=lookback)
+            if months == 3 and quarterly is not None:
+                cached = next(s for s in quarterly["strategies"] if s["cash_allocation"] == cash)
+                strategies.append({"cash_allocation": cash, "etf_allocation": 100 - cash,
+                                   "metrics": dict(cached["metrics"]), "trade_count": cached["trade_count"],
+                                   "series": [dict(point) for point in cached["series"]]})
+                continue
+            records = Backtester(period_config, Portfolio(period_config), DataHandler()).run(frame, period_ends).to_dict("records")
+            decisions = {record["date"]: record for record in records}
+            held_shares, held_cash = capital * allocation / first_price, capital * (1 - allocation)
+            previous_shares, trade_count = held_shares, 0
+            for record in records:
+                trade_count += abs(float(record["etf_shares"]) - previous_shares) > 1e-8
+                previous_shares = float(record["etf_shares"])
+            series = []
+            for day in quarter_ends:
+                if day in decisions:
+                    held_shares = float(decisions[day]["etf_shares"])
+                    held_cash = float(decisions[day]["cash_value"])
+                etf_value = held_shares * float(frame.loc[day, "ETF_Price"])
+                total = etf_value + held_cash
+                if not all(math.isfinite(v) for v in (etf_value, held_cash, total)):
+                    raise ValueError("周期模拟结果溢出，请缩短区间或减小参数。")
+                series.append({"date": day.strftime("%Y-%m-%d"), "quarter": f"{day.year} Q{day.quarter}",
+                               "total_value": total, "total_return": total / capital - 1,
+                               "etf_value": etf_value, "cash_value": held_cash})
+            summary, drawdowns = metrics([p["total_value"] for p in series], capital, elapsed)
+            if not all(math.isfinite(v) for v in summary.values() if v is not None):
+                raise ValueError("周期模拟指标溢出，请缩短区间或减小参数。")
+            for point, drawdown in zip(series, drawdowns):
+                point["drawdown"] = drawdown
+            strategies.append({"cash_allocation": cash, "etf_allocation": 100 - cash,
+                               "metrics": summary, "trade_count": int(trade_count), "series": series})
+        groups.append({"months": months, "label": label, "target_growth_pct": growth * 100,
+                       "lookback_periods": lookback, "effective_lookback_months": lookback * months,
+                       "extreme_gain_pct": parameters["extreme_gain"],
+                       "initial_record_date": period_ends[0].strftime("%Y-%m-%d"),
+                       "check_dates": [d.strftime("%Y-%m-%d") for d in period_ends[1:]],
+                       "check_count": len(period_ends) - 1, "incomplete_periods": incomplete,
+                       "strategies": strategies})
+    return {
+        "source": source, "warnings": warnings,
+        "period": {"start": frame.index[0].strftime("%Y-%m-%d"), "end": frame.index[-1].strftime("%Y-%m-%d"),
+                   "days": elapsed, "observations": len(frame), "quarters": len(quarter_ends)},
+        "shared_config": {key: value for key, value in parameters.items() if key != "etf_allocation"},
+        "valuation_sampling": "quarter_end", "schedule": "calendar_period_last_observation", "groups": groups,
+    }
+
+
 @app.after_request
 def headers(response):
     response.headers["X-Content-Type-Options"] = "nosniff"
@@ -376,14 +460,24 @@ def preview():
 def backtest():
     payload = body()
     include_comparison = payload.get("include_cash_comparison", False)
+    include_frequencies = payload.get("include_frequency_comparison", False)
     if not isinstance(include_comparison, bool):
         raise ValueError("现金对比开关必须是布尔值。")
+    if not isinstance(include_frequencies, bool):
+        raise ValueError("周期对比开关必须是布尔值。")
     result = run_backtest(payload)
     if include_comparison:
         result["cash_comparison"] = compare_cash_allocations(payload, result)
+    if include_frequencies:
+        result["frequency_comparison"] = compare_rebalance_frequencies(payload, result.get("cash_comparison"))
     return jsonify(result)
 
 
 @app.post("/api/compare")
 def compare():
     return jsonify(compare_cash_allocations(body()))
+
+
+@app.post("/api/compare-frequency")
+def compare_frequency():
+    return jsonify(compare_rebalance_frequencies(body()))
