@@ -1,0 +1,2327 @@
+{
+  "source": "30914975.pdf",
+  "sha256": "082926772d476c15f15b2e4e77fa90794854ff044a70625cfd86ec73cede9abc",
+  "page_count": 210,
+  "started_utc": "2026-10-17T22:56:39.995808+00:00",
+  "finished_utc": "2026-10-17T23:03:06.036406+00:00",
+  "tool_versions": {
+    "pymupdf": "1.28.2",
+    "rapidocr_onnxruntime": "1.4.4",
+    "onnxruntime": "1.31.0",
+    "opencv-python": "5.0.0.93",
+    "numpy": "2.5.4"
+  },
+  "ocr_parameters": {
+    "intra_op_num_threads": 2,
+    "inter_op_num_threads": 1,
+    "det_limit_side_len": 1536,
+    "det_limit_type": "max",
+    "max_side_len": 2800,
+    "rec_batch_num": 16
+  },
+  "use_cls": false,
+  "model_sha256": {
+    "ch_ppocr_mobile_v2.0_cls_infer.onnx": "e47acedf663230f8863ff1ab0e64dd2d82b838fceb5957146dab185a89d6215c",
+    "ch_PP-OCRv4_det_infer.onnx": "d2a7720d45a54257208b1e13e36a8479894cb74155a5efe29462512d42f49da9",
+    "ch_PP-OCRv4_rec_infer.onnx": "48fc40f24f6d2a207a2b1091d3437eb3cc3eb6b676dc3ef9c37384005483683b"
+  },
+  "bookmarks": [
+    [
+      1,
+      "封面",
+      1
+    ],
+    [
+      1,
+      "书名",
+      2
+    ],
+    [
+      1,
+      "版权",
+      3
+    ],
+    [
+      1,
+      "前言",
+      4
+    ],
+    [
+      1,
+      "目录",
+      6
+    ],
+    [
+      1,
+      "第一章  中国证券市场的周期和大盘判断",
+      8
+    ],
+    [
+      1,
+      "第一节  中国股市的周期判断",
+      8
+    ],
+    [
+      1,
+      "第二节  中国经济的大局观和未来演绎",
+      20
+    ],
+    [
+      1,
+      "第二章  股票投资的逻辑",
+      22
+    ],
+    [
+      1,
+      "第一节  股票投资的逻辑基础",
+      22
+    ],
+    [
+      1,
+      "第二节  四项基本分析",
+      28
+    ],
+    [
+      1,
+      "第三节  题材与大盘不同打法",
+      34
+    ],
+    [
+      1,
+      "第四节  不同市况的不同操作策略",
+      36
+    ],
+    [
+      1,
+      "第五节  交易心得",
+      40
+    ],
+    [
+      1,
+      "第三章  两类最常见大牛股的操作模式",
+      46
+    ],
+    [
+      1,
+      "第一节  长线跨年度庄家大牛股的操作模式",
+      46
+    ],
+    [
+      1,
+      "第二节  龙头股爆发战法",
+      55
+    ],
+    [
+      1,
+      "第三节  涨停板研究",
+      57
+    ],
+    [
+      1,
+      "第四章  九种确定性较大的盈利模式",
+      76
+    ],
+    [
+      1,
+      "第一节  模式一：低吸“价格确定，时间不确定”的股票",
+      76
+    ],
+    [
+      1,
+      "第二节  模式二：快速建仓处于横盘末期位置的优质股",
+      79
+    ],
+    [
+      1,
+      "第三节  模式三：30％仓位买进处于第一次回调位置的前期连续涨停股",
+      81
+    ],
+    [
+      1,
+      "第四节  模式四：布局处于稳定上升通道的龙头股",
+      83
+    ],
+    [
+      1,
+      "第五节  模式五：年度长线持有主流题材股",
+      84
+    ],
+    [
+      1,
+      "第六节  模式六：死磕跟庄筹码集中股",
+      86
+    ],
+    [
+      1,
+      "第七节  模式七：果断满仓出击“时间确定，价格不确定”的股票",
+      87
+    ],
+    [
+      1,
+      "第八节  模式八：牛市满仓券商＋行业龙头股",
+      89
+    ],
+    [
+      1,
+      "第九节  模式九：图形定式与条件反射技术买点",
+      90
+    ],
+    [
+      1,
+      "第五章  笔者的交易系统",
+      94
+    ],
+    [
+      1,
+      "第一节  技术分析的应用范围",
+      94
+    ],
+    [
+      1,
+      "第二节  MACD：终极指标",
+      100
+    ],
+    [
+      1,
+      "第三节  市场本质的数学原理",
+      117
+    ],
+    [
+      1,
+      "第四节  笔者的交易系统",
+      166
+    ],
+    [
+      1,
+      "第六章  三位世界级高手的投机思想",
+      168
+    ],
+    [
+      1,
+      "第一节  投机界鼻祖大作手杰西·利弗莫尔",
+      168
+    ],
+    [
+      1,
+      "第二节  全球宏观策略鼻祖乔治·W．索罗斯",
+      186
+    ],
+    [
+      1,
+      "第三节  期货王者斯坦利·克罗",
+      199
+    ],
+    [
+      1,
+      "后记",
+      208
+    ],
+    [
+      1,
+      "封底",
+      210
+    ]
+  ],
+  "pages": [
+    {
+      "pdf_page": 1,
+      "image": "page-0001.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 2.981,
+      "line_count": 18,
+      "character_count": 158,
+      "low_confidence_lines": 4
+    },
+    {
+      "pdf_page": 2,
+      "image": "page-0002.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 2.62,
+      "line_count": 9,
+      "character_count": 119,
+      "low_confidence_lines": 1
+    },
+    {
+      "pdf_page": 3,
+      "image": "page-0003.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 4.638,
+      "line_count": 36,
+      "character_count": 417,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 4,
+      "image": "page-0004.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 5.894,
+      "line_count": 17,
+      "character_count": 361,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 5,
+      "image": "page-0005.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 5.638,
+      "line_count": 17,
+      "character_count": 360,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 6,
+      "image": "page-0006.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 2.765,
+      "line_count": 36,
+      "character_count": 210,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 7,
+      "image": "page-0007.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 5.268,
+      "line_count": 55,
+      "character_count": 409,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 8,
+      "image": "page-0008.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 0.001,
+      "line_count": 16,
+      "character_count": 341,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 9,
+      "image": "page-0009.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 9.204,
+      "line_count": 30,
+      "character_count": 674,
+      "low_confidence_lines": 2
+    },
+    {
+      "pdf_page": 10,
+      "image": "page-0010.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 8.785,
+      "line_count": 30,
+      "character_count": 676,
+      "low_confidence_lines": 1
+    },
+    {
+      "pdf_page": 11,
+      "image": "page-0011.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 5.796,
+      "line_count": 48,
+      "character_count": 452,
+      "low_confidence_lines": 3
+    },
+    {
+      "pdf_page": 12,
+      "image": "page-0012.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 8.484,
+      "line_count": 29,
+      "character_count": 630,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 13,
+      "image": "page-0013.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 8.296,
+      "line_count": 28,
+      "character_count": 584,
+      "low_confidence_lines": 1
+    },
+    {
+      "pdf_page": 14,
+      "image": "page-0014.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 6.953,
+      "line_count": 82,
+      "character_count": 490,
+      "low_confidence_lines": 4
+    },
+    {
+      "pdf_page": 15,
+      "image": "page-0015.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 8.323,
+      "line_count": 28,
+      "character_count": 712,
+      "low_confidence_lines": 1
+    },
+    {
+      "pdf_page": 16,
+      "image": "page-0016.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 9.275,
+      "line_count": 28,
+      "character_count": 710,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 17,
+      "image": "page-0017.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 9.637,
+      "line_count": 28,
+      "character_count": 683,
+      "low_confidence_lines": 2
+    },
+    {
+      "pdf_page": 18,
+      "image": "page-0018.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 7.228,
+      "line_count": 54,
+      "character_count": 594,
+      "low_confidence_lines": 2
+    },
+    {
+      "pdf_page": 19,
+      "image": "page-0019.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 8.559,
+      "line_count": 41,
+      "character_count": 672,
+      "low_confidence_lines": 2
+    },
+    {
+      "pdf_page": 20,
+      "image": "page-0020.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 7.71,
+      "line_count": 24,
+      "character_count": 639,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 21,
+      "image": "page-0021.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 3.788,
+      "line_count": 10,
+      "character_count": 220,
+      "low_confidence_lines": 1
+    },
+    {
+      "pdf_page": 22,
+      "image": "page-0022.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 5.185,
+      "line_count": 15,
+      "character_count": 272,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 23,
+      "image": "page-0023.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 8.075,
+      "line_count": 27,
+      "character_count": 638,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 24,
+      "image": "page-0024.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 8.133,
+      "line_count": 27,
+      "character_count": 669,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 25,
+      "image": "page-0025.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 9.189,
+      "line_count": 28,
+      "character_count": 700,
+      "low_confidence_lines": 1
+    },
+    {
+      "pdf_page": 26,
+      "image": "page-0026.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 9.464,
+      "line_count": 28,
+      "character_count": 672,
+      "low_confidence_lines": 1
+    },
+    {
+      "pdf_page": 27,
+      "image": "page-0027.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 8.548,
+      "line_count": 25,
+      "character_count": 596,
+      "low_confidence_lines": 1
+    },
+    {
+      "pdf_page": 28,
+      "image": "page-0028.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 5.644,
+      "line_count": 23,
+      "character_count": 484,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 29,
+      "image": "page-0029.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 8.025,
+      "line_count": 28,
+      "character_count": 669,
+      "low_confidence_lines": 2
+    },
+    {
+      "pdf_page": 30,
+      "image": "page-0030.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 9.844,
+      "line_count": 28,
+      "character_count": 693,
+      "low_confidence_lines": 1
+    },
+    {
+      "pdf_page": 31,
+      "image": "page-0031.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 6.454,
+      "line_count": 27,
+      "character_count": 647,
+      "low_confidence_lines": 1
+    },
+    {
+      "pdf_page": 32,
+      "image": "page-0032.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 9.111,
+      "line_count": 27,
+      "character_count": 635,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 33,
+      "image": "page-0033.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 6.047,
+      "line_count": 23,
+      "character_count": 594,
+      "low_confidence_lines": 2
+    },
+    {
+      "pdf_page": 34,
+      "image": "page-0034.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 6.568,
+      "line_count": 22,
+      "character_count": 461,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 35,
+      "image": "page-0035.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 7.987,
+      "line_count": 64,
+      "character_count": 556,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 36,
+      "image": "page-0036.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 7.629,
+      "line_count": 23,
+      "character_count": 593,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 37,
+      "image": "page-0037.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 7.518,
+      "line_count": 28,
+      "character_count": 660,
+      "low_confidence_lines": 1
+    },
+    {
+      "pdf_page": 38,
+      "image": "page-0038.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 9.325,
+      "line_count": 28,
+      "character_count": 660,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 39,
+      "image": "page-0039.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 8.989,
+      "line_count": 27,
+      "character_count": 570,
+      "low_confidence_lines": 1
+    },
+    {
+      "pdf_page": 40,
+      "image": "page-0040.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 6.999,
+      "line_count": 23,
+      "character_count": 464,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 41,
+      "image": "page-0041.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 5.613,
+      "line_count": 27,
+      "character_count": 602,
+      "low_confidence_lines": 1
+    },
+    {
+      "pdf_page": 42,
+      "image": "page-0042.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 9.494,
+      "line_count": 28,
+      "character_count": 643,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 43,
+      "image": "page-0043.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 5.666,
+      "line_count": 27,
+      "character_count": 524,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 44,
+      "image": "page-0044.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 5.254,
+      "line_count": 20,
+      "character_count": 363,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 45,
+      "image": "page-0045.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 1.061,
+      "line_count": 0,
+      "character_count": 0,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 46,
+      "image": "page-0046.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 5.863,
+      "line_count": 15,
+      "character_count": 308,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 47,
+      "image": "page-0047.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 7.353,
+      "line_count": 28,
+      "character_count": 605,
+      "low_confidence_lines": 1
+    },
+    {
+      "pdf_page": 48,
+      "image": "page-0048.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 6.666,
+      "line_count": 19,
+      "character_count": 455,
+      "low_confidence_lines": 2
+    },
+    {
+      "pdf_page": 49,
+      "image": "page-0049.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 4.071,
+      "line_count": 17,
+      "character_count": 408,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 50,
+      "image": "page-0050.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 9.846,
+      "line_count": 26,
+      "character_count": 702,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 51,
+      "image": "page-0051.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 8.511,
+      "line_count": 26,
+      "character_count": 630,
+      "low_confidence_lines": 1
+    },
+    {
+      "pdf_page": 52,
+      "image": "page-0052.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 7.666,
+      "line_count": 28,
+      "character_count": 671,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 53,
+      "image": "page-0053.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 7.983,
+      "line_count": 27,
+      "character_count": 647,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 54,
+      "image": "page-0054.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 9.378,
+      "line_count": 27,
+      "character_count": 674,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 55,
+      "image": "page-0055.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 5.568,
+      "line_count": 22,
+      "character_count": 486,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 56,
+      "image": "page-0056.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 6.417,
+      "line_count": 27,
+      "character_count": 560,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 57,
+      "image": "page-0057.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 4.993,
+      "line_count": 19,
+      "character_count": 316,
+      "low_confidence_lines": 1
+    },
+    {
+      "pdf_page": 58,
+      "image": "page-0058.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 8.143,
+      "line_count": 172,
+      "character_count": 853,
+      "low_confidence_lines": 64
+    },
+    {
+      "pdf_page": 59,
+      "image": "page-0059.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 8.545,
+      "line_count": 140,
+      "character_count": 705,
+      "low_confidence_lines": 10
+    },
+    {
+      "pdf_page": 60,
+      "image": "page-0060.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 9.893,
+      "line_count": 135,
+      "character_count": 830,
+      "low_confidence_lines": 8
+    },
+    {
+      "pdf_page": 61,
+      "image": "page-0061.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 9.915,
+      "line_count": 171,
+      "character_count": 673,
+      "low_confidence_lines": 60
+    },
+    {
+      "pdf_page": 62,
+      "image": "page-0062.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 6.076,
+      "line_count": 18,
+      "character_count": 366,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 63,
+      "image": "page-0063.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 3.753,
+      "line_count": 11,
+      "character_count": 140,
+      "low_confidence_lines": 1
+    },
+    {
+      "pdf_page": 64,
+      "image": "page-0064.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 5.748,
+      "line_count": 16,
+      "character_count": 295,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 65,
+      "image": "page-0065.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 3.048,
+      "line_count": 9,
+      "character_count": 152,
+      "low_confidence_lines": 2
+    },
+    {
+      "pdf_page": 66,
+      "image": "page-0066.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 6.114,
+      "line_count": 16,
+      "character_count": 294,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 67,
+      "image": "page-0067.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 9.53,
+      "line_count": 219,
+      "character_count": 922,
+      "low_confidence_lines": 90
+    },
+    {
+      "pdf_page": 68,
+      "image": "page-0068.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 11.721,
+      "line_count": 200,
+      "character_count": 1045,
+      "low_confidence_lines": 98
+    },
+    {
+      "pdf_page": 69,
+      "image": "page-0069.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 4.243,
+      "line_count": 12,
+      "character_count": 187,
+      "low_confidence_lines": 1
+    },
+    {
+      "pdf_page": 70,
+      "image": "page-0070.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 5.955,
+      "line_count": 17,
+      "character_count": 356,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 71,
+      "image": "page-0071.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 6.236,
+      "line_count": 31,
+      "character_count": 256,
+      "low_confidence_lines": 1
+    },
+    {
+      "pdf_page": 72,
+      "image": "page-0072.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 4.471,
+      "line_count": 53,
+      "character_count": 381,
+      "low_confidence_lines": 2
+    },
+    {
+      "pdf_page": 73,
+      "image": "page-0073.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 4.776,
+      "line_count": 28,
+      "character_count": 319,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 74,
+      "image": "page-0074.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 5.869,
+      "line_count": 13,
+      "character_count": 295,
+      "low_confidence_lines": 1
+    },
+    {
+      "pdf_page": 75,
+      "image": "page-0075.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 0.921,
+      "line_count": 0,
+      "character_count": 0,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 76,
+      "image": "page-0076.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 0.001,
+      "line_count": 16,
+      "character_count": 313,
+      "low_confidence_lines": 1
+    },
+    {
+      "pdf_page": 77,
+      "image": "page-0077.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 9.647,
+      "line_count": 113,
+      "character_count": 793,
+      "low_confidence_lines": 34
+    },
+    {
+      "pdf_page": 78,
+      "image": "page-0078.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 12.038,
+      "line_count": 303,
+      "character_count": 1349,
+      "low_confidence_lines": 98
+    },
+    {
+      "pdf_page": 79,
+      "image": "page-0079.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 9.066,
+      "line_count": 109,
+      "character_count": 789,
+      "low_confidence_lines": 36
+    },
+    {
+      "pdf_page": 80,
+      "image": "page-0080.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 8.012,
+      "line_count": 127,
+      "character_count": 656,
+      "low_confidence_lines": 63
+    },
+    {
+      "pdf_page": 81,
+      "image": "page-0081.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 8.078,
+      "line_count": 60,
+      "character_count": 470,
+      "low_confidence_lines": 18
+    },
+    {
+      "pdf_page": 82,
+      "image": "page-0082.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 13.86,
+      "line_count": 267,
+      "character_count": 1631,
+      "low_confidence_lines": 92
+    },
+    {
+      "pdf_page": 83,
+      "image": "page-0083.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 10.44,
+      "line_count": 131,
+      "character_count": 974,
+      "low_confidence_lines": 47
+    },
+    {
+      "pdf_page": 84,
+      "image": "page-0084.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 7.856,
+      "line_count": 120,
+      "character_count": 711,
+      "low_confidence_lines": 27
+    },
+    {
+      "pdf_page": 85,
+      "image": "page-0085.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 12.742,
+      "line_count": 282,
+      "character_count": 1314,
+      "low_confidence_lines": 56
+    },
+    {
+      "pdf_page": 86,
+      "image": "page-0086.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 5.045,
+      "line_count": 41,
+      "character_count": 431,
+      "low_confidence_lines": 12
+    },
+    {
+      "pdf_page": 87,
+      "image": "page-0087.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 7.522,
+      "line_count": 24,
+      "character_count": 577,
+      "low_confidence_lines": 2
+    },
+    {
+      "pdf_page": 88,
+      "image": "page-0088.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 6.969,
+      "line_count": 132,
+      "character_count": 838,
+      "low_confidence_lines": 28
+    },
+    {
+      "pdf_page": 89,
+      "image": "page-0089.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 8.732,
+      "line_count": 139,
+      "character_count": 893,
+      "low_confidence_lines": 38
+    },
+    {
+      "pdf_page": 90,
+      "image": "page-0090.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 4.434,
+      "line_count": 14,
+      "character_count": 308,
+      "low_confidence_lines": 1
+    },
+    {
+      "pdf_page": 91,
+      "image": "page-0091.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 5.281,
+      "line_count": 21,
+      "character_count": 157,
+      "low_confidence_lines": 12
+    },
+    {
+      "pdf_page": 92,
+      "image": "page-0092.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 5.436,
+      "line_count": 16,
+      "character_count": 295,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 93,
+      "image": "page-0093.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 1.063,
+      "line_count": 5,
+      "character_count": 25,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 94,
+      "image": "page-0094.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 5.69,
+      "line_count": 15,
+      "character_count": 319,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 95,
+      "image": "page-0095.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 9.389,
+      "line_count": 28,
+      "character_count": 747,
+      "low_confidence_lines": 1
+    },
+    {
+      "pdf_page": 96,
+      "image": "page-0096.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 9.621,
+      "line_count": 28,
+      "character_count": 798,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 97,
+      "image": "page-0097.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 9.014,
+      "line_count": 28,
+      "character_count": 757,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 98,
+      "image": "page-0098.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 9.121,
+      "line_count": 27,
+      "character_count": 665,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 99,
+      "image": "page-0099.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 9.48,
+      "line_count": 28,
+      "character_count": 704,
+      "low_confidence_lines": 1
+    },
+    {
+      "pdf_page": 100,
+      "image": "page-0100.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 6.343,
+      "line_count": 23,
+      "character_count": 461,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 101,
+      "image": "page-0101.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 7.856,
+      "line_count": 32,
+      "character_count": 580,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 102,
+      "image": "page-0102.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 9.383,
+      "line_count": 27,
+      "character_count": 657,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 103,
+      "image": "page-0103.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 6.052,
+      "line_count": 28,
+      "character_count": 669,
+      "low_confidence_lines": 1
+    },
+    {
+      "pdf_page": 104,
+      "image": "page-0104.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 9.018,
+      "line_count": 28,
+      "character_count": 699,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 105,
+      "image": "page-0105.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 10.344,
+      "line_count": 27,
+      "character_count": 635,
+      "low_confidence_lines": 2
+    },
+    {
+      "pdf_page": 106,
+      "image": "page-0106.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 9.552,
+      "line_count": 28,
+      "character_count": 791,
+      "low_confidence_lines": 1
+    },
+    {
+      "pdf_page": 107,
+      "image": "page-0107.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 8.097,
+      "line_count": 28,
+      "character_count": 775,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 108,
+      "image": "page-0108.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 7.983,
+      "line_count": 26,
+      "character_count": 664,
+      "low_confidence_lines": 1
+    },
+    {
+      "pdf_page": 109,
+      "image": "page-0109.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 6.472,
+      "line_count": 22,
+      "character_count": 357,
+      "low_confidence_lines": 2
+    },
+    {
+      "pdf_page": 110,
+      "image": "page-0110.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 5.401,
+      "line_count": 19,
+      "character_count": 207,
+      "low_confidence_lines": 1
+    },
+    {
+      "pdf_page": 111,
+      "image": "page-0111.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 6.252,
+      "line_count": 20,
+      "character_count": 341,
+      "low_confidence_lines": 1
+    },
+    {
+      "pdf_page": 112,
+      "image": "page-0112.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 7.153,
+      "line_count": 24,
+      "character_count": 471,
+      "low_confidence_lines": 1
+    },
+    {
+      "pdf_page": 113,
+      "image": "page-0113.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 7.732,
+      "line_count": 28,
+      "character_count": 743,
+      "low_confidence_lines": 5
+    },
+    {
+      "pdf_page": 114,
+      "image": "page-0114.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 7.3,
+      "line_count": 28,
+      "character_count": 794,
+      "low_confidence_lines": 4
+    },
+    {
+      "pdf_page": 115,
+      "image": "page-0115.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 8.503,
+      "line_count": 28,
+      "character_count": 613,
+      "low_confidence_lines": 1
+    },
+    {
+      "pdf_page": 116,
+      "image": "page-0116.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 8.476,
+      "line_count": 28,
+      "character_count": 682,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 117,
+      "image": "page-0117.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 8.267,
+      "line_count": 24,
+      "character_count": 553,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 118,
+      "image": "page-0118.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 10.253,
+      "line_count": 28,
+      "character_count": 718,
+      "low_confidence_lines": 1
+    },
+    {
+      "pdf_page": 119,
+      "image": "page-0119.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 7.03,
+      "line_count": 32,
+      "character_count": 537,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 120,
+      "image": "page-0120.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 5.987,
+      "line_count": 26,
+      "character_count": 511,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 121,
+      "image": "page-0121.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 9.663,
+      "line_count": 29,
+      "character_count": 569,
+      "low_confidence_lines": 1
+    },
+    {
+      "pdf_page": 122,
+      "image": "page-0122.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 8.454,
+      "line_count": 30,
+      "character_count": 576,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 123,
+      "image": "page-0123.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 8.918,
+      "line_count": 28,
+      "character_count": 585,
+      "low_confidence_lines": 1
+    },
+    {
+      "pdf_page": 124,
+      "image": "page-0124.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 5.767,
+      "line_count": 19,
+      "character_count": 391,
+      "low_confidence_lines": 1
+    },
+    {
+      "pdf_page": 125,
+      "image": "page-0125.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 6.136,
+      "line_count": 28,
+      "character_count": 450,
+      "low_confidence_lines": 2
+    },
+    {
+      "pdf_page": 126,
+      "image": "page-0126.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 6.866,
+      "line_count": 28,
+      "character_count": 635,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 127,
+      "image": "page-0127.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 6.545,
+      "line_count": 24,
+      "character_count": 501,
+      "low_confidence_lines": 1
+    },
+    {
+      "pdf_page": 128,
+      "image": "page-0128.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 9.083,
+      "line_count": 23,
+      "character_count": 455,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 129,
+      "image": "page-0129.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 7.605,
+      "line_count": 24,
+      "character_count": 526,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 130,
+      "image": "page-0130.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 9.833,
+      "line_count": 28,
+      "character_count": 719,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 131,
+      "image": "page-0131.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 4.956,
+      "line_count": 22,
+      "character_count": 512,
+      "low_confidence_lines": 1
+    },
+    {
+      "pdf_page": 132,
+      "image": "page-0132.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 8.288,
+      "line_count": 28,
+      "character_count": 578,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 133,
+      "image": "page-0133.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 9.804,
+      "line_count": 27,
+      "character_count": 539,
+      "low_confidence_lines": 2
+    },
+    {
+      "pdf_page": 134,
+      "image": "page-0134.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 4.211,
+      "line_count": 19,
+      "character_count": 408,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 135,
+      "image": "page-0135.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 1.809,
+      "line_count": 19,
+      "character_count": 70,
+      "low_confidence_lines": 2
+    },
+    {
+      "pdf_page": 136,
+      "image": "page-0136.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 1.956,
+      "line_count": 16,
+      "character_count": 102,
+      "low_confidence_lines": 4
+    },
+    {
+      "pdf_page": 137,
+      "image": "page-0137.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 2.207,
+      "line_count": 18,
+      "character_count": 173,
+      "low_confidence_lines": 11
+    },
+    {
+      "pdf_page": 138,
+      "image": "page-0138.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 4.86,
+      "line_count": 84,
+      "character_count": 499,
+      "low_confidence_lines": 21
+    },
+    {
+      "pdf_page": 139,
+      "image": "page-0139.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 6.252,
+      "line_count": 115,
+      "character_count": 709,
+      "low_confidence_lines": 33
+    },
+    {
+      "pdf_page": 140,
+      "image": "page-0140.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 4.065,
+      "line_count": 15,
+      "character_count": 147,
+      "low_confidence_lines": 5
+    },
+    {
+      "pdf_page": 141,
+      "image": "page-0141.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 7.506,
+      "line_count": 30,
+      "character_count": 513,
+      "low_confidence_lines": 12
+    },
+    {
+      "pdf_page": 142,
+      "image": "page-0142.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 6.007,
+      "line_count": 15,
+      "character_count": 164,
+      "low_confidence_lines": 1
+    },
+    {
+      "pdf_page": 143,
+      "image": "page-0143.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 1.681,
+      "line_count": 19,
+      "character_count": 74,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 144,
+      "image": "page-0144.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 8.382,
+      "line_count": 101,
+      "character_count": 793,
+      "low_confidence_lines": 37
+    },
+    {
+      "pdf_page": 145,
+      "image": "page-0145.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 9.458,
+      "line_count": 243,
+      "character_count": 1127,
+      "low_confidence_lines": 73
+    },
+    {
+      "pdf_page": 146,
+      "image": "page-0146.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 9.099,
+      "line_count": 24,
+      "character_count": 303,
+      "low_confidence_lines": 11
+    },
+    {
+      "pdf_page": 147,
+      "image": "page-0147.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 3.775,
+      "line_count": 10,
+      "character_count": 217,
+      "low_confidence_lines": 2
+    },
+    {
+      "pdf_page": 148,
+      "image": "page-0148.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 7.152,
+      "line_count": 115,
+      "character_count": 750,
+      "low_confidence_lines": 37
+    },
+    {
+      "pdf_page": 149,
+      "image": "page-0149.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 4.293,
+      "line_count": 85,
+      "character_count": 605,
+      "low_confidence_lines": 16
+    },
+    {
+      "pdf_page": 150,
+      "image": "page-0150.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 8.72,
+      "line_count": 27,
+      "character_count": 581,
+      "low_confidence_lines": 2
+    },
+    {
+      "pdf_page": 151,
+      "image": "page-0151.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 7.909,
+      "line_count": 28,
+      "character_count": 669,
+      "low_confidence_lines": 1
+    },
+    {
+      "pdf_page": 152,
+      "image": "page-0152.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 7.652,
+      "line_count": 28,
+      "character_count": 672,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 153,
+      "image": "page-0153.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 8.958,
+      "line_count": 28,
+      "character_count": 642,
+      "low_confidence_lines": 1
+    },
+    {
+      "pdf_page": 154,
+      "image": "page-0154.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 8.333,
+      "line_count": 28,
+      "character_count": 686,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 155,
+      "image": "page-0155.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 7.52,
+      "line_count": 28,
+      "character_count": 654,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 156,
+      "image": "page-0156.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 8.143,
+      "line_count": 28,
+      "character_count": 657,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 157,
+      "image": "page-0157.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 9.225,
+      "line_count": 28,
+      "character_count": 618,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 158,
+      "image": "page-0158.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 9.653,
+      "line_count": 28,
+      "character_count": 676,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 159,
+      "image": "page-0159.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 8.015,
+      "line_count": 28,
+      "character_count": 672,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 160,
+      "image": "page-0160.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 9.636,
+      "line_count": 28,
+      "character_count": 722,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 161,
+      "image": "page-0161.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 8.047,
+      "line_count": 28,
+      "character_count": 714,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 162,
+      "image": "page-0162.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 8.305,
+      "line_count": 28,
+      "character_count": 682,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 163,
+      "image": "page-0163.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 9.24,
+      "line_count": 28,
+      "character_count": 720,
+      "low_confidence_lines": 2
+    },
+    {
+      "pdf_page": 164,
+      "image": "page-0164.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 8.775,
+      "line_count": 28,
+      "character_count": 680,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 165,
+      "image": "page-0165.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 8.087,
+      "line_count": 28,
+      "character_count": 681,
+      "low_confidence_lines": 1
+    },
+    {
+      "pdf_page": 166,
+      "image": "page-0166.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 5.634,
+      "line_count": 45,
+      "character_count": 467,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 167,
+      "image": "page-0167.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 0.001,
+      "line_count": 57,
+      "character_count": 293,
+      "low_confidence_lines": 3
+    },
+    {
+      "pdf_page": 168,
+      "image": "page-0168.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 6.642,
+      "line_count": 16,
+      "character_count": 344,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 169,
+      "image": "page-0169.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 8.964,
+      "line_count": 28,
+      "character_count": 745,
+      "low_confidence_lines": 2
+    },
+    {
+      "pdf_page": 170,
+      "image": "page-0170.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 7.187,
+      "line_count": 26,
+      "character_count": 625,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 171,
+      "image": "page-0171.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 7.934,
+      "line_count": 28,
+      "character_count": 771,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 172,
+      "image": "page-0172.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 9.373,
+      "line_count": 26,
+      "character_count": 692,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 173,
+      "image": "page-0173.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 7.96,
+      "line_count": 28,
+      "character_count": 758,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 174,
+      "image": "page-0174.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 9.714,
+      "line_count": 27,
+      "character_count": 705,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 175,
+      "image": "page-0175.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 8.587,
+      "line_count": 27,
+      "character_count": 696,
+      "low_confidence_lines": 1
+    },
+    {
+      "pdf_page": 176,
+      "image": "page-0176.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 9.436,
+      "line_count": 26,
+      "character_count": 668,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 177,
+      "image": "page-0177.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 7.701,
+      "line_count": 28,
+      "character_count": 752,
+      "low_confidence_lines": 1
+    },
+    {
+      "pdf_page": 178,
+      "image": "page-0178.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 6.253,
+      "line_count": 27,
+      "character_count": 732,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 179,
+      "image": "page-0179.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 9.736,
+      "line_count": 27,
+      "character_count": 701,
+      "low_confidence_lines": 3
+    },
+    {
+      "pdf_page": 180,
+      "image": "page-0180.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 8.862,
+      "line_count": 27,
+      "character_count": 706,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 181,
+      "image": "page-0181.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 10.054,
+      "line_count": 28,
+      "character_count": 683,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 182,
+      "image": "page-0182.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 9.461,
+      "line_count": 27,
+      "character_count": 719,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 183,
+      "image": "page-0183.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 4.885,
+      "line_count": 32,
+      "character_count": 533,
+      "low_confidence_lines": 14
+    },
+    {
+      "pdf_page": 184,
+      "image": "page-0184.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 9.008,
+      "line_count": 26,
+      "character_count": 663,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 185,
+      "image": "page-0185.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 8.26,
+      "line_count": 24,
+      "character_count": 639,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 186,
+      "image": "page-0186.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 6.797,
+      "line_count": 21,
+      "character_count": 496,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 187,
+      "image": "page-0187.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 8.828,
+      "line_count": 26,
+      "character_count": 679,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 188,
+      "image": "page-0188.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 9.966,
+      "line_count": 26,
+      "character_count": 702,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 189,
+      "image": "page-0189.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 8.942,
+      "line_count": 27,
+      "character_count": 730,
+      "low_confidence_lines": 1
+    },
+    {
+      "pdf_page": 190,
+      "image": "page-0190.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 7.165,
+      "line_count": 27,
+      "character_count": 720,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 191,
+      "image": "page-0191.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 9.673,
+      "line_count": 27,
+      "character_count": 689,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 192,
+      "image": "page-0192.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 10.582,
+      "line_count": 27,
+      "character_count": 715,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 193,
+      "image": "page-0193.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 6.218,
+      "line_count": 26,
+      "character_count": 660,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 194,
+      "image": "page-0194.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 9.304,
+      "line_count": 26,
+      "character_count": 678,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 195,
+      "image": "page-0195.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 8.06,
+      "line_count": 26,
+      "character_count": 670,
+      "low_confidence_lines": 1
+    },
+    {
+      "pdf_page": 196,
+      "image": "page-0196.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 8.685,
+      "line_count": 26,
+      "character_count": 663,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 197,
+      "image": "page-0197.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 8.819,
+      "line_count": 28,
+      "character_count": 580,
+      "low_confidence_lines": 1
+    },
+    {
+      "pdf_page": 198,
+      "image": "page-0198.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 10.04,
+      "line_count": 28,
+      "character_count": 640,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 199,
+      "image": "page-0199.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 5.393,
+      "line_count": 23,
+      "character_count": 508,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 200,
+      "image": "page-0200.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 9.713,
+      "line_count": 28,
+      "character_count": 781,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 201,
+      "image": "page-0201.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 9.992,
+      "line_count": 28,
+      "character_count": 734,
+      "low_confidence_lines": 1
+    },
+    {
+      "pdf_page": 202,
+      "image": "page-0202.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 6.818,
+      "line_count": 27,
+      "character_count": 604,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 203,
+      "image": "page-0203.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 9.633,
+      "line_count": 28,
+      "character_count": 682,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 204,
+      "image": "page-0204.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 8.2,
+      "line_count": 26,
+      "character_count": 593,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 205,
+      "image": "page-0205.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 8.008,
+      "line_count": 28,
+      "character_count": 696,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 206,
+      "image": "page-0206.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 9.802,
+      "line_count": 28,
+      "character_count": 663,
+      "low_confidence_lines": 1
+    },
+    {
+      "pdf_page": 207,
+      "image": "page-0207.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 4.615,
+      "line_count": 18,
+      "character_count": 413,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 208,
+      "image": "page-0208.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 5.986,
+      "line_count": 20,
+      "character_count": 499,
+      "low_confidence_lines": 0
+    },
+    {
+      "pdf_page": 209,
+      "image": "page-0209.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 2.717,
+      "line_count": 10,
+      "character_count": 125,
+      "low_confidence_lines": 1
+    },
+    {
+      "pdf_page": 210,
+      "image": "page-0210.jpeg",
+      "width": 1936,
+      "height": 2717,
+      "elapsed_seconds": 5.381,
+      "line_count": 16,
+      "character_count": 332,
+      "low_confidence_lines": 3
+    }
+  ]
+}

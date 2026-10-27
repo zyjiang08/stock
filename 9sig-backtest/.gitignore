@@ -1,0 +1,24 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Environment
+.env
+.venv
+venv/
+env/
+
+# IDE / Editor
+.vscode/
+.idea/
+
+# Backtest Artifacts
+*.log
+*.csv
+*.html
+
+# OS-specific
+.DS_Store
+Thumbs.db

@@ -1,0 +1,436 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="9Sig 自定义季度调仓教学模板：下载 CSV、Excel 和中文指南，使用离线计算器。">
+  <title>9Sig 季度调仓模板 · 中文指南</title>
+  <style>
+    :root{color-scheme:light;--ink:#173d39;--muted:#566d65;--line:#d7e2da;--paper:#fafbf7;--accent:#c7e8ce}
+    *{box-sizing:border-box}body{margin:0;background:var(--paper);color:#243a32;font:16px/1.75 system-ui,-apple-system,"Noto Sans CJK SC","Microsoft YaHei",sans-serif}
+    a{color:#17634f;text-underline-offset:3px}main{max-width:1120px;margin:auto;padding:40px 28px 80px}
+    .masthead{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);padding-bottom:20px;gap:16px;font-size:13px;letter-spacing:.08em;color:var(--muted)}
+    .mark{font-size:22px;font-weight:800;letter-spacing:-.05em;color:var(--ink)}
+    .hero{padding:48px 0 28px;display:grid;grid-template-columns:1.5fr 1fr;gap:36px;align-items:center}
+    .eyebrow{font-size:13px;color:var(--muted);letter-spacing:.12em;margin:0 0 12px}
+    h1{font-size:clamp(32px,5vw,50px);line-height:1.2;letter-spacing:-.04em;margin:0 0 20px;color:var(--ink)}
+    .lead{max-width:670px;color:var(--muted);margin:0 0 20px}.badge{display:inline-block;font-size:12px;padding:4px 12px;background:#e8f1e7;border-radius:30px}
+    .allocation{border:1px solid var(--line);padding:24px;border-radius:18px;background:#fff}.allocation strong{font-size:32px;color:var(--ink)}
+    .bar{height:14px;background:#e3eadf;border-radius:10px;overflow:hidden;margin:16px 0}.bar span{display:block;width:40%;height:100%;background:#367a61}.legend{display:flex;justify-content:space-between;font-size:14px}
+    .downloads{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0 16px}button,.button{font:inherit;border:1px solid var(--line);background:#fff;border-radius:9px;padding:10px 16px;cursor:pointer;color:var(--ink);text-decoration:none;line-height:1.5}
+    button:hover,.button:hover{background:#e8f1e7}button.primary{background:var(--ink);border-color:var(--ink);color:white}button.primary:hover{background:#245e51}
+    button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid #81b69d;outline-offset:3px}
+    .small{font-size:13px;color:var(--muted)}.notice{padding:16px 20px;border-left:3px solid #73947a;background:#f0f4eb;margin:24px 0 38px;font-size:14px}
+    section{margin:32px 0}h2{color:var(--ink);font-size:25px;margin:0 0 12px;letter-spacing:-.02em}h3{font-size:18px;color:var(--ink)}
+    .calculator{background:white;border:1px solid var(--line);border-radius:18px;padding:28px}.fields{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    label{font-size:13px;color:var(--muted);display:block}input[type=number]{width:100%;font:inherit;font-size:18px;margin-top:5px;border:1px solid #c6d7cc;border-radius:7px;background:#fcfdfb;padding:9px 11px;color:var(--ink)}
+    .check{display:flex;gap:8px;align-items:center;margin:20px 0;color:var(--ink)}.result{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;padding-top:22px;border-top:1px solid var(--line)}
+    .result span{display:block;font-size:12px;color:var(--muted)}.result strong{font-size:23px;color:var(--ink)}#calc-error{color:#a33626}#calc-detail{margin-bottom:0}
+    details{border:1px solid var(--line);border-radius:12px;background:#fff;margin-top:30px}summary{cursor:pointer;font-weight:650;color:var(--ink);padding:20px 24px}.guide{padding:4px 28px 28px;overflow-wrap:anywhere}
+    .guide h1{font-size:29px;line-height:1.5;margin-top:20px}.guide h2{margin-top:36px;border-top:1px solid var(--line);padding-top:26px;font-size:23px}
+    .guide p,.guide li{font-size:15px}.table-wrap{overflow-x:auto;margin:18px 0}table{border-collapse:collapse;width:100%;font-size:13px;white-space:normal}th,td{padding:11px 13px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}th{background:#edf3eb;color:var(--ink)}
+    code{font-family:ui-monospace,monospace;font-size:.9em;background:#eef3ed;border-radius:3px;padding:2px 4px}pre{background:#f1f5ef;border-radius:8px;padding:18px;overflow-x:auto}pre code{padding:0;background:transparent;white-space:pre}
+    footer{margin-top:32px;font-size:12px;color:var(--muted)}
+    @media(max-width:720px){main{padding:20px 16px 48px}.masthead{font-size:11px}.hero{grid-template-columns:1fr;padding-top:30px;gap:18px}.fields,.result{grid-template-columns:repeat(2,1fr)}.calculator{padding:20px}.guide{padding:0 16px 20px}.guide h1{font-size:25px}th,td{min-width:105px}.result strong{font-size:20px}}
+    @media print{body{background:white;font-size:11pt}main{max-width:none;padding:0}.masthead,.hero,.downloads,.intro-note,.notice,.calculator,summary,footer{display:none}details{border:0;margin:0}.guide{padding:0}.guide h1{font-size:20pt}.guide h2{font-size:15pt;break-after:avoid}.guide p,.guide li{font-size:10pt}table{font-size:8pt}th,td{padding:5px}a{color:inherit}pre{white-space:pre-wrap}pre code{white-space:pre-wrap}}
+  </style>
+</head>
+<body>
+<main>
+  <header class="masthead"><span class="mark">9Sig / worksheet</span><span>中文指南 · 独立教学版本 · 2026.10.27</span></header>
+  <div class="hero">
+    <div><p class="eyebrow">每季度，把价格变化转成可核对的数字</p><h1>9Sig 季度调仓模板</h1><p class="lead">输入价格，计算交易股数，结转股票与储备余额。下载到本地，或导入 Google Sheets 继续记录。</p><span class="badge">文件无需登录 · 网页可离线使用</span></div>
+    <aside class="allocation"><div class="small">本模板的自定义起点</div><strong>40 / 60</strong><div class="bar" aria-hidden="true"><span></span></div><div class="legend"><span>TQQQ 40%</span><span>现金储备 60%</span></div><p class="small">演示本金 $100,000；价格为假设值。</p></aside>
+  </div>
+  <nav class="downloads" aria-label="下载文件">
+    <button class="primary" id="download-csv" type="button">下载 CSV 模板</button>
+    <button id="download-xlsx" type="button">下载 Excel 版</button>
+    <button id="download-guide" type="button">下载中文指南</button>
+    <button id="download-results" type="button">下载示例结果</button>
+    <button id="print-guide" type="button">打印 / 保存 PDF</button>
+  </nav>
+  <p class="small intro-note">下载的是固定示例模板。下方计算器用于单季度演算，其输入不会改写下载文件。导入 Google Sheets 后保存个人副本仍需 Google 账号。</p>
+  <p class="notice">40/60 是本页的自定义示例。作者有日期可查的公开说明采用 60/40；本模板未自动实现完整的 30 Down 与 Spike Reset 判断。9% 是股票部分的调仓目标，实际投资可能亏损。<a href="#guide">查看规则来源与操作说明</a></p>
+
+  <section class="calculator" aria-labelledby="calculator-title">
+    <h2 id="calculator-title">先算一个季度</h2>
+    <p class="small">默认演示 Q1：价格从 $40 涨至 $50，应卖出 128 股。假设现金储备、估值价即成交价、无费用及出入金。</p>
+    <form id="calculator-form">
+      <div class="fields">
+        <label>上季股票基数（美元）<input id="base" type="number" value="40000" min="0" step="any" required></label>
+        <label>本季 TQQQ 价格（美元）<input id="price" type="number" value="50" min="0.000001" step="any" required></label>
+        <label>当前 TQQQ 股数<input id="shares" type="number" value="1000" min="0" step="any" required></label>
+        <label>当前现金储备（美元）<input id="cash" type="number" value="60000" min="0" step="any" required></label>
+        <label>季度目标率（%）<input id="growth" type="number" value="9" min="0" step="any" required></label>
+        <label>最多使用储备（%）<input id="cap" type="number" value="90" min="0" max="100" step="any" required></label>
+        <label>交易股数小数位<input id="decimals" type="number" value="0" min="0" max="6" step="1" required></label>
+        <label>手动重置股票占比（%，可留空）<input id="reset" type="number" min="0" max="100" step="any" placeholder="留空：正常季度信号"></label>
+      </div>
+      <label class="check"><input id="hold" type="checkbox">本季暂停卖出（手动确认，优先于重置请求）</label>
+    </form>
+    <p id="calc-error" role="alert" hidden>请输入有效数字：价格须大于 0，比例需在允许范围内，小数位须为 0–6 的整数。</p>
+    <div id="calc-results" aria-live="polite">
+      <div class="result">
+        <div><span>本季度股票目标</span><strong id="target">—</strong></div>
+        <div><span>交易方向与股数</span><strong id="trade">—</strong></div>
+        <div><span>交易后股票股数</span><strong id="after-shares">—</strong></div>
+        <div><span>交易后现金</span><strong id="after-cash">—</strong></div>
+      </div>
+      <p class="small" id="calc-detail"></p>
+    </div>
+  </section>
+
+  <details id="guide" open>
+    <summary>完整中文指南 · 导入、公式、示例与规则依据</summary>
+    <article class="guide"><h1>Jason Kelly 9Sig 策略 Google Sheets 自动计算与调仓模板指南</h1>
+<p>自定义教学模板 · 2026-10-27 · 美元计价</p>
+<p>本套文件提供季度信号计算、买入金额限制、持仓与储备结转，以及手动暂停卖出和重置功能。示例采用你指定的 <strong>40% TQQQ + 60% 现金储备</strong>，初始资金 100,000 美元。所有价格都是演示数据，不代表历史行情或实际收益。</p>
+<p>这是独立制作的计算模板，不是 Jason Kelly 的官方表格或完整 9Sig 操作手册。9% 是股票部分的季度调仓目标，并不代表整个账户每季能赚 9%。TQQQ 的三倍目标针对<strong>单日</strong>表现，长期结果会受每日复利路径影响。<a href="https://www.proshares.com/our-etfs/leveraged-and-inverse/tqqq">ProShares 产品说明</a></p>
+<h2>文件与打开方式</h2>
+<table>
+<thead>
+<tr>
+<th>文件</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>9Sig_Google_Sheets_Template.csv</code></td>
+<td>含公式的原始模板，使用 UTF-8 BOM 编码</td>
+</tr>
+<tr>
+<td><code>9Sig_Google_Sheets_Template.xlsx</code></td>
+<td>同一模板的排版版，含输入提示与本指南，可直接导入 Google Sheets</td>
+</tr>
+<tr>
+<td><code>9Sig_Example_Results.csv</code></td>
+<td>示例计算结果，只含数值，便于核对</td>
+</tr>
+<tr>
+<td><code>9Sig_Google_Sheets_Guide.md</code></td>
+<td>本中文指南</td>
+</tr>
+<tr>
+<td><code>index.html</code></td>
+<td>离线指南、单季度计算器与下载按钮；单个文件也能使用</td>
+</tr>
+</tbody>
+</table>
+<p>CSV、XLSX 和 HTML 文件本身不需要密钥或 Google 授权。可以直接把文件发送给别人；如果要让别人通过网址下载，仍需将网页放到可公开访问的服务器上。本地路径不是互联网分享链接。</p>
+<p>在 Google Drive 中创建或保存个人副本需要 Google 账号；将链接改为 <code>/copy</code> 不能免除这个要求。公开查看与保存个人副本是不同操作。<a href="https://support.google.com/docs/answer/148833?hl=en">Google 的复制文件说明</a></p>
+<h2>导入 Google Sheets</h2>
+<ol>
+<li>打开一个空白 Google 表格，选择“文件 → 导入 → 上传”。</li>
+<li>上传 <code>9Sig_Google_Sheets_Template.csv</code>，选择“替换当前工作表”或“创建新电子表格”，分隔符选逗号。</li>
+<li>如果出现“将文本转换为数字、日期和公式”，保持勾选，然后导入。</li>
+<li>检查 <code>G2</code> 显示 <code>40000</code>、<code>O3</code> 显示 <code>-128</code>、<code>Q3</code> 显示 <code>872</code>。若显示公式文字，重新导入并启用转换；若出现公式解析错误，可先将表格地区设置为美国后重新导入。</li>
+<li>也可以直接导入 XLSX，保留格式、输入校验及指南页。<a href="https://support.google.com/docs/answer/12236443?hl=en">Google 文件导入说明</a>、<a href="https://support.google.com/docs/answer/9331167?hl=en">Excel 导入说明</a></li>
+</ol>
+<p>不要把整段 CSV 粘贴后按逗号拆列：公式自身也有逗号，必须由 CSV 导入器正确处理引号。CSV 不保存颜色或数字格式，XLSX 则保留这些信息。</p>
+<h2>第一次填写</h2>
+<p>第 1 行是标题，第 2 行是初始建仓记录，第 3 行起每行代表一个季度。XLSX 中蓝底单元格供手动输入，灰底单元格含公式。</p>
+<ul>
+<li><code>C2</code>：初始 TQQQ 价格，示例为 <code>40</code>。</li>
+<li><code>D2</code>：储备单位价格，现金保持 <code>1</code>。</li>
+<li><code>E2</code>：初始 TQQQ 股数，示例为 <code>1000</code>。</li>
+<li><code>F2</code>：初始储备单位数，现金示例为 <code>60000</code>。</li>
+<li><code>Z2</code>：季度目标率，<code>0.09</code> 表示 9%。</li>
+<li><code>AA2</code>：一次买入最多使用的储备比例，示例为 <code>0.90</code>。</li>
+<li><code>AB2</code>：股票交易的小数位数，<code>0</code> 表示整股；券商支持碎股时才改成相应精度，最多 6 位。</li>
+</ul>
+<p>更改起始配置时，直接调整 <code>E2</code> 与 <code>F2</code>。例如同样以 100,000 美元、每股 40 美元起步，60/40 配置对应 <code>E2=1500</code>、<code>F2=40000</code>。实际填写时使用券商确认的持仓与余额；后续行会自动引用上一季调仓后的数量。</p>
+<h2>每季度操作</h2>
+<ol>
+<li>修改 A、B 列的季度和记录日期，在 C、D 列填入本季度的估值价格。为保持简单，本模板假设估值价等于成交价。</li>
+<li>核对 E、F 列结转数量与券商账户一致；有分红、拆股、出入金或未按示例成交时，先按实际记录修正数量和信号基数。</li>
+<li>正常计算时 <code>W=0</code>，X、Y 留空。有已确认的特殊指令，再填写这些手动控制项。</li>
+<li>查看 AD 列：必须是 <code>OK</code>，然后读取 AC 列动作、O 列股数、P 列成交金额。正数买入，负数卖出。</li>
+<li>Q、R 列给出交易后持仓，U 列给出总资产。下一季度复制最后一整行到下方，替换日期和价格，并将 W 恢复为 <code>0</code>、清空 X、Y，避免延续上季的临时指令。</li>
+</ol>
+<p>第 2 行只是初始持仓快照，不执行交易；W、X、Y 在这一行必须分别保持 <code>0</code>、空白、空白。<code>Z3</code> 以后引用 <code>$Z$2</code>，AA、AB 同理；如果以后修改了全局参数，历史行也会重算。需要保留历史规则时，把历史参数行改为当时的固定值。</p>
+<h2>列定义</h2>
+<table>
+<thead>
+<tr>
+<th>列</th>
+<th>字段</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A–B</td>
+<td>Quarter / Date</td>
+<td>季度、记录日期</td>
+</tr>
+<tr>
+<td>C–D</td>
+<td>TQQQ Price / Reserve Unit Price</td>
+<td>股票价格与储备单位价格，必须大于 0</td>
+</tr>
+<tr>
+<td>E–F</td>
+<td>Shares / Units Before</td>
+<td>调仓前持仓；第 3 行起自动结转</td>
+</tr>
+<tr>
+<td>G–I</td>
+<td>Values Before</td>
+<td>股票、储备及总资产市值</td>
+</tr>
+<tr>
+<td>J</td>
+<td>Signal Target</td>
+<td>本季度股票目标市值</td>
+</tr>
+<tr>
+<td>K</td>
+<td>Raw Signal Amount</td>
+<td>目标减去当前股票市值</td>
+</tr>
+<tr>
+<td>L</td>
+<td>Buy Cap Amount</td>
+<td>储备市值乘以最多使用比例</td>
+</tr>
+<tr>
+<td>M</td>
+<td>Requested Trade Amount</td>
+<td>普通信号，或手动重置对应的交易金额</td>
+</tr>
+<tr>
+<td>N</td>
+<td>Allowed Trade Amount</td>
+<td>应用暂停卖出、买入上限及持仓限制后的金额</td>
+</tr>
+<tr>
+<td>O</td>
+<td>Trade Shares</td>
+<td>按指定精度向零截断的交易股数</td>
+</tr>
+<tr>
+<td>P</td>
+<td>Executed Trade Amount</td>
+<td>股数乘价格，实际用于现金结算的金额</td>
+</tr>
+<tr>
+<td>Q–R</td>
+<td>Shares / Units After</td>
+<td>交易后的股票股数和储备单位数</td>
+</tr>
+<tr>
+<td>S–U</td>
+<td>Values After</td>
+<td>交易后的股票、储备及总资产市值</td>
+</tr>
+<tr>
+<td>V</td>
+<td>Next Signal Base</td>
+<td>下一季度的起算基数，默认为本季交易后股票市值</td>
+</tr>
+<tr>
+<td>W</td>
+<td>Ignore Sell</td>
+<td><code>1</code> 暂停本季卖出，<code>0</code> 正常；需每季手动确认</td>
+</tr>
+<tr>
+<td>X</td>
+<td>Reset Stock Weight</td>
+<td>留空表示不重置，<code>0.4</code> 表示请求重置为 40% 股票</td>
+</tr>
+<tr>
+<td>Y</td>
+<td>Next Base Override</td>
+<td>留空自动使用 S；填写数值则覆盖下一季的信号基数</td>
+</tr>
+<tr>
+<td>Z</td>
+<td>Quarterly Target Rate</td>
+<td><code>0.09</code> 表示季度目标率 9%</td>
+</tr>
+<tr>
+<td>AA</td>
+<td>Max Reserve Use</td>
+<td><code>0.9</code> 表示一次买入最多使用储备市值的 90%</td>
+</tr>
+<tr>
+<td>AB</td>
+<td>Share Decimals</td>
+<td>交易股数小数位数，0–6</td>
+</tr>
+<tr>
+<td>AC</td>
+<td>Action</td>
+<td>INIT / BUY / SELL / HOLD / BLOCKED</td>
+</tr>
+<tr>
+<td>AD</td>
+<td>Check</td>
+<td>输入合法性与资金守恒检查</td>
+</tr>
+<tr>
+<td>AE</td>
+<td>Notes</td>
+<td>手工记录规则依据、实际交易和例外</td>
+</tr>
+</tbody>
+</table>
+<h2>核心公式（第 3 行）</h2>
+<pre><code class="language-text">E3 = Q2                         上季股票股数结转
+F3 = R2                         上季储备单位数结转
+G3 = E3*C3                      当前股票市值
+H3 = F3*D3                      当前储备市值
+I3 = G3+H3                      当前总资产
+J3 = V2*(1+Z3)                  本季目标
+K3 = J3-G3                      原始交易金额
+L3 = MAX(0,H3)*AA3              买入上限
+M3 = IF(X3=&quot;&quot;,K3,I3*X3-G3)      可选的手动重置请求
+P3 = O3*C3                      按交易股数结算
+Q3 = E3+O3                      交易后股票数量
+R3 = F3-P3/D3                   交易后储备数量
+S3 = Q3*C3                      交易后股票市值
+T3 = R3*D3                      交易后储备市值
+U3 = S3+T3                      交易后总资产
+V3 = IF(Y3=&quot;&quot;,S3,Y3)            下季基数或手动覆盖
+</code></pre>
+<p>N 列先执行 W 的暂停卖出，再将买入金额限制在 L 内、卖出金额限制在已有股票市值内。O 列使用 <code>TRUNC(N3/C3,AB3)</code> 向零截断。输入不合法时关闭交易计算并在 AD 标记错误，避免零价格或无效比例生成可执行信号。</p>
+<p>本模板采用<strong>上一季实际调仓后的股票市值</strong>作为下一季起算基数，包含整股舍入、买入不足、暂停卖出和重置的结果。不是无条件沿着最初本金一直乘 <code>1.09</code>。这个约定在模板各处保持一致；若你的正式指令使用另一信号基数，可通过 Y 列录入。<a href="https://jasonkelly.com/3sig/">作者对 3Sig 资金不足及调仓后基数的解释</a></p>
+<h2>示例核对</h2>
+<p>以下数据使用整股、储备价格恒为 1、无费用且无出入金。每次调仓只在两部分之间转移资金，因此交易前后总资产相等。</p>
+<table>
+<thead>
+<tr>
+<th>行</th>
+<th style="text-align: right;">TQQQ 价格</th>
+<th style="text-align: right;">股票目标</th>
+<th style="text-align: right;">交易股数</th>
+<th style="text-align: right;">成交金额</th>
+<th style="text-align: right;">交易后股票股数</th>
+<th style="text-align: right;">交易后现金</th>
+<th style="text-align: right;">总资产</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>初始</td>
+<td style="text-align: right;">40.00</td>
+<td style="text-align: right;">40,000.00</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">1,000</td>
+<td style="text-align: right;">60,000.00</td>
+<td style="text-align: right;">100,000.00</td>
+</tr>
+<tr>
+<td>Q1</td>
+<td style="text-align: right;">50.00</td>
+<td style="text-align: right;">43,600.00</td>
+<td style="text-align: right;">-128</td>
+<td style="text-align: right;">-6,400.00</td>
+<td style="text-align: right;">872</td>
+<td style="text-align: right;">66,400.00</td>
+<td style="text-align: right;">110,000.00</td>
+</tr>
+<tr>
+<td>Q2</td>
+<td style="text-align: right;">35.00</td>
+<td style="text-align: right;">47,524.00</td>
+<td style="text-align: right;">485</td>
+<td style="text-align: right;">16,975.00</td>
+<td style="text-align: right;">1,357</td>
+<td style="text-align: right;">49,425.00</td>
+<td style="text-align: right;">96,920.00</td>
+</tr>
+<tr>
+<td>Q3</td>
+<td style="text-align: right;">42.00</td>
+<td style="text-align: right;">51,769.55</td>
+<td style="text-align: right;">-124</td>
+<td style="text-align: right;">-5,208.00</td>
+<td style="text-align: right;">1,233</td>
+<td style="text-align: right;">54,633.00</td>
+<td style="text-align: right;">106,419.00</td>
+</tr>
+</tbody>
+</table>
+<p>Q1 股票市值超过目标，应卖出 128 股，所以 Q2 的期初股数是 872。原先粘贴内容中的 1,128 股会把卖出误记成买入，本模板已修正。Q2 因整股截断未完全达到目标，所以下一季按实际股票市值 47,495 美元起算。</p>
+<h2>9Sig 规则核对与手动控制</h2>
+<p>作者 2018 年公开答复使用的基准是 <strong>60% 股票 / 40% 债券</strong>，并说明单季买入最多使用债券余额的 90%。同一答复将 Spike Reset 描述为：股票基金当季上涨至少 100%、常规调仓后股票占比处于 60%–100%，且不在 30 Down 暂停卖出期时，重置到 60% 股票。<a href="https://jasonkelly.com/resources/strategies/">作者公开规则答复</a></p>
+<p>作者在 2023 年说明，9Sig 的 30 Down 阶段会跳过两次季度卖出信号，并在该阶段结束时恢复到基准配置；正常运行时股票占比也可能低于 60%。<a href="https://jasonkelly.com/2023/02/tqqq-and-volatility-decay/">作者对 30 Down 与配置的说明</a></p>
+<p>这些是带日期的公开说明，不足以确认最新会员版全部细节，也未证实“40/60 是最新官方配置”。40/60 在这里仅是你指定的自定义起点。完整执行规则以作者的会员资料为准。<a href="https://jasonkelly.com/">The Kelly Letter 官方入口</a></p>
+<p>模板不会自动判断 30 Down 的触发、计数或到期，也不会自动触发 Spike Reset。确认需要跳过本季卖出时填写 <code>W=1</code>；确认需要重置时填写 X；需要另行指定下季起点时填写 Y，并在 AE 留下注释。<strong>W 的暂停卖出优先于 X 的重置请求，买入上限始终有效</strong>，因此重置不保证一次完成，也会有整股误差。X 填 <code>0</code> 表示请求卖光，留空才是不重置。</p>
+<h2>价格、债券与实际记账</h2>
+<p>历史行请填写固定的历史价格。不要将每一季都替换成实时 <code>GOOGLEFINANCE</code>，否则过去的记录会随今天的价格变化。实时参考价可以放在模板外的独立单元格：</p>
+<pre><code class="language-text">=GOOGLEFINANCE(&quot;NASDAQ:TQQQ&quot;,&quot;price&quot;)
+</code></pre>
+<p>Google 表示这类报价可能延迟最多 20 分钟，且并非所有证券都可用。用于季度记录前，核对价格对应日期并粘贴为数值。<a href="https://support.google.com/docs/answer/3093281?hl=en">GOOGLEFINANCE 官方说明</a></p>
+<p>默认储备为价格恒等于 1 的现金。若把 D 改为债券净值，F/R 就是按该净值估算的份额；公式允许储备碎份额，且未自动处理债券分红、整股订单和零钱账户。债券基金市值会变动，不能当作固定不亏的现金。真实债券 ETF 调仓应另核对债券卖出数量、分红与现金余额。</p>
+<p>本版没有自动处理新增资金、提款、分红、拆股、税费或成交滑点，也不会连接券商下单。这些情况需要先按实际持仓修正记录；不能把出入金造成的总资产变化当作投资收益。发生拆股时必须统一前后价格与股数口径。</p>
+<h2>分享与公开发布</h2>
+<p>把 <code>index.html</code> 发送给别人，接收者下载后用浏览器打开，就能阅读指南、使用单季度计算器及导出其中内嵌的 CSV、XLSX 和指南，不需要登录。网页不调用行情 API，也不上传输入内容；刷新后计算器恢复示例值。</p>
+<p>若要提供免登录网址，将 <code>index.html</code> 放入你选定的公开静态网站目录。下载内容已经内嵌，网页单文件即可使用；也可以一并发布本目录中的独立文件。发布后应在未登录的浏览器中打开实际网址并验证下载。本套文件的生成不等于已经完成互联网发布。</p></article>
+  </details>
+  <noscript><p>浏览器禁用脚本时仍可阅读以上指南。下载按钮和计算器需要启用 JavaScript。</p></noscript>
+  <footer>独立制作，无 Jason Kelly / The Kelly Letter 官方关联。下载文件内嵌在网页中；计算器不调用外部服务，也不保存输入。</footer>
+</main>
+<script id="download-data" type="application/json">{"csv": "﻿Quarter,Date,TQQQ Price,Reserve Unit Price,TQQQ Shares Before,Reserve Units Before,TQQQ Value Before,Reserve Value Before,Portfolio Before,Signal Target,Raw Signal Amount,Buy Cap Amount,Requested Trade Amount,Allowed Trade Amount,Trade Shares,Executed Trade Amount,TQQQ Shares After,Reserve Units After,TQQQ Value After,Reserve Value After,Portfolio After,Next Signal Base,Ignore Sell (0 or 1),Reset Stock Weight (optional),Next Base Override (optional),Quarterly Target Rate,Max Reserve Use,Share Decimals,Action,Check,Notes\r\nQ0 (Init),2024-01-02,40,1,1000,60000,=E2*C2,=F2*D2,=G2+H2,=G2,=0,\"=MAX(0,H2)*AA2\",=0,=0,\"=IFERROR(TRUNC(N2/C2,AB2),0)\",=O2*C2,=E2+O2,=F2-P2/D2,=Q2*C2,=R2*D2,=S2+T2,\"=IF(Y2=\"\"\"\",S2,Y2)\",0,,,0.09,0.9,0,\"=IF(AD2\u003c>\"\"OK\"\",\"\"BLOCKED\"\",\"\"INIT\"\")\",\"=IFERROR(IF(NOT(AND(COUNT(C2:F2)=4,C2>0,D2>0,E2>=0,F2>=0,ISNUMBER(J2),J2>=0,ISNUMBER(Z2),Z2>=0,ISNUMBER(AA2),AA2>=0,AA2\u003c=1,ISNUMBER(AB2),AB2>=0,AB2\u003c=6,AB2=INT(AB2),ISNUMBER(W2),OR(W2=0,W2=1),OR(X2=\"\"\"\",AND(ISNUMBER(X2),X2>=0,X2\u003c=1)),OR(Y2=\"\"\"\",AND(ISNUMBER(Y2),Y2>=0)),W2=0,X2=\"\"\"\",Y2=\"\"\"\")),\"\"INVALID INPUT\"\",IF(AND(Q2>=-0.000001,R2>=-0.000001,ABS(U2-I2)\u003c0.000001,P2\u003c=L2+0.000001),\"\"OK\"\",\"\"CHECK BALANCES\"\")),\"\"INVALID INPUT\"\")\",自定义40/60起点；演示价格；现金储备；非完整官方规则\r\nQ1,2024-03-28,50,1,=Q2,=R2,=E3*C3,=F3*D3,=G3+H3,=V2*(1+Z3),=J3-G3,\"=MAX(0,H3)*AA3\",\"=IF(X3=\"\"\"\",K3,I3*X3-G3)\",\"=IFERROR(IF(AND(COUNT(C3:F3)=4,C3>0,D3>0,E3>=0,F3>=0,ISNUMBER(J3),J3>=0,ISNUMBER(Z3),Z3>=0,ISNUMBER(AA3),AA3>=0,AA3\u003c=1,ISNUMBER(AB3),AB3>=0,AB3\u003c=6,AB3=INT(AB3),ISNUMBER(W3),OR(W3=0,W3=1),OR(X3=\"\"\"\",AND(ISNUMBER(X3),X3>=0,X3\u003c=1)),OR(Y3=\"\"\"\",AND(ISNUMBER(Y3),Y3>=0)),AD2=\"\"OK\"\"),IF(AND(W3=1,M3\u003c0),0,IF(M3>0,MIN(M3,L3),MAX(M3,-G3))),0),0)\",\"=IFERROR(TRUNC(N3/C3,AB3),0)\",=O3*C3,=E3+O3,=F3-P3/D3,=Q3*C3,=R3*D3,=S3+T3,\"=IF(Y3=\"\"\"\",S3,Y3)\",0,,,=$Z$2,=$AA$2,=$AB$2,\"=IF(AD3\u003c>\"\"OK\"\",\"\"BLOCKED\"\",IF(O3>0,\"\"BUY\"\",IF(O3\u003c0,\"\"SELL\"\",\"\"HOLD\"\")))\",\"=IFERROR(IF(NOT(AND(COUNT(C3:F3)=4,C3>0,D3>0,E3>=0,F3>=0,ISNUMBER(J3),J3>=0,ISNUMBER(Z3),Z3>=0,ISNUMBER(AA3),AA3>=0,AA3\u003c=1,ISNUMBER(AB3),AB3>=0,AB3\u003c=6,AB3=INT(AB3),ISNUMBER(W3),OR(W3=0,W3=1),OR(X3=\"\"\"\",AND(ISNUMBER(X3),X3>=0,X3\u003c=1)),OR(Y3=\"\"\"\",AND(ISNUMBER(Y3),Y3>=0)),AD2=\"\"OK\"\")),\"\"INVALID INPUT\"\",IF(AND(Q3>=-0.000001,R3>=-0.000001,ABS(U3-I3)\u003c0.000001,P3\u003c=L3+0.000001),\"\"OK\"\",\"\"CHECK BALANCES\"\")),\"\"INVALID INPUT\"\")\",演示价格；W/X/Y为手动控制；新增季度须清除临时设置\r\nQ2,2024-06-28,35,1,=Q3,=R3,=E4*C4,=F4*D4,=G4+H4,=V3*(1+Z4),=J4-G4,\"=MAX(0,H4)*AA4\",\"=IF(X4=\"\"\"\",K4,I4*X4-G4)\",\"=IFERROR(IF(AND(COUNT(C4:F4)=4,C4>0,D4>0,E4>=0,F4>=0,ISNUMBER(J4),J4>=0,ISNUMBER(Z4),Z4>=0,ISNUMBER(AA4),AA4>=0,AA4\u003c=1,ISNUMBER(AB4),AB4>=0,AB4\u003c=6,AB4=INT(AB4),ISNUMBER(W4),OR(W4=0,W4=1),OR(X4=\"\"\"\",AND(ISNUMBER(X4),X4>=0,X4\u003c=1)),OR(Y4=\"\"\"\",AND(ISNUMBER(Y4),Y4>=0)),AD3=\"\"OK\"\"),IF(AND(W4=1,M4\u003c0),0,IF(M4>0,MIN(M4,L4),MAX(M4,-G4))),0),0)\",\"=IFERROR(TRUNC(N4/C4,AB4),0)\",=O4*C4,=E4+O4,=F4-P4/D4,=Q4*C4,=R4*D4,=S4+T4,\"=IF(Y4=\"\"\"\",S4,Y4)\",0,,,=$Z$2,=$AA$2,=$AB$2,\"=IF(AD4\u003c>\"\"OK\"\",\"\"BLOCKED\"\",IF(O4>0,\"\"BUY\"\",IF(O4\u003c0,\"\"SELL\"\",\"\"HOLD\"\")))\",\"=IFERROR(IF(NOT(AND(COUNT(C4:F4)=4,C4>0,D4>0,E4>=0,F4>=0,ISNUMBER(J4),J4>=0,ISNUMBER(Z4),Z4>=0,ISNUMBER(AA4),AA4>=0,AA4\u003c=1,ISNUMBER(AB4),AB4>=0,AB4\u003c=6,AB4=INT(AB4),ISNUMBER(W4),OR(W4=0,W4=1),OR(X4=\"\"\"\",AND(ISNUMBER(X4),X4>=0,X4\u003c=1)),OR(Y4=\"\"\"\",AND(ISNUMBER(Y4),Y4>=0)),AD3=\"\"OK\"\")),\"\"INVALID INPUT\"\",IF(AND(Q4>=-0.000001,R4>=-0.000001,ABS(U4-I4)\u003c0.000001,P4\u003c=L4+0.000001),\"\"OK\"\",\"\"CHECK BALANCES\"\")),\"\"INVALID INPUT\"\")\",演示价格；W/X/Y为手动控制；新增季度须清除临时设置\r\nQ3,2024-09-30,42,1,=Q4,=R4,=E5*C5,=F5*D5,=G5+H5,=V4*(1+Z5),=J5-G5,\"=MAX(0,H5)*AA5\",\"=IF(X5=\"\"\"\",K5,I5*X5-G5)\",\"=IFERROR(IF(AND(COUNT(C5:F5)=4,C5>0,D5>0,E5>=0,F5>=0,ISNUMBER(J5),J5>=0,ISNUMBER(Z5),Z5>=0,ISNUMBER(AA5),AA5>=0,AA5\u003c=1,ISNUMBER(AB5),AB5>=0,AB5\u003c=6,AB5=INT(AB5),ISNUMBER(W5),OR(W5=0,W5=1),OR(X5=\"\"\"\",AND(ISNUMBER(X5),X5>=0,X5\u003c=1)),OR(Y5=\"\"\"\",AND(ISNUMBER(Y5),Y5>=0)),AD4=\"\"OK\"\"),IF(AND(W5=1,M5\u003c0),0,IF(M5>0,MIN(M5,L5),MAX(M5,-G5))),0),0)\",\"=IFERROR(TRUNC(N5/C5,AB5),0)\",=O5*C5,=E5+O5,=F5-P5/D5,=Q5*C5,=R5*D5,=S5+T5,\"=IF(Y5=\"\"\"\",S5,Y5)\",0,,,=$Z$2,=$AA$2,=$AB$2,\"=IF(AD5\u003c>\"\"OK\"\",\"\"BLOCKED\"\",IF(O5>0,\"\"BUY\"\",IF(O5\u003c0,\"\"SELL\"\",\"\"HOLD\"\")))\",\"=IFERROR(IF(NOT(AND(COUNT(C5:F5)=4,C5>0,D5>0,E5>=0,F5>=0,ISNUMBER(J5),J5>=0,ISNUMBER(Z5),Z5>=0,ISNUMBER(AA5),AA5>=0,AA5\u003c=1,ISNUMBER(AB5),AB5>=0,AB5\u003c=6,AB5=INT(AB5),ISNUMBER(W5),OR(W5=0,W5=1),OR(X5=\"\"\"\",AND(ISNUMBER(X5),X5>=0,X5\u003c=1)),OR(Y5=\"\"\"\",AND(ISNUMBER(Y5),Y5>=0)),AD4=\"\"OK\"\")),\"\"INVALID INPUT\"\",IF(AND(Q5>=-0.000001,R5>=-0.000001,ABS(U5-I5)\u003c0.000001,P5\u003c=L5+0.000001),\"\"OK\"\",\"\"CHECK BALANCES\"\")),\"\"INVALID INPUT\"\")\",演示价格；W/X/Y为手动控制；新增季度须清除临时设置\r\n", "results": "﻿Quarter,Date,TQQQ Price,Reserve Unit Price,TQQQ Shares Before,Reserve Units Before,TQQQ Value Before,Reserve Value Before,Portfolio Before,Signal Target,Raw Signal Amount,Buy Cap Amount,Requested Trade Amount,Allowed Trade Amount,Trade Shares,Executed Trade Amount,TQQQ Shares After,Reserve Units After,TQQQ Value After,Reserve Value After,Portfolio After,Next Signal Base,Ignore Sell (0 or 1),Reset Stock Weight (optional),Next Base Override (optional),Quarterly Target Rate,Max Reserve Use,Share Decimals,Action,Check,Notes\r\nQ0 (Init),2024-01-02,40,1,1000,60000,40000,60000,100000,40000,0,54000.0,0,0,0,0,1000,60000,40000,60000,100000,40000,0,,,0.09,0.9,0,INIT,OK,自定义40/60起点；演示价格；现金储备；非完整官方规则\r\nQ1,2024-03-28,50,1,1000,60000,50000,60000,110000,43600.00,-6400.00,54000.0,-6400.00,-6400.00,-128,-6400,872,66400,43600,66400,110000,43600,0,,,0.09,0.9,0,SELL,OK,演示价格；W/X/Y为手动控制；新增季度须清除临时设置\r\nQ2,2024-06-28,35,1,872,66400,30520,66400,96920,47524.00,17004.00,59760.0,17004.00,17004.00,485,16975,1357,49425,47495,49425,96920,47495,0,,,0.09,0.9,0,BUY,OK,演示价格；W/X/Y为手动控制；新增季度须清除临时设置\r\nQ3,2024-09-30,42,1,1357,49425,56994,49425,106419,51769.55,-5224.45,44482.5,-5224.45,-5224.45,-124,-5208,1233,54633,51786,54633,106419,51786,0,,,0.09,0.9,0,SELL,OK,演示价格；W/X/Y为手动控制；新增季度须清除临时设置\r\n", "guide": "# Jason Kelly 9Sig 策略 Google Sheets 自动计算与调仓模板指南\n\n自定义教学模板 · 2026-10-27 · 美元计价\n\n本套文件提供季度信号计算、买入金额限制、持仓与储备结转，以及手动暂停卖出和重置功能。示例采用你指定的 **40% TQQQ + 60% 现金储备**，初始资金 100,000 美元。所有价格都是演示数据，不代表历史行情或实际收益。\n\n这是独立制作的计算模板，不是 Jason Kelly 的官方表格或完整 9Sig 操作手册。9% 是股票部分的季度调仓目标，并不代表整个账户每季能赚 9%。TQQQ 的三倍目标针对**单日**表现，长期结果会受每日复利路径影响。[ProShares 产品说明](https://www.proshares.com/our-etfs/leveraged-and-inverse/tqqq)\n\n## 文件与打开方式\n\n| 文件 | 用途 |\n| --- | --- |\n| `9Sig_Google_Sheets_Template.csv` | 含公式的原始模板，使用 UTF-8 BOM 编码 |\n| `9Sig_Google_Sheets_Template.xlsx` | 同一模板的排版版，含输入提示与本指南，可直接导入 Google Sheets |\n| `9Sig_Example_Results.csv` | 示例计算结果，只含数值，便于核对 |\n| `9Sig_Google_Sheets_Guide.md` | 本中文指南 |\n| `index.html` | 离线指南、单季度计算器与下载按钮；单个文件也能使用 |\n\nCSV、XLSX 和 HTML 文件本身不需要密钥或 Google 授权。可以直接把文件发送给别人；如果要让别人通过网址下载，仍需将网页放到可公开访问的服务器上。本地路径不是互联网分享链接。\n\n在 Google Drive 中创建或保存个人副本需要 Google 账号；将链接改为 `/copy` 不能免除这个要求。公开查看与保存个人副本是不同操作。[Google 的复制文件说明](https://support.google.com/docs/answer/148833?hl=en)\n\n## 导入 Google Sheets\n\n1. 打开一个空白 Google 表格，选择“文件 → 导入 → 上传”。\n2. 上传 `9Sig_Google_Sheets_Template.csv`，选择“替换当前工作表”或“创建新电子表格”，分隔符选逗号。\n3. 如果出现“将文本转换为数字、日期和公式”，保持勾选，然后导入。\n4. 检查 `G2` 显示 `40000`、`O3` 显示 `-128`、`Q3` 显示 `872`。若显示公式文字，重新导入并启用转换；若出现公式解析错误，可先将表格地区设置为美国后重新导入。\n5. 也可以直接导入 XLSX，保留格式、输入校验及指南页。[Google 文件导入说明](https://support.google.com/docs/answer/12236443?hl=en)、[Excel 导入说明](https://support.google.com/docs/answer/9331167?hl=en)\n\n不要把整段 CSV 粘贴后按逗号拆列：公式自身也有逗号，必须由 CSV 导入器正确处理引号。CSV 不保存颜色或数字格式，XLSX 则保留这些信息。\n\n## 第一次填写\n\n第 1 行是标题，第 2 行是初始建仓记录，第 3 行起每行代表一个季度。XLSX 中蓝底单元格供手动输入，灰底单元格含公式。\n\n- `C2`：初始 TQQQ 价格，示例为 `40`。\n- `D2`：储备单位价格，现金保持 `1`。\n- `E2`：初始 TQQQ 股数，示例为 `1000`。\n- `F2`：初始储备单位数，现金示例为 `60000`。\n- `Z2`：季度目标率，`0.09` 表示 9%。\n- `AA2`：一次买入最多使用的储备比例，示例为 `0.90`。\n- `AB2`：股票交易的小数位数，`0` 表示整股；券商支持碎股时才改成相应精度，最多 6 位。\n\n更改起始配置时，直接调整 `E2` 与 `F2`。例如同样以 100,000 美元、每股 40 美元起步，60/40 配置对应 `E2=1500`、`F2=40000`。实际填写时使用券商确认的持仓与余额；后续行会自动引用上一季调仓后的数量。\n\n## 每季度操作\n\n1. 修改 A、B 列的季度和记录日期，在 C、D 列填入本季度的估值价格。为保持简单，本模板假设估值价等于成交价。\n2. 核对 E、F 列结转数量与券商账户一致；有分红、拆股、出入金或未按示例成交时，先按实际记录修正数量和信号基数。\n3. 正常计算时 `W=0`，X、Y 留空。有已确认的特殊指令，再填写这些手动控制项。\n4. 查看 AD 列：必须是 `OK`，然后读取 AC 列动作、O 列股数、P 列成交金额。正数买入，负数卖出。\n5. Q、R 列给出交易后持仓，U 列给出总资产。下一季度复制最后一整行到下方，替换日期和价格，并将 W 恢复为 `0`、清空 X、Y，避免延续上季的临时指令。\n\n第 2 行只是初始持仓快照，不执行交易；W、X、Y 在这一行必须分别保持 `0`、空白、空白。`Z3` 以后引用 `$Z$2`，AA、AB 同理；如果以后修改了全局参数，历史行也会重算。需要保留历史规则时，把历史参数行改为当时的固定值。\n\n## 列定义\n\n| 列 | 字段 | 含义 |\n| --- | --- | --- |\n| A–B | Quarter / Date | 季度、记录日期 |\n| C–D | TQQQ Price / Reserve Unit Price | 股票价格与储备单位价格，必须大于 0 |\n| E–F | Shares / Units Before | 调仓前持仓；第 3 行起自动结转 |\n| G–I | Values Before | 股票、储备及总资产市值 |\n| J | Signal Target | 本季度股票目标市值 |\n| K | Raw Signal Amount | 目标减去当前股票市值 |\n| L | Buy Cap Amount | 储备市值乘以最多使用比例 |\n| M | Requested Trade Amount | 普通信号，或手动重置对应的交易金额 |\n| N | Allowed Trade Amount | 应用暂停卖出、买入上限及持仓限制后的金额 |\n| O | Trade Shares | 按指定精度向零截断的交易股数 |\n| P | Executed Trade Amount | 股数乘价格，实际用于现金结算的金额 |\n| Q–R | Shares / Units After | 交易后的股票股数和储备单位数 |\n| S–U | Values After | 交易后的股票、储备及总资产市值 |\n| V | Next Signal Base | 下一季度的起算基数，默认为本季交易后股票市值 |\n| W | Ignore Sell | `1` 暂停本季卖出，`0` 正常；需每季手动确认 |\n| X | Reset Stock Weight | 留空表示不重置，`0.4` 表示请求重置为 40% 股票 |\n| Y | Next Base Override | 留空自动使用 S；填写数值则覆盖下一季的信号基数 |\n| Z | Quarterly Target Rate | `0.09` 表示季度目标率 9% |\n| AA | Max Reserve Use | `0.9` 表示一次买入最多使用储备市值的 90% |\n| AB | Share Decimals | 交易股数小数位数，0–6 |\n| AC | Action | INIT / BUY / SELL / HOLD / BLOCKED |\n| AD | Check | 输入合法性与资金守恒检查 |\n| AE | Notes | 手工记录规则依据、实际交易和例外 |\n\n## 核心公式（第 3 行）\n\n```text\nE3 = Q2                         上季股票股数结转\nF3 = R2                         上季储备单位数结转\nG3 = E3*C3                      当前股票市值\nH3 = F3*D3                      当前储备市值\nI3 = G3+H3                      当前总资产\nJ3 = V2*(1+Z3)                  本季目标\nK3 = J3-G3                      原始交易金额\nL3 = MAX(0,H3)*AA3              买入上限\nM3 = IF(X3=\"\",K3,I3*X3-G3)      可选的手动重置请求\nP3 = O3*C3                      按交易股数结算\nQ3 = E3+O3                      交易后股票数量\nR3 = F3-P3/D3                   交易后储备数量\nS3 = Q3*C3                      交易后股票市值\nT3 = R3*D3                      交易后储备市值\nU3 = S3+T3                      交易后总资产\nV3 = IF(Y3=\"\",S3,Y3)            下季基数或手动覆盖\n```\n\nN 列先执行 W 的暂停卖出，再将买入金额限制在 L 内、卖出金额限制在已有股票市值内。O 列使用 `TRUNC(N3/C3,AB3)` 向零截断。输入不合法时关闭交易计算并在 AD 标记错误，避免零价格或无效比例生成可执行信号。\n\n本模板采用**上一季实际调仓后的股票市值**作为下一季起算基数，包含整股舍入、买入不足、暂停卖出和重置的结果。不是无条件沿着最初本金一直乘 `1.09`。这个约定在模板各处保持一致；若你的正式指令使用另一信号基数，可通过 Y 列录入。[作者对 3Sig 资金不足及调仓后基数的解释](https://jasonkelly.com/3sig/)\n\n## 示例核对\n\n以下数据使用整股、储备价格恒为 1、无费用且无出入金。每次调仓只在两部分之间转移资金，因此交易前后总资产相等。\n\n| 行 | TQQQ 价格 | 股票目标 | 交易股数 | 成交金额 | 交易后股票股数 | 交易后现金 | 总资产 |\n| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |\n| 初始 | 40.00 | 40,000.00 | 0 | 0.00 | 1,000 | 60,000.00 | 100,000.00 |\n| Q1 | 50.00 | 43,600.00 | -128 | -6,400.00 | 872 | 66,400.00 | 110,000.00 |\n| Q2 | 35.00 | 47,524.00 | 485 | 16,975.00 | 1,357 | 49,425.00 | 96,920.00 |\n| Q3 | 42.00 | 51,769.55 | -124 | -5,208.00 | 1,233 | 54,633.00 | 106,419.00 |\n\nQ1 股票市值超过目标，应卖出 128 股，所以 Q2 的期初股数是 872。原先粘贴内容中的 1,128 股会把卖出误记成买入，本模板已修正。Q2 因整股截断未完全达到目标，所以下一季按实际股票市值 47,495 美元起算。\n\n## 9Sig 规则核对与手动控制\n\n作者 2018 年公开答复使用的基准是 **60% 股票 / 40% 债券**，并说明单季买入最多使用债券余额的 90%。同一答复将 Spike Reset 描述为：股票基金当季上涨至少 100%、常规调仓后股票占比处于 60%–100%，且不在 30 Down 暂停卖出期时，重置到 60% 股票。[作者公开规则答复](https://jasonkelly.com/resources/strategies/)\n\n作者在 2023 年说明，9Sig 的 30 Down 阶段会跳过两次季度卖出信号，并在该阶段结束时恢复到基准配置；正常运行时股票占比也可能低于 60%。[作者对 30 Down 与配置的说明](https://jasonkelly.com/2023/02/tqqq-and-volatility-decay/)\n\n这些是带日期的公开说明，不足以确认最新会员版全部细节，也未证实“40/60 是最新官方配置”。40/60 在这里仅是你指定的自定义起点。完整执行规则以作者的会员资料为准。[The Kelly Letter 官方入口](https://jasonkelly.com/)\n\n模板不会自动判断 30 Down 的触发、计数或到期，也不会自动触发 Spike Reset。确认需要跳过本季卖出时填写 `W=1`；确认需要重置时填写 X；需要另行指定下季起点时填写 Y，并在 AE 留下注释。**W 的暂停卖出优先于 X 的重置请求，买入上限始终有效**，因此重置不保证一次完成，也会有整股误差。X 填 `0` 表示请求卖光，留空才是不重置。\n\n## 价格、债券与实际记账\n\n历史行请填写固定的历史价格。不要将每一季都替换成实时 `GOOGLEFINANCE`，否则过去的记录会随今天的价格变化。实时参考价可以放在模板外的独立单元格：\n\n```text\n=GOOGLEFINANCE(\"NASDAQ:TQQQ\",\"price\")\n```\n\nGoogle 表示这类报价可能延迟最多 20 分钟，且并非所有证券都可用。用于季度记录前，核对价格对应日期并粘贴为数值。[GOOGLEFINANCE 官方说明](https://support.google.com/docs/answer/3093281?hl=en)\n\n默认储备为价格恒等于 1 的现金。若把 D 改为债券净值，F/R 就是按该净值估算的份额；公式允许储备碎份额，且未自动处理债券分红、整股订单和零钱账户。债券基金市值会变动，不能当作固定不亏的现金。真实债券 ETF 调仓应另核对债券卖出数量、分红与现金余额。\n\n本版没有自动处理新增资金、提款、分红、拆股、税费或成交滑点，也不会连接券商下单。这些情况需要先按实际持仓修正记录；不能把出入金造成的总资产变化当作投资收益。发生拆股时必须统一前后价格与股数口径。\n\n## 分享与公开发布\n\n把 `index.html` 发送给别人，接收者下载后用浏览器打开，就能阅读指南、使用单季度计算器及导出其中内嵌的 CSV、XLSX 和指南，不需要登录。网页不调用行情 API，也不上传输入内容；刷新后计算器恢复示例值。\n\n若要提供免登录网址，将 `index.html` 放入你选定的公开静态网站目录。下载内容已经内嵌，网页单文件即可使用；也可以一并发布本目录中的独立文件。发布后应在未登录的浏览器中打开实际网址并验证下载。本套文件的生成不等于已经完成互联网发布。\n", "xlsx": "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"}</script>
+<script>
+  'use strict';
+  const data = JSON.parse(document.getElementById('download-data').textContent);
+  function download(contents, filename, type) {
+    const url = URL.createObjectURL(new Blob([contents], {type}));
+    const a = document.createElement('a');
+    a.href = url; a.download = filename; document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 30000);
+  }
+  document.getElementById('download-csv').addEventListener('click', () => download(data.csv, '9Sig_Google_Sheets_Template.csv', 'text/csv;charset=utf-8'));
+  document.getElementById('download-guide').addEventListener('click', () => download(data.guide, '9Sig_Google_Sheets_Guide.md', 'text/markdown;charset=utf-8'));
+  document.getElementById('download-results').addEventListener('click', () => download(data.results, '9Sig_Example_Results.csv', 'text/csv;charset=utf-8'));
+  document.getElementById('download-xlsx').addEventListener('click', () => {
+    const bytes = Uint8Array.from(atob(data.xlsx), c => c.charCodeAt(0));
+    download(bytes, '9Sig_Google_Sheets_Template.xlsx', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+  });
+  document.getElementById('print-guide').addEventListener('click', () => {
+    document.getElementById('guide').open = true; window.print();
+  });
+  document.querySelectorAll('.guide table').forEach(table => {
+    const wrapper = document.createElement('div'); wrapper.className = 'table-wrap';
+    table.before(wrapper); wrapper.appendChild(table);
+  });
+  const form = document.getElementById('calculator-form');
+  const money = n => new Intl.NumberFormat('en-US', {style:'currency', currency:'USD', maximumFractionDigits:2}).format(n);
+  const quantity = n => new Intl.NumberFormat('en-US', {maximumFractionDigits:6}).format(n);
+  function calculate() {
+    const get = id => Number(document.getElementById(id).value);
+    const valid = form.checkValidity();
+    document.getElementById('calc-error').hidden = valid;
+    document.getElementById('calc-results').hidden = !valid;
+    if (!valid) return;
+    const base = get('base'), price = get('price'), shares = get('shares'), cash = get('cash');
+    const target = base * (1 + get('growth') / 100), stock = shares * price;
+    const resetText = document.getElementById('reset').value;
+    const requested = resetText === '' ? target - stock : (stock + cash) * get('reset') / 100 - stock;
+    const limit = cash * get('cap') / 100;
+    const allowed = document.getElementById('hold').checked && requested < 0 ? 0 : requested > 0 ? Math.min(requested, limit) : Math.max(requested, -stock);
+    const scale = 10 ** get('decimals');
+    const trade = Math.trunc((allowed / price) * scale) / scale;
+    const afterShares = shares + trade, afterCash = cash - trade * price;
+    if (![target, stock, requested, allowed, trade, afterShares, afterCash].every(Number.isFinite)) {
+      document.getElementById('calc-error').hidden = false;
+      document.getElementById('calc-results').hidden = true;
+      return;
+    }
+    document.getElementById('target').textContent = money(target);
+    document.getElementById('trade').textContent = trade > 0 ? '买入 ' + quantity(trade) : trade < 0 ? '卖出 ' + quantity(-trade) : '不交易';
+    document.getElementById('after-shares').textContent = quantity(afterShares);
+    document.getElementById('after-cash').textContent = money(afterCash);
+    const capped = requested > limit ? '；买入请求已受储备上限限制' : '';
+    document.getElementById('calc-detail').textContent = '成交金额 ' + money(Math.abs(trade * price)) + ' · 交易后总资产 ' + money(afterShares * price + afterCash) + ' · 下一季起点 ' + money(afterShares * price) + capped + '。';
+  }
+  form.addEventListener('input', calculate);
+  form.addEventListener('submit', event => event.preventDefault());
+  calculate();
+</script>
+</body>
+</html>

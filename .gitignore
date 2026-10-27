@@ -1,0 +1,28 @@
+# Git metadata from nested repositories
+.git
+.git/
+
+# Video files (case insensitive)
+*.[mM][pP]4
+*.[mM][kK][vV]
+*.[mM][oO][vV]
+*.[aA][vV][iI]
+*.[wW][eE][bB][mM]
+*.[fF][lL][vV]
+*.[wW][mM][vV]
+*.[mM]4[vV]
+*.[mM][pP][eE][gG]
+*.[mM][pP][gG]
+*.3[gG][pP]
+*.3[gG]2
+*.[mM]2[tT][sS]
+*.[vV][oO][bB]
+*.[oO][gG][vV]
+*.[mM][xX][fF]
+*.[rR][mM]
+*.[rR][mM][vV][bB]
+*.[aA][sS][fF]
+*.[fF]4[vV]
+*.[mM]2[vV]
+
+# .ts and .mts can be TypeScript sources; preserve them.

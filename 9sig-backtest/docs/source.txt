@@ -1,0 +1,23 @@
+https://www.reddit.com/r/LETFs/comments/1mo71pm/9sig_summary_jason_kelly/
+
+9sig
+
+Instrument: 3x leveraged ETF (e.g., TQQQ / QQQ3)
+
+Start allocation: 60% ETF, 40% cash (or gold/bonds/etc.)
+
+Rebalancing: Normally rebalance the ETF each quarter  to obtain 9% quarterly etf growth
+
+30 Down rule
+
+If the ETF drops 30% (quarter close) compared to the highest quarterly close in the past 2 years:
+
+Ignore the next sell signals
+
+Still buy if the ETF is up less than 9% in a quarter
+
+After 2 ignored sell signals, rebalance back to 60/40
+
+100 Up rule
+
+If the ETF gains 100% in a single quarter → rebalance back to 60/40? (Not 100% sure on this one)

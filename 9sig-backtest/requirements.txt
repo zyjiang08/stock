@@ -1,0 +1,5 @@
+pandas
+numpy
+plotly
+rich
+kaleido==0.1.0.post1

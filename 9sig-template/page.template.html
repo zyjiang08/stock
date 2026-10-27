@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="9Sig 自定义季度调仓教学模板：下载 CSV、Excel 和中文指南，使用离线计算器。">
+  <title>9Sig 季度调仓模板 · 中文指南</title>
+  <style>
+    :root{color-scheme:light;--ink:#173d39;--muted:#566d65;--line:#d7e2da;--paper:#fafbf7;--accent:#c7e8ce}
+    *{box-sizing:border-box}body{margin:0;background:var(--paper);color:#243a32;font:16px/1.75 system-ui,-apple-system,"Noto Sans CJK SC","Microsoft YaHei",sans-serif}
+    a{color:#17634f;text-underline-offset:3px}main{max-width:1120px;margin:auto;padding:40px 28px 80px}
+    .masthead{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);padding-bottom:20px;gap:16px;font-size:13px;letter-spacing:.08em;color:var(--muted)}
+    .mark{font-size:22px;font-weight:800;letter-spacing:-.05em;color:var(--ink)}
+    .hero{padding:48px 0 28px;display:grid;grid-template-columns:1.5fr 1fr;gap:36px;align-items:center}
+    .eyebrow{font-size:13px;color:var(--muted);letter-spacing:.12em;margin:0 0 12px}
+    h1{font-size:clamp(32px,5vw,50px);line-height:1.2;letter-spacing:-.04em;margin:0 0 20px;color:var(--ink)}
+    .lead{max-width:670px;color:var(--muted);margin:0 0 20px}.badge{display:inline-block;font-size:12px;padding:4px 12px;background:#e8f1e7;border-radius:30px}
+    .allocation{border:1px solid var(--line);padding:24px;border-radius:18px;background:#fff}.allocation strong{font-size:32px;color:var(--ink)}
+    .bar{height:14px;background:#e3eadf;border-radius:10px;overflow:hidden;margin:16px 0}.bar span{display:block;width:40%;height:100%;background:#367a61}.legend{display:flex;justify-content:space-between;font-size:14px}
+    .downloads{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0 16px}button,.button{font:inherit;border:1px solid var(--line);background:#fff;border-radius:9px;padding:10px 16px;cursor:pointer;color:var(--ink);text-decoration:none;line-height:1.5}
+    button:hover,.button:hover{background:#e8f1e7}button.primary{background:var(--ink);border-color:var(--ink);color:white}button.primary:hover{background:#245e51}
+    button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid #81b69d;outline-offset:3px}
+    .small{font-size:13px;color:var(--muted)}.notice{padding:16px 20px;border-left:3px solid #73947a;background:#f0f4eb;margin:24px 0 38px;font-size:14px}
+    section{margin:32px 0}h2{color:var(--ink);font-size:25px;margin:0 0 12px;letter-spacing:-.02em}h3{font-size:18px;color:var(--ink)}
+    .calculator{background:white;border:1px solid var(--line);border-radius:18px;padding:28px}.fields{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    label{font-size:13px;color:var(--muted);display:block}input[type=number]{width:100%;font:inherit;font-size:18px;margin-top:5px;border:1px solid #c6d7cc;border-radius:7px;background:#fcfdfb;padding:9px 11px;color:var(--ink)}
+    .check{display:flex;gap:8px;align-items:center;margin:20px 0;color:var(--ink)}.result{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;padding-top:22px;border-top:1px solid var(--line)}
+    .result span{display:block;font-size:12px;color:var(--muted)}.result strong{font-size:23px;color:var(--ink)}#calc-error{color:#a33626}#calc-detail{margin-bottom:0}
+    details{border:1px solid var(--line);border-radius:12px;background:#fff;margin-top:30px}summary{cursor:pointer;font-weight:650;color:var(--ink);padding:20px 24px}.guide{padding:4px 28px 28px;overflow-wrap:anywhere}
+    .guide h1{font-size:29px;line-height:1.5;margin-top:20px}.guide h2{margin-top:36px;border-top:1px solid var(--line);padding-top:26px;font-size:23px}
+    .guide p,.guide li{font-size:15px}.table-wrap{overflow-x:auto;margin:18px 0}table{border-collapse:collapse;width:100%;font-size:13px;white-space:normal}th,td{padding:11px 13px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}th{background:#edf3eb;color:var(--ink)}
+    code{font-family:ui-monospace,monospace;font-size:.9em;background:#eef3ed;border-radius:3px;padding:2px 4px}pre{background:#f1f5ef;border-radius:8px;padding:18px;overflow-x:auto}pre code{padding:0;background:transparent;white-space:pre}
+    footer{margin-top:32px;font-size:12px;color:var(--muted)}
+    @media(max-width:720px){main{padding:20px 16px 48px}.masthead{font-size:11px}.hero{grid-template-columns:1fr;padding-top:30px;gap:18px}.fields,.result{grid-template-columns:repeat(2,1fr)}.calculator{padding:20px}.guide{padding:0 16px 20px}.guide h1{font-size:25px}th,td{min-width:105px}.result strong{font-size:20px}}
+    @media print{body{background:white;font-size:11pt}main{max-width:none;padding:0}.masthead,.hero,.downloads,.intro-note,.notice,.calculator,summary,footer{display:none}details{border:0;margin:0}.guide{padding:0}.guide h1{font-size:20pt}.guide h2{font-size:15pt;break-after:avoid}.guide p,.guide li{font-size:10pt}table{font-size:8pt}th,td{padding:5px}a{color:inherit}pre{white-space:pre-wrap}pre code{white-space:pre-wrap}}
+  </style>
+</head>
+<body>
+<main>
+  <header class="masthead"><span class="mark">9Sig / worksheet</span><span>中文指南 · 独立教学版本 · 2026.10.27</span></header>
+  <div class="hero">
+    <div><p class="eyebrow">每季度，把价格变化转成可核对的数字</p><h1>9Sig 季度调仓模板</h1><p class="lead">输入价格，计算交易股数，结转股票与储备余额。下载到本地，或导入 Google Sheets 继续记录。</p><span class="badge">文件无需登录 · 网页可离线使用</span></div>
+    <aside class="allocation"><div class="small">本模板的自定义起点</div><strong>40 / 60</strong><div class="bar" aria-hidden="true"><span></span></div><div class="legend"><span>TQQQ 40%</span><span>现金储备 60%</span></div><p class="small">演示本金 $100,000；价格为假设值。</p></aside>
+  </div>
+  <nav class="downloads" aria-label="下载文件">
+    <button class="primary" id="download-csv" type="button">下载 CSV 模板</button>
+    <button id="download-xlsx" type="button">下载 Excel 版</button>
+    <button id="download-guide" type="button">下载中文指南</button>
+    <button id="download-results" type="button">下载示例结果</button>
+    <button id="print-guide" type="button">打印 / 保存 PDF</button>
+  </nav>
+  <p class="small intro-note">下载的是固定示例模板。下方计算器用于单季度演算，其输入不会改写下载文件。导入 Google Sheets 后保存个人副本仍需 Google 账号。</p>
+  <p class="notice">40/60 是本页的自定义示例。作者有日期可查的公开说明采用 60/40；本模板未自动实现完整的 30 Down 与 Spike Reset 判断。9% 是股票部分的调仓目标，实际投资可能亏损。<a href="#guide">查看规则来源与操作说明</a></p>
+
+  <section class="calculator" aria-labelledby="calculator-title">
+    <h2 id="calculator-title">先算一个季度</h2>
+    <p class="small">默认演示 Q1：价格从 $40 涨至 $50，应卖出 128 股。假设现金储备、估值价即成交价、无费用及出入金。</p>
+    <form id="calculator-form">
+      <div class="fields">
+        <label>上季股票基数（美元）<input id="base" type="number" value="40000" min="0" step="any" required></label>
+        <label>本季 TQQQ 价格（美元）<input id="price" type="number" value="50" min="0.000001" step="any" required></label>
+        <label>当前 TQQQ 股数<input id="shares" type="number" value="1000" min="0" step="any" required></label>
+        <label>当前现金储备（美元）<input id="cash" type="number" value="60000" min="0" step="any" required></label>
+        <label>季度目标率（%）<input id="growth" type="number" value="9" min="0" step="any" required></label>
+        <label>最多使用储备（%）<input id="cap" type="number" value="90" min="0" max="100" step="any" required></label>
+        <label>交易股数小数位<input id="decimals" type="number" value="0" min="0" max="6" step="1" required></label>
+        <label>手动重置股票占比（%，可留空）<input id="reset" type="number" min="0" max="100" step="any" placeholder="留空：正常季度信号"></label>
+      </div>
+      <label class="check"><input id="hold" type="checkbox">本季暂停卖出（手动确认，优先于重置请求）</label>
+    </form>
+    <p id="calc-error" role="alert" hidden>请输入有效数字：价格须大于 0，比例需在允许范围内，小数位须为 0–6 的整数。</p>
+    <div id="calc-results" aria-live="polite">
+      <div class="result">
+        <div><span>本季度股票目标</span><strong id="target">—</strong></div>
+        <div><span>交易方向与股数</span><strong id="trade">—</strong></div>
+        <div><span>交易后股票股数</span><strong id="after-shares">—</strong></div>
+        <div><span>交易后现金</span><strong id="after-cash">—</strong></div>
+      </div>
+      <p class="small" id="calc-detail"></p>
+    </div>
+  </section>
+
+  <details id="guide" open>
+    <summary>完整中文指南 · 导入、公式、示例与规则依据</summary>
+    <article class="guide">{{GUIDE}}</article>
+  </details>
+  <noscript><p>浏览器禁用脚本时仍可阅读以上指南。下载按钮和计算器需要启用 JavaScript。</p></noscript>
+  <footer>独立制作，无 Jason Kelly / The Kelly Letter 官方关联。下载文件内嵌在网页中；计算器不调用外部服务，也不保存输入。</footer>
+</main>
+<script id="download-data" type="application/json">{{PAYLOAD}}</script>
+<script>
+  'use strict';
+  const data = JSON.parse(document.getElementById('download-data').textContent);
+  function download(contents, filename, type) {
+    const url = URL.createObjectURL(new Blob([contents], {type}));
+    const a = document.createElement('a');
+    a.href = url; a.download = filename; document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 30000);
+  }
+  document.getElementById('download-csv').addEventListener('click', () => download(data.csv, '9Sig_Google_Sheets_Template.csv', 'text/csv;charset=utf-8'));
+  document.getElementById('download-guide').addEventListener('click', () => download(data.guide, '9Sig_Google_Sheets_Guide.md', 'text/markdown;charset=utf-8'));
+  document.getElementById('download-results').addEventListener('click', () => download(data.results, '9Sig_Example_Results.csv', 'text/csv;charset=utf-8'));
+  document.getElementById('download-xlsx').addEventListener('click', () => {
+    const bytes = Uint8Array.from(atob(data.xlsx), c => c.charCodeAt(0));
+    download(bytes, '9Sig_Google_Sheets_Template.xlsx', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+  });
+  document.getElementById('print-guide').addEventListener('click', () => {
+    document.getElementById('guide').open = true; window.print();
+  });
+  document.querySelectorAll('.guide table').forEach(table => {
+    const wrapper = document.createElement('div'); wrapper.className = 'table-wrap';
+    table.before(wrapper); wrapper.appendChild(table);
+  });
+  const form = document.getElementById('calculator-form');
+  const money = n => new Intl.NumberFormat('en-US', {style:'currency', currency:'USD', maximumFractionDigits:2}).format(n);
+  const quantity = n => new Intl.NumberFormat('en-US', {maximumFractionDigits:6}).format(n);
+  function calculate() {
+    const get = id => Number(document.getElementById(id).value);
+    const valid = form.checkValidity();
+    document.getElementById('calc-error').hidden = valid;
+    document.getElementById('calc-results').hidden = !valid;
+    if (!valid) return;
+    const base = get('base'), price = get('price'), shares = get('shares'), cash = get('cash');
+    const target = base * (1 + get('growth') / 100), stock = shares * price;
+    const resetText = document.getElementById('reset').value;
+    const requested = resetText === '' ? target - stock : (stock + cash) * get('reset') / 100 - stock;
+    const limit = cash * get('cap') / 100;
+    const allowed = document.getElementById('hold').checked && requested < 0 ? 0 : requested > 0 ? Math.min(requested, limit) : Math.max(requested, -stock);
+    const scale = 10 ** get('decimals');
+    const trade = Math.trunc((allowed / price) * scale) / scale;
+    const afterShares = shares + trade, afterCash = cash - trade * price;
+    if (![target, stock, requested, allowed, trade, afterShares, afterCash].every(Number.isFinite)) {
+      document.getElementById('calc-error').hidden = false;
+      document.getElementById('calc-results').hidden = true;
+      return;
+    }
+    document.getElementById('target').textContent = money(target);
+    document.getElementById('trade').textContent = trade > 0 ? '买入 ' + quantity(trade) : trade < 0 ? '卖出 ' + quantity(-trade) : '不交易';
+    document.getElementById('after-shares').textContent = quantity(afterShares);
+    document.getElementById('after-cash').textContent = money(afterCash);
+    const capped = requested > limit ? '；买入请求已受储备上限限制' : '';
+    document.getElementById('calc-detail').textContent = '成交金额 ' + money(Math.abs(trade * price)) + ' · 交易后总资产 ' + money(afterShares * price + afterCash) + ' · 下一季起点 ' + money(afterShares * price) + capped + '。';
+  }
+  form.addEventListener('input', calculate);
+  form.addEventListener('submit', event => event.preventDefault());
+  calculate();
+</script>
+</body>
+</html>
