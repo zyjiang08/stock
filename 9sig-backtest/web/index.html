@@ -16,6 +16,7 @@
   <nav aria-label="主导航">
     <a class="nav-link active" href="/" aria-current="page"><span>▦</span> 回测工作台</a>
     <button class="nav-link" type="button" data-tour><span>▷</span> 跟着演示</button>
+    <a class="nav-link" href="/?rebalance=1#rebalance-panel"><span>⇄</span> 再平衡过程</a>
     <a class="nav-link" href="/guide"><span>☷</span> 完整操作指南</a>
     <a class="nav-link" href="/guide#rules"><span>◇</span> 规则与计算口径</a>
   </nav>
@@ -26,6 +27,11 @@
   <main id="workspace">
     <div class="page-heading"><div><p class="eyebrow">9SIG STRATEGY LAB</p><h1>让每一次调仓，都有迹可循。</h1><p class="subtitle">设置参数，运行回测，再沿着时间线理解每一个季度的决定。</p></div><button class="button secondary" type="button" data-tour>▷ 跟着演示一遍</button></div>
     <div class="notice compact"><span class="notice-mark">i</span><p><strong>独立教学版本</strong> · 调用原仓库 Python 引擎。默认价格为人工模拟，9% 是 ETF 市值的调仓目标。<a href="/guide#rules">查看计算口径</a></p></div>
+    <section class="panel strategy-summary" aria-label="交易策略概览">
+      <div><p class="eyebrow">HOW THE STRATEGY TRADES</p><h2>先判断规则，再计算本季买卖</h2><p>按季度末价格估值；首季建仓后只记录。以下目标随本次回测参数更新。</p><a href="/guide#rebalance">交易策略与再平衡详解 ↗</a></div>
+      <div><span class="strategy-tag">常规季度</span><h3>上季 ETF 市值 × <span id="strategy-growth">1.09</span></h3><p>高于目标卖出，低于目标且现金足够时补买。调仓后的占比随市场变化。</p></div>
+      <div><span class="strategy-tag">特殊规则重置</span><h3>总资产 × <span id="strategy-allocation">60%</span> → ETF</h3><p>30 Down 忽略次数用完，或 100 Up 触发时，按初始 ETF / 现金比例再平衡。</p></div>
+    </section>
     <div id="error" class="error-banner" role="alert" hidden></div>
     <div class="workspace-grid">
       <form id="settings" class="panel settings-panel">
@@ -74,8 +80,25 @@
           <section id="quarter-panel" class="panel quarter-panel" aria-live="polite">
             <div class="panel-title"><div><p class="eyebrow">QUARTER IN FOCUS</p><h2 id="detail-title">选择一个季度，看看发生了什么</h2></div><span id="action-badge" class="action-badge">—</span></div>
             <p id="detail-explanation" class="detail-explanation">拖动上方滑块，或点击下方季度记录。</p>
-            <div class="quarter-grid"><div><span>调仓前 ETF 市值</span><strong id="detail-before">—</strong></div><div><span>本季参考目标</span><strong id="detail-target">—</strong></div><div><span>实际买卖股数</span><strong id="detail-trade">—</strong></div><div><span>调仓后现金</span><strong id="detail-cash">—</strong></div></div>
+            <div class="quarter-grid"><div><span>调仓前 ETF 市值</span><strong id="detail-before">—</strong></div><div><span>本季执行目标 · ETF</span><strong id="detail-target">—</strong></div><div><span>实际买卖股数</span><strong id="detail-trade">—</strong></div><div><span>调仓后现金</span><strong id="detail-cash">—</strong></div></div>
             <p id="detail-formula" class="formula"></p>
+            <div id="rebalance-panel" class="rebalance-panel">
+              <div class="panel-title"><div><p class="eyebrow">FOLLOW THE MONEY</p><h2>再平衡过程 · 一步步核对</h2></div><a class="small-link" href="/guide#rebalance">完整策略说明 ↗</a></div>
+              <p class="hint">先选择当前结果中的一个案例，再点击 1—5 查看计算。也可用“上一季 / 下一季”连续复盘。</p>
+              <div id="rebalance-scenarios" class="scenario-buttons" aria-label="选择调仓案例"></div>
+              <div class="rebalance-heading"><strong id="rebalance-mode"></strong><div><button id="quarter-prev" class="text-button" type="button">← 上一季</button><button id="quarter-next" class="text-button" type="button">下一季 →</button></div></div>
+              <div id="rebalance-steps" class="process-nav" role="group" aria-label="再平衡计算步骤">
+                <button type="button" data-step="0" aria-pressed="true"><b>1</b> 估值</button><button type="button" data-step="1" aria-pressed="false"><b>2</b> 判定</button><button type="button" data-step="2" aria-pressed="false"><b>3</b> 目标</button><button type="button" data-step="3" aria-pressed="false"><b>4</b> 买卖</button><button type="button" data-step="4" aria-pressed="false"><b>5</b> 核对</button>
+              </div>
+              <div class="process-card" aria-live="polite"><span id="process-count" class="strategy-tag"></span><h3 id="process-title"></h3><p id="process-description"></p><p id="process-formula" class="process-formula"></p><p id="process-note" class="hint"></p><div class="process-actions"><button id="process-prev" class="text-button" type="button">← 上一步</button><button id="process-next" class="button secondary small" type="button">下一步 →</button></div></div>
+              <div id="rebalance-flow" class="money-flow"></div>
+              <div class="holdings-comparison">
+                <div><div class="allocation-caption"><strong>调仓前</strong><span id="weight-before"></span></div><div class="weight-bar" aria-hidden="true"><span id="weight-bar-before"></span></div></div>
+                <div><div class="allocation-caption"><strong>调仓后</strong><span id="weight-after"></span></div><div class="weight-bar" aria-hidden="true"><span id="weight-bar-after"></span></div></div>
+              </div>
+              <div class="table-scroll"><table class="holdings-table"><thead><tr><th>项目</th><th>调仓前</th><th>变动</th><th>调仓后</th></tr></thead><tbody id="holdings-table"></tbody></table></div>
+              <p id="rebalance-state" class="state-note"></p>
+            </div>
           </section>
           <section id="table-panel" class="panel table-panel">
             <div class="panel-title"><div><h2>每季度的决策记录</h2><p class="hint">点击季度展开计算过程；正股数为买入，负股数为卖出。</p></div><button id="export" class="button secondary small" type="button" disabled>↓ 导出 CSV</button></div>

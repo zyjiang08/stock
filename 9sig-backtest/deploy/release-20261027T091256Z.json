@@ -1,0 +1,227 @@
+{
+  "release_id": "20261027T091256Z",
+  "image_tag": "9sig-backtest-web:20261027T091256Z",
+  "previous_image_tag": "9sig-backtest-web:20261027T083455Z",
+  "previous_image_id": "sha256:49e83bea3c161cd3995e6c18172cecea3a1e1df4809c3964840296e185e15c68",
+  "outer_base_revision": "dbdf052bd9bc5d76733d0045470ad75c0eee3c80",
+  "files": {
+    "Dockerfile.web": "697e88c0caac96d7362c2ada35b8137e2c22f34d732df50a6c5597c41660368d",
+    "compose.web.yaml": "eb32b23e18d30381f7ac1db99abaf6db13cddf8a9f6cf133abc02b0848cff399",
+    "requirements-web.txt": "23afab8153ff85ebb2089665ac1fcbc3b5d3e3a94d3703c7de9e7aabb7bb5ef4",
+    "src/backtester.py": "676962ef2d64a8976eaab7be67e0d0ce26b371aa2da7c40655c7633cdfebd5f3",
+    "src/web_app.py": "f388b6bf6bff753e7297322ead7ee9597edcc2d32de54a38ad629ab7cd6886ae",
+    "data/demo_prices.csv": "675114d797b6160314ee1d3663a0deba336811a948072996c88bc0c30525f290",
+    "web/assets/app.js": "ab4f0b74a87b9e5f2184b85767bb63898516620e241fe9bcdf124cc2c365b7ee",
+    "web/assets/demo-overview.png": "6c03f1817ff0a68057c9f99127071a8a9e47ba5e5608961854ac892f8fabb74c",
+    "web/assets/demo-quarter.png": "b1cf6dd318f886fc01dc09200241e26d59e07d31d7aca984bc157111b469ce4c",
+    "web/assets/demo-rebalance.png": "6f4adb5e67dee3c71d8419a7ff5c9f387c7581cb86709414672b97a8f8f51c5e",
+    "web/assets/favicon.svg": "52ecde4511f0f199ed6a4d974404538aab0e06517dd20e4f7ed281bf29f0e55d",
+    "web/assets/style.css": "619b16021e4f088958cf61c561a3153744639b6c47deac392e8cc8e2bc6a426a",
+    "web/guide.html": "55a377dbb9cd8fd5ee4260bc47f0f334b82e54730b971c81f498d457e5669d6e",
+    "web/index.html": "376a4e1d08a82b3cae9ee0f728b7209c64c17109f65b1d923f5c62db2e07782a"
+  },
+  "baseline": {
+    "vibe-trading-vibe-trading-1": "1f107df7e738b156e2d21b9c40d39db9264997697e0475899080f1a8fe1fec09 2026-10-26T14:28:20.528041199Z",
+    "nexa-data-om-kafka-1": "6b47a23be70dbc92edb6a1d4a9a85072640a9aa6a221d19573e7e865695aa203 2026-10-14T12:28:08.317895894Z",
+    "nexa-data-om-clickhouse-1": "fab29b999751c25539cfda2492cc9854772ccd19eb73e52396119b9a55787b32 2026-10-14T12:28:08.318484187Z"
+  },
+  "image_id": "sha256:09ee7da74c73d0b0f6dce1c99f927371bfa4cac6195a5b7f77aea13d811826c6",
+  "runtime_sha256": {
+    "requirements-web.txt": "23afab8153ff85ebb2089665ac1fcbc3b5d3e3a94d3703c7de9e7aabb7bb5ef4",
+    "src/backtester.py": "676962ef2d64a8976eaab7be67e0d0ce26b371aa2da7c40655c7633cdfebd5f3",
+    "src/web_app.py": "f388b6bf6bff753e7297322ead7ee9597edcc2d32de54a38ad629ab7cd6886ae",
+    "data/demo_prices.csv": "675114d797b6160314ee1d3663a0deba336811a948072996c88bc0c30525f290",
+    "web/assets/app.js": "ab4f0b74a87b9e5f2184b85767bb63898516620e241fe9bcdf124cc2c365b7ee",
+    "web/assets/demo-overview.png": "6c03f1817ff0a68057c9f99127071a8a9e47ba5e5608961854ac892f8fabb74c",
+    "web/assets/demo-quarter.png": "b1cf6dd318f886fc01dc09200241e26d59e07d31d7aca984bc157111b469ce4c",
+    "web/assets/demo-rebalance.png": "6f4adb5e67dee3c71d8419a7ff5c9f387c7581cb86709414672b97a8f8f51c5e",
+    "web/assets/favicon.svg": "52ecde4511f0f199ed6a4d974404538aab0e06517dd20e4f7ed281bf29f0e55d",
+    "web/assets/style.css": "619b16021e4f088958cf61c561a3153744639b6c47deac392e8cc8e2bc6a426a",
+    "web/guide.html": "55a377dbb9cd8fd5ee4260bc47f0f334b82e54730b971c81f498d457e5669d6e",
+    "web/index.html": "376a4e1d08a82b3cae9ee0f728b7209c64c17109f65b1d923f5c62db2e07782a"
+  },
+  "container_health": "healthy",
+  "container_started": "2026-10-27T09:13:38.375510859Z",
+  "shared_containers_unchanged": true,
+  "http": {
+    "http://192.168.124.107:8910": {
+      "/": {
+        "status": 200,
+        "sha256": "376a4e1d08a82b3cae9ee0f728b7209c64c17109f65b1d923f5c62db2e07782a"
+      },
+      "/guide": {
+        "status": 200,
+        "sha256": "55a377dbb9cd8fd5ee4260bc47f0f334b82e54730b971c81f498d457e5669d6e"
+      },
+      "/api/sample.csv": {
+        "status": 200,
+        "sha256": "675114d797b6160314ee1d3663a0deba336811a948072996c88bc0c30525f290"
+      },
+      "/assets/favicon.svg": {
+        "status": 200,
+        "sha256": "52ecde4511f0f199ed6a4d974404538aab0e06517dd20e4f7ed281bf29f0e55d"
+      },
+      "/assets/demo-rebalance.png": {
+        "status": 200,
+        "sha256": "6f4adb5e67dee3c71d8419a7ff5c9f387c7581cb86709414672b97a8f8f51c5e"
+      },
+      "/assets/app.js": {
+        "status": 200,
+        "sha256": "ab4f0b74a87b9e5f2184b85767bb63898516620e241fe9bcdf124cc2c365b7ee"
+      },
+      "/assets/demo-overview.png": {
+        "status": 200,
+        "sha256": "6c03f1817ff0a68057c9f99127071a8a9e47ba5e5608961854ac892f8fabb74c"
+      },
+      "/assets/style.css": {
+        "status": 200,
+        "sha256": "619b16021e4f088958cf61c561a3153744639b6c47deac392e8cc8e2bc6a426a"
+      },
+      "/assets/demo-quarter.png": {
+        "status": 200,
+        "sha256": "b1cf6dd318f886fc01dc09200241e26d59e07d31d7aca984bc157111b469ce4c"
+      }
+    },
+    "http://183.23.140.51:8910": {
+      "/": {
+        "status": 200,
+        "sha256": "376a4e1d08a82b3cae9ee0f728b7209c64c17109f65b1d923f5c62db2e07782a"
+      },
+      "/guide": {
+        "status": 200,
+        "sha256": "55a377dbb9cd8fd5ee4260bc47f0f334b82e54730b971c81f498d457e5669d6e"
+      },
+      "/api/sample.csv": {
+        "status": 200,
+        "sha256": "675114d797b6160314ee1d3663a0deba336811a948072996c88bc0c30525f290"
+      },
+      "/assets/favicon.svg": {
+        "status": 200,
+        "sha256": "52ecde4511f0f199ed6a4d974404538aab0e06517dd20e4f7ed281bf29f0e55d"
+      },
+      "/assets/demo-rebalance.png": {
+        "status": 200,
+        "sha256": "6f4adb5e67dee3c71d8419a7ff5c9f387c7581cb86709414672b97a8f8f51c5e"
+      },
+      "/assets/app.js": {
+        "status": 200,
+        "sha256": "ab4f0b74a87b9e5f2184b85767bb63898516620e241fe9bcdf124cc2c365b7ee"
+      },
+      "/assets/demo-overview.png": {
+        "status": 200,
+        "sha256": "6c03f1817ff0a68057c9f99127071a8a9e47ba5e5608961854ac892f8fabb74c"
+      },
+      "/assets/style.css": {
+        "status": 200,
+        "sha256": "619b16021e4f088958cf61c561a3153744639b6c47deac392e8cc8e2bc6a426a"
+      },
+      "/assets/demo-quarter.png": {
+        "status": 200,
+        "sha256": "b1cf6dd318f886fc01dc09200241e26d59e07d31d7aca984bc157111b469ce4c"
+      }
+    }
+  },
+  "remote_verification": {
+    "source_host": "coturn-OMEN-16L-Gaming-Desktop-TG03-0xxx",
+    "source_ip": "192.168.124.112",
+    "scope": "second LAN host; direct HTTP including public-IP route; not independent off-LAN",
+    "checks": {
+      "http://192.168.124.107:8910": {
+        "/healthz": {
+          "status": 200,
+          "sha256": "1cf6f61696a9a2c9255841237c4efe17dfc03dd464f896eeb4e0d6b60c6f9df2"
+        },
+        "/": {
+          "status": 200,
+          "sha256": "376a4e1d08a82b3cae9ee0f728b7209c64c17109f65b1d923f5c62db2e07782a"
+        },
+        "/guide": {
+          "status": 200,
+          "sha256": "55a377dbb9cd8fd5ee4260bc47f0f334b82e54730b971c81f498d457e5669d6e"
+        },
+        "/assets/app.js": {
+          "status": 200,
+          "sha256": "ab4f0b74a87b9e5f2184b85767bb63898516620e241fe9bcdf124cc2c365b7ee"
+        },
+        "/assets/style.css": {
+          "status": 200,
+          "sha256": "619b16021e4f088958cf61c561a3153744639b6c47deac392e8cc8e2bc6a426a"
+        },
+        "/assets/demo-rebalance.png": {
+          "status": 200,
+          "sha256": "6f4adb5e67dee3c71d8419a7ff5c9f387c7581cb86709414672b97a8f8f51c5e"
+        },
+        "demo": {
+          "quarters": 25,
+          "reset_target": 86213.40476570294,
+          "reset_shares": -168.061907949138,
+          "status": "PASS"
+        }
+      },
+      "http://183.23.140.51:8910": {
+        "/healthz": {
+          "status": 200,
+          "sha256": "1cf6f61696a9a2c9255841237c4efe17dfc03dd464f896eeb4e0d6b60c6f9df2"
+        },
+        "/": {
+          "status": 200,
+          "sha256": "376a4e1d08a82b3cae9ee0f728b7209c64c17109f65b1d923f5c62db2e07782a"
+        },
+        "/guide": {
+          "status": 200,
+          "sha256": "55a377dbb9cd8fd5ee4260bc47f0f334b82e54730b971c81f498d457e5669d6e"
+        },
+        "/assets/app.js": {
+          "status": 200,
+          "sha256": "ab4f0b74a87b9e5f2184b85767bb63898516620e241fe9bcdf124cc2c365b7ee"
+        },
+        "/assets/style.css": {
+          "status": 200,
+          "sha256": "619b16021e4f088958cf61c561a3153744639b6c47deac392e8cc8e2bc6a426a"
+        },
+        "/assets/demo-rebalance.png": {
+          "status": 200,
+          "sha256": "6f4adb5e67dee3c71d8419a7ff5c9f387c7581cb86709414672b97a8f8f51c5e"
+        },
+        "demo": {
+          "quarters": 25,
+          "reset_target": 86213.40476570294,
+          "reset_shares": -168.061907949138,
+          "status": "PASS"
+        }
+      }
+    }
+  },
+  "test_report": "test/web/reports/20261027T091406332906Z-production.md",
+  "validation": {
+    "api_tests": 20,
+    "browser_flows": 12,
+    "browser": "151.0.7922.71",
+    "public_browser_target": "http://183.23.140.51:8910",
+    "local_report": "test/web/reports/20261027T091033880339Z-local.md"
+  },
+  "verified_utc": "2026-10-27T09:15:44.964457+00:00",
+  "runtime_packages": [
+    "blinker==1.9.0",
+    "click==8.5.0",
+    "Flask==3.1.2",
+    "gunicorn==23.0.0",
+    "itsdangerous==2.2.0",
+    "Jinja2==3.1.6",
+    "markdown-it-py==4.2.0",
+    "MarkupSafe==3.0.4",
+    "mdurl==0.1.2",
+    "numpy==1.26.4",
+    "packaging==26.3",
+    "pandas==2.2.2",
+    "plotly==5.24.1",
+    "Pygments==2.21.0",
+    "python-dateutil==3.0.0",
+    "pytz==2026.5",
+    "rich==13.7.1",
+    "six==1.17.0",
+    "tenacity==9.2.1",
+    "tzdata==2026.5",
+    "Werkzeug==3.1.9"
+  ]
+}

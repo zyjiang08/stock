@@ -32,6 +32,71 @@ class WebTests(unittest.TestCase):
         self.assertEqual(rows["2021-06-30"]["kind"], "skip")
         self.assertEqual(rows["2021-09-30"]["action"], "30-Down Complete & Rebalance")
 
+    def test_growth_target_does_not_reset_allocation(self):
+        row = run_backtest({})["rows"][1]
+        audit = row["rebalance"]
+        self.assertEqual(audit["mode"], "growth_target")
+        self.assertAlmostEqual(audit["total_before"], 115000)
+        self.assertAlmostEqual(audit["execution_target"], 65400)
+        self.assertAlmostEqual(audit["allocation_target"], 69000)
+        self.assertAlmostEqual(audit["weight_after"], 65400 / 115000)
+        self.assertAlmostEqual(audit["requested_trade"], -9600)
+        self.assertAlmostEqual(audit["cash_change"], 9600)
+
+    def test_reset_uses_total_assets_and_consumes_final_signal(self):
+        rows = run_backtest({})["rows"]
+        trigger, skip, reset = rows[9:12]
+        self.assertEqual([(r["rebalance"]["ignore_before"], r["rebalance"]["ignore_after"]) for r in (trigger, skip, reset)], [(0, 2), (2, 1), (1, 0)])
+        self.assertTrue(trigger["rebalance"]["drawdown_hit"])
+        self.assertAlmostEqual(trigger["rebalance"]["history_high"], max(r["etf_value"] for r in rows[1:9]))
+        for hold in (trigger, skip):
+            self.assertIsNone(hold["rebalance"]["execution_target"])
+            self.assertEqual(hold["rebalance"]["cash_change"], 0)
+        audit = reset["rebalance"]
+        self.assertEqual(audit["mode"], "allocation_reset")
+        self.assertAlmostEqual(audit["execution_target"], 86213.40476570294)
+        self.assertNotAlmostEqual(audit["execution_target"], reset["target"])
+        self.assertAlmostEqual(audit["weight_after"], .6)
+        self.assertTrue(audit["sell_signal_consumed"])
+        self.assertFalse(audit["active_after"])
+
+    def test_buy_during_drawdown_preserves_remaining_signals(self):
+        result = run_backtest({"source": "upload", "csv": "Date,ETF_Price\n2023-12-31,100\n2024-03-31,50\n2024-06-30,45\n2024-09-30,60\n2024-12-31,70", "config": {"lookback_quarters": 1}})
+        initial, trigger, buy, skip, reset = result["rows"]
+        self.assertEqual([r["kind"] for r in result["rows"]], ["initial", "drawdown", "buy", "skip", "reset"])
+        self.assertAlmostEqual(buy["trade_amount"], 5700)
+        self.assertEqual((buy["rebalance"]["ignore_before"], buy["rebalance"]["ignore_after"]), (2, 2))
+        self.assertFalse(buy["rebalance"]["sell_signal_consumed"])
+        # A proportional reset can require buying, even after a sell signal.
+        self.assertGreater(reset["trade_amount"], 0)
+        self.assertAlmostEqual(reset["rebalance"]["execution_target"], 51100)
+        self.assertAlmostEqual(reset["trade_amount"], 700 / 3)
+
+    def test_cash_shortfall_and_hundred_up_buy_reset(self):
+        rows = run_backtest({"source": "upload", "csv": "Date,ETF_Price\n2024-03-31,100\n2024-06-30,20\n2024-09-30,41"})["rows"]
+        cash, reset = rows[1:]
+        self.assertEqual(cash["kind"], "cash")
+        self.assertAlmostEqual(cash["rebalance"]["requested_trade"], 53400)
+        self.assertIsNone(cash["rebalance"]["execution_target"])
+        self.assertAlmostEqual(cash["trade_shares"], 0)
+        self.assertEqual(reset["action"], "100-Up Rule Triggered")
+        self.assertAlmostEqual(reset["rebalance"]["execution_target"], 38760)
+        self.assertAlmostEqual(reset["trade_amount"], 14160)
+        self.assertAlmostEqual(reset["rebalance"]["weight_after"], .6)
+
+    def test_audit_balances_and_custom_allocations(self):
+        for allocation in (1, 40, 60, 100):
+            for row in run_backtest({"config": {"etf_allocation": allocation}})["rows"]:
+                b = row["rebalance"]
+                self.assertAlmostEqual(b["total_before"], row["total_value"])
+                self.assertAlmostEqual(b["cash_change"], -row["trade_amount"])
+                self.assertAlmostEqual(b["weight_before"], row["etf_before"] / b["total_before"])
+                if b["execution_target"] is not None:
+                    self.assertAlmostEqual(b["execution_target"], row["etf_value"])
+                    self.assertAlmostEqual(b["requested_trade"], row["trade_amount"])
+                if row["kind"] == "reset":
+                    self.assertAlmostEqual(b["weight_after"], allocation / 100)
+
     def test_web_matches_original_engine_for_two_allocations(self):
         frame, _, _ = parse_csv((ROOT / "data/demo_prices.csv").read_text())
         for allocation in (40, 60):

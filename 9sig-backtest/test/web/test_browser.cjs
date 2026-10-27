@@ -58,6 +58,34 @@ async function main() {
     await page.screenshot({path: path.join(evidence, "quarter-detail.png")});
     if (process.env.CAPTURE_GUIDE === "1") { const dest = path.join(root, "web/assets/demo-quarter.png"); fs.copyFileSync(path.join(evidence, "quarter-detail.png"), dest); fs.chmodSync(dest, 0o644); }
   });
+  await check("rebalance walkthrough separates actual reset from quarterly target", async () => {
+    await page.getByRole("button", {name: "30 Down 再平衡", exact: true}).click();
+    assert.match(await page.locator("#detail-title").innerText(), /2021 Q3/);
+    assert.equal(await page.locator("#detail-target").innerText(), "$86,213.40");
+    assert.match(await page.locator("#detail-formula").innerText(), /78,188.16/);
+    assert.match(await page.locator("#weight-after").innerText(), /ETF 60.00% \/ 现金 40.00%/);
+    for (let i = 0; i < 5; i++) {
+      assert.equal(await page.locator("#process-count").innerText(), `步骤 ${i + 1} / 5`);
+      if (i === 1) assert.match(await page.locator("#process-description").innerText(), /1 → 0/);
+      if (i === 2) assert.match(await page.locator("#process-formula").innerText(), /143,689.01.*60%.*86,213.40/);
+      if (i === 3) assert.match(await page.locator("#process-title").innerText(), /168.0619/);
+      if (i < 4) await page.locator("#process-next").click();
+    }
+    assert(await page.locator("#process-next").isDisabled());
+    await page.locator('[data-step="2"]').click();
+    await page.locator("#rebalance-panel").scrollIntoViewIfNeeded();
+    await page.locator("#rebalance-panel").screenshot({path: path.join(evidence, "rebalance.png")});
+    if (process.env.CAPTURE_GUIDE === "1") { const dest = path.join(root, "web/assets/demo-rebalance.png"); fs.copyFileSync(path.join(evidence, "rebalance.png"), dest); fs.chmodSync(dest, 0o644); }
+    await page.locator("#quarter-prev").click();
+    assert.match(await page.locator("#rebalance-state").innerText(), /2 → 1/);
+    assert.equal(await page.locator("#detail-target").innerText(), "不调仓");
+    await page.locator("#quarter-prev").click();
+    assert.match(await page.locator("#rebalance-state").innerText(), /0 → 2/);
+    await page.getByRole("button", {name: "100 Up 再平衡", exact: true}).click();
+    assert.equal(await page.locator("#detail-target").innerText(), "$101,964.48");
+    await page.getByRole("button", {name: "常规卖出", exact: true}).click();
+    assert.match(await page.locator("#weight-after").innerText(), /56.87%/);
+  });
   await check("parameter edits mark old results and recompute", async () => {
     const old = await page.locator("#final-value").innerText();
     await page.locator("#allocation").fill("40");
@@ -66,6 +94,10 @@ async function main() {
     await page.locator("#run").click(); await complete();
     assert.notEqual(await page.locator("#final-value").innerText(), old);
     assert.match(await page.locator("#chart-subtitle").innerText(), /40% ETF \/ 60% 现金/);
+    await page.getByRole("button", {name: "30 Down 再平衡", exact: true}).click();
+    assert.match(await page.locator("#weight-after").innerText(), /ETF 40.00% \/ 现金 60.00%/);
+    await page.locator('[data-step="2"]').click();
+    assert.match(await page.locator("#process-formula").innerText(), /× 40%/);
   });
   await check("CSV export contains all 25 quarterly records", async () => {
     const pending = page.waitForEvent("download");
@@ -77,6 +109,8 @@ async function main() {
     const content = fs.readFileSync(output, "utf8").trim();
     assert.equal(content.split(/\r?\n/).length, 26);
     assert.match(content, /trade_shares/);
+    assert.match(content, /execution_target/);
+    assert.match(content, /ignore_before,ignore_after/);
   });
   await check("all six interactive tour steps execute", async () => {
     await page.locator(".page-heading [data-tour]").click();
@@ -84,7 +118,7 @@ async function main() {
     for (let i = 1; i <= 6; i++) {
       await page.waitForFunction((n) => document.getElementById("tour-count").textContent.includes(`${n} / 6`), i);
       if (i === 4) assert.equal(await page.locator("#detail-trade").innerText(), "-192.0000");
-      if (i === 5) assert.match(await page.locator("#action-badge").innerText(), /30 Down 触发/);
+      if (i === 5) { assert.match(await page.locator("#action-badge").innerText(), /30 Down 结束并重置/); assert.match(await page.locator("#process-formula").innerText(), /86,213.40/); }
       await page.locator("#tour-next").click();
     }
     await page.locator("#tour").waitFor({state: "hidden"});
@@ -98,6 +132,18 @@ async function main() {
     assert.match(await page.locator("#result-status").innerText(), /CSV 回测已完成/);
     assert.equal(await page.locator("#quarter-table tr").count(), 5);
     assert.equal(await page.locator("#detail-trade").innerText(), "-192.0000");
+    assert(await page.getByRole("button", {name: "30 Down 再平衡", exact: true}).isDisabled());
+  });
+  await check("cash shortfall and buy-direction reset explain actual money flow", async () => {
+    await page.locator("#csv-file").setInputFiles({name: "reset-buy.csv", mimeType: "text/csv", buffer: Buffer.from("Date,ETF_Price\n2024-03-31,100\n2024-06-30,20\n2024-09-30,41")});
+    await page.waitForFunction(() => !document.getElementById("run").disabled);
+    await page.locator("#run").click(); await complete();
+    assert.equal(await page.locator("#detail-target").innerText(), "不调仓");
+    await page.locator('[data-step="2"]').click();
+    assert.match(await page.locator("#process-note").innerText(), /53,400.00.*40,000.00/);
+    await page.getByRole("button", {name: "100 Up 再平衡", exact: true}).click();
+    assert.equal(await page.locator("#detail-target").innerText(), "$38,760.00");
+    assert.match(await page.locator("#rebalance-flow").innerText(), /现金 → ETF.*14,160.00/);
   });
   await check("invalid CSV blocks computation and export", async () => {
     await page.locator("#csv-file").setInputFiles({name: "invalid.csv", mimeType: "text/csv", buffer: Buffer.from("Date,ETF_Price\n2024-03-31,0\n2024-06-30,50")});
@@ -117,9 +163,10 @@ async function main() {
     await page.unroute("**/api/backtest");
     await page.locator("#reset").click(); await complete();
   });
-  await check("full guide and both real screenshots load", async () => {
+  await check("full guide and all three real screenshots load", async () => {
     await page.goto(`${baseURL}/guide`, {waitUntil: "networkidle"});
-    assert.equal(await page.locator(".guide-section").count(), 6);
+    assert.equal(await page.locator(".guide-section").count(), 7);
+    assert.match(await page.locator("#rebalance").innerText(), /168.0619/);
     for (const image of await page.locator(".guide-section img").all()) {
       await image.scrollIntoViewIfNeeded();
       await image.evaluate((el) => el.decode());
@@ -135,6 +182,12 @@ async function main() {
     await phone.goto(baseURL, {waitUntil: "networkidle"}); await complete(phone);
     await noOverflow(phone);
     await phone.screenshot({path: path.join(evidence, "mobile.png"), fullPage: true});
+    await phone.goto(`${baseURL}/?rebalance=1#rebalance-panel`, {waitUntil: "networkidle"}); await complete(phone);
+    assert.match(await phone.locator("#detail-title").innerText(), /2021 Q3/);
+    await phone.locator('[data-step="3"]').click();
+    assert.match(await phone.locator("#process-title").innerText(), /168.0619/);
+    await noOverflow(phone);
+    await phone.screenshot({path: path.join(evidence, "mobile-rebalance.png")});
     await phone.locator(".page-heading [data-tour]").click();
     await phone.locator("#tour").waitFor({state: "visible"});
     await noOverflow(phone);

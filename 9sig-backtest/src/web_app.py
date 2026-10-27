@@ -186,6 +186,47 @@ def explain(action, is_first):
     return "hold", "持有", "本季保持持仓。"
 
 
+def rebalance_details(row, history, config, active, remaining):
+    """Explain the engine's recorded action; never decide or execute a trade here."""
+    action, kind = row["action"], row["kind"]
+    total = row["etf_before"] + row["cash_before"]
+    lookback = config.drawdown_lookback_quarters
+    high = max(r["etf_value"] for r in history[-lookback:]) if len(history) >= lookback else None
+    level = high * (1 - config.drawdown_threshold) if high is not None else None
+    growth = (row["etf_before"] - row["previous_etf"]) / row["previous_etf"] if row["previous_etf"] else None
+    after_active, after_remaining = active, remaining
+    if kind == "drawdown":
+        after_active, after_remaining = True, config.sell_signals_to_ignore_on_drawdown
+    elif kind == "reset":
+        after_active, after_remaining = False, 0
+    elif kind == "skip":
+        after_remaining = int(re.search(r"(\d+) left", action).group(1))
+    mode = "allocation_reset" if kind == "reset" else "growth_target" if kind in ("buy", "sell", "cash") else "initial" if kind == "initial" else "hold"
+    planned = total * config.etf_allocation if mode == "allocation_reset" else row["target"] if mode == "growth_target" else None
+    # A skipped signal has a reference growth target, but no execution target.
+    executed = planned if kind in ("buy", "sell", "reset") else None
+    return {
+        "mode": mode,
+        "mode_label": {"allocation_reset": "按初始比例再平衡", "growth_target": "按季度增长目标调仓", "initial": "首季记录", "hold": "本季保持持仓"}[mode],
+        "total_before": total,
+        "weight_before": row["etf_before"] / total,
+        "weight_after": row["etf_value"] / row["total_value"],
+        "allocation_target": total * config.etf_allocation,
+        "planned_target": planned,
+        "execution_target": executed,
+        "requested_trade": planned - row["etf_before"] if planned is not None else None,
+        "cash_change": row["cash_value"] - row["cash_before"],
+        "quarter_growth": growth,
+        "history_quarters": min(len(history), lookback),
+        "history_high": high,
+        "drawdown_level": level,
+        "drawdown_hit": level is not None and row["etf_before"] <= level,
+        "active_before": active, "active_after": after_active,
+        "ignore_before": remaining, "ignore_after": after_remaining,
+        "sell_signal_consumed": kind == "skip" or action == "30-Down Complete & Rebalance",
+    }
+
+
 def run_backtest(payload):
     config, parameters = config_from_json(payload.get("config", {}))
     frame, warnings, source = dataset(payload)
@@ -209,6 +250,7 @@ def run_backtest(payload):
     previous_shares = config.initial_capital * config.etf_allocation / initial_price
     previous_cash = config.initial_capital * config.cash_allocation
     previous_etf = None
+    active, remaining = False, 0
     rows = []
     for i, record in result.iterrows():
         price, shares = float(record["etf_price"]), float(record["etf_shares"])
@@ -228,6 +270,10 @@ def run_backtest(payload):
         }
         if not all(math.isfinite(v) for v in row.values() if isinstance(v, (int, float))):
             raise ValueError("数据或参数导致结果溢出，请缩短区间或减小参数。")
+        row["rebalance"] = rebalance_details(row, rows, config, active, remaining)
+        if not all(math.isfinite(v) for v in row["rebalance"].values() if isinstance(v, (int, float))):
+            raise ValueError("数据或参数导致调仓过程溢出，请缩短区间或减小参数。")
+        active, remaining = row["rebalance"]["active_after"], row["rebalance"]["ignore_after"]
         rows.append(row)
         previous_shares, previous_cash, previous_etf = shares, row["cash_value"], row["etf_value"]
     elapsed = (frame.index[-1] - frame.index[0]).days

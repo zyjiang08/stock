@@ -5,12 +5,16 @@
 - Host: `harry-Precision-3660`, LAN IP `192.168.124.107`.
 - Workspace: `/home/harry/swork/stock/9sig-backtest` (independent Git root).
 - Application: `http://192.168.124.107:8910/`.
+- Public entry: `http://183.23.140.51:8910/`.
+- Rebalance walkthrough: `http://183.23.140.51:8910/?rebalance=1#rebalance-panel`.
+- Strategy details: `http://183.23.140.51:8910/guide#rebalance`.
 - Interactive walkthrough: `http://192.168.124.107:8910/?demo=1`.
 - Illustrated guide: `http://192.168.124.107:8910/guide`.
 - Health: `http://192.168.124.107:8910/healthz`.
 
-This is a LAN deployment; use the same LAN or an existing route into that LAN.
-No router WAN forwarding or public domain is configured by this deployment.
+The container binds the LAN address. The existing public-IP route reaches this
+same service; the strategy update does not change router settings. Acceptance
+records distinguish requests to the public URL from an independent off-LAN test.
 
 The dedicated Compose project `9sig-backtest` publishes only LAN address
 `192.168.124.107:8910` to the container's port 8000. It runs Flask through Gunicorn
@@ -21,7 +25,9 @@ The running app does not depend on the local development server or a terminal.
 
 The original engine is unchanged. The adapter validates input, explains actual
 engine decisions, calculates time-based CAGR and suppresses the CLI engine's
-portfolio-amount logs. Sample prices are deterministic synthetic input. Uploaded
+portfolio-amount logs. Its rebalance audit reports ordinary versus reset targets,
+before/after balances, cash flows and 30 Down counters from recorded actions;
+it does not independently execute trades. Sample prices are deterministic synthetic input. Uploaded
 CSV exists only in request memory. The image's build allowlist excludes Git
 metadata, local data, test evidence, private files and unrelated stock projects.
 
@@ -44,6 +50,7 @@ docker compose -p 9sig-backtest -f compose.web.yaml build web
 docker image inspect "9sig-backtest-web:$RELEASE_ID" --format '{{.Id}}'
 docker compose -p 9sig-backtest -f compose.web.yaml up -d --no-build --wait --wait-timeout 60 web
 curl --fail --noproxy '*' http://192.168.124.107:8910/healthz
+curl --fail --noproxy '*' http://183.23.140.51:8910/healthz
 ```
 
 `BIND_IP` and `PORT` optionally override the LAN binding. Never claim WAN access

@@ -20,6 +20,12 @@ truncated date ranges, request size, static-file isolation, and suppression of
 portfolio amounts in persistent web logs. No network or
 external data is required. Inputs are synthetic; no account is accessed.
 
+Rebalance cases verify that ordinary quarterly targets do not reset to 60/40,
+the last ignored sell triggers a reset in that same quarter, intervening buys
+preserve the ignore count, both reset rules can buy, cash shortfalls have no
+execution target, and custom allocations reconcile the displayed cash flows
+and before/after values with the original engine.
+
 ## Browser acceptance
 
 Use Node 20+ and Playwright (`npm install --no-save --prefix test/web playwright@1.63.0`),
@@ -32,7 +38,7 @@ Start a local test server if needed:
 python -m flask --app src.web_app run --host 127.0.0.1 --port 8911
 ```
 
-Run against this server or the deployed LAN address:
+Run against this server, the deployed LAN address, or `http://183.23.140.51:8910`:
 
 ```sh
 umask 077
@@ -46,12 +52,14 @@ node test/web/test_browser.cjs
 
 `PLAYWRIGHT_MODULE` optionally points at an existing Playwright installation.
 `CAPTURE_GUIDE=1` explicitly refreshes `web/assets/demo-overview.png` and
-`demo-quarter.png` using only the default synthetic dataset. Capture before
+`demo-quarter.png` and `demo-rebalance.png` using only the default synthetic dataset. Capture before
 building the production image. The default test mode only writes ignored
 evidence, never source assets.
 
 The browser case opens the desktop workspace, checks the manual sell, switches
 chart type, runs a 40% allocation, exports CSV, follows all six tour steps,
+executes all five rebalance steps, checks the 30 Down sequence and 100 Up reset,
+verifies no-trade and buy-direction cases, opens the direct rebalance link,
 imports a valid fixture, rejects invalid data, verifies a failed request leaves
 export disabled, reads the guide, and checks the mobile layout at 390px. It saves
 screenshots and `browser-results.json`; errors yield a nonzero exit code.
