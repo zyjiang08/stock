@@ -3,13 +3,14 @@
 import math
 import logging
 import unittest
+from copy import deepcopy
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 import pandas as pd
 
 from src.backtester import Backtester, DataHandler, Portfolio
-from src.web_app import ROOT, app, config_from_json, metrics, parse_csv, run_backtest
+from src.web_app import ROOT, app, compare_cash_allocations, config_from_json, metrics, parse_csv, run_backtest
 
 
 class WebTests(unittest.TestCase):
@@ -96,6 +97,65 @@ class WebTests(unittest.TestCase):
                     self.assertAlmostEqual(b["requested_trade"], row["trade_amount"])
                 if row["kind"] == "reset":
                     self.assertAlmostEqual(b["weight_after"], allocation / 100)
+
+    def test_cash_comparison_matches_separate_strategy_runs(self):
+        comparison = compare_cash_allocations({})
+        self.assertEqual([(s["cash_allocation"], s["etf_allocation"]) for s in comparison["strategies"]], [(40, 60), (50, 50), (60, 40)])
+        for strategy in comparison["strategies"]:
+            direct = run_backtest({"config": {"etf_allocation": strategy["etf_allocation"]}})
+            self.assertEqual(strategy["metrics"], direct["strategy"])
+            self.assertEqual(strategy["trade_count"], direct["trade_count"])
+            self.assertEqual(comparison["period"], direct["period"])
+            for expected, actual in zip(direct["rows"], strategy["series"]):
+                for field in ("date", "etf_value", "cash_value", "total_value", "drawdown"):
+                    self.assertEqual(expected[field], actual[field])
+                self.assertAlmostEqual(actual["total_return"], actual["total_value"] / 100000 - 1)
+
+    def test_cash_comparison_manual_return_and_peak_drawdown(self):
+        result = compare_cash_allocations({"source": "upload", "csv": "Date,ETF_Price\n2023-12-31,100\n2024-03-31,125\n2024-06-30,90"})
+        # At 125, accounts are 115000/112500/110000; rebalance only moves cash.
+        # At 90, total assets are shares after the sale * 90 + unspent cash.
+        for strategy, peak, final in zip(result["strategies"], (115000, 112500, 110000), (96688, 97240, 97792)):
+            self.assertAlmostEqual(strategy["series"][1]["total_value"], peak)
+            self.assertAlmostEqual(strategy["metrics"]["final_value"], final)
+            self.assertAlmostEqual(strategy["metrics"]["total_return"], final / 100000 - 1)
+            self.assertAlmostEqual(strategy["metrics"]["max_drawdown"], final / peak - 1)
+            self.assertIsNone(strategy["metrics"]["cagr"])
+
+    def test_cash_comparison_keeps_shared_inputs_and_does_not_mutate(self):
+        payload = {"start_date": "2023-01-01", "end_date": "2024-09-30", "config": {"initial_capital": 123456, "target_growth": 8, "lookback_quarters": 2, "drawdown_threshold": 25, "ignore_sell_signals": 3, "extreme_gain": 50, "etf_allocation": 97}}
+        original = deepcopy(payload)
+        comparison = compare_cash_allocations(payload)
+        self.assertEqual(payload, original)
+        self.assertEqual(comparison, compare_cash_allocations({**payload, "config": {**payload["config"], "etf_allocation": 1}}))
+        self.assertEqual(comparison["period"]["start"], "2023-03-31")
+        self.assertEqual(comparison["period"]["end"], "2024-09-30")
+        self.assertNotIn("etf_allocation", comparison["shared_config"])
+        for strategy in comparison["strategies"]:
+            expected = run_backtest({**payload, "config": {**payload["config"], "etf_allocation": strategy["etf_allocation"]}})
+            self.assertEqual(strategy["metrics"], expected["strategy"])
+            self.assertAlmostEqual(strategy["initial_cash"], 123456 * strategy["cash_allocation"] / 100)
+
+    def test_comparison_includes_initial_capital_in_drawdown(self):
+        result = compare_cash_allocations({"source": "upload", "csv": "Date,ETF_Price\n2024-01-01,100\n2024-03-31,80\n2024-06-30,75"})
+        for strategy, final, drawdown in zip(result["strategies"], (85000, 87500, 90000), (-.15, -.125, -.10)):
+            self.assertAlmostEqual(strategy["metrics"]["final_value"], final)
+            self.assertAlmostEqual(strategy["metrics"]["max_drawdown"], drawdown)
+            self.assertLess(strategy["series"][0]["drawdown"], 0)
+            self.assertIsNone(strategy["metrics"]["cagr"])
+
+    def test_comparison_api_and_atomic_backtest_response(self):
+        standalone = self.client.post("/api/compare", json={})
+        self.assertEqual(standalone.status_code, 200)
+        self.assertEqual(standalone.headers["Cache-Control"], "no-store")
+        together = self.client.post("/api/backtest", json={"include_cash_comparison": True}).json
+        self.assertEqual(together["cash_comparison"], standalone.json)
+        self.assertEqual(together["strategy"], standalone.json["strategies"][0]["metrics"])
+        self.assertNotIn("cash_comparison", self.client.post("/api/backtest", json={}).json)
+        self.assertEqual(self.client.post("/api/backtest", json={"include_cash_comparison": "true"}).status_code, 400)
+        for payload in ([], {"config": None}, {"source": "upload", "csv": "bad"}, {"start_date": "2025-01-01"}):
+            with self.subTest(payload=payload):
+                self.assertEqual(self.client.post("/api/compare", json=payload).status_code, 400)
 
     def test_web_matches_original_engine_for_two_allocations(self):
         frame, _, _ = parse_csv((ROOT / "data/demo_prices.csv").read_text())

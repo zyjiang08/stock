@@ -5,6 +5,8 @@ original Python engine integration, CSV validation, financial invariants, browse
 operations, the interactive walkthrough, downloads, and mobile layout.
 Rebalance coverage includes rule counters, ordinary and proportional targets,
 cash-flow conservation, buy-direction resets and the five-step browser process.
+The cash comparison cases cover independent 40/50/60% cash strategies, shared
+inputs, return/drawdown calculations, interactive curves and comparison export.
 
 Run from the **9sig-backtest Git root**. Summaries belong in
 `test/web/reports/`; raw evidence belongs in `test/web/results/<UTC-run-id>/`

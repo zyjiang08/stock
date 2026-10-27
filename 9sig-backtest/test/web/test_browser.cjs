@@ -45,6 +45,39 @@ async function main() {
     await page.screenshot({path: path.join(evidence, "desktop.png")});
     if (process.env.CAPTURE_GUIDE === "1") { const dest = path.join(root, "web/assets/demo-overview.png"); fs.copyFileSync(path.join(evidence, "desktop.png"), dest); fs.chmodSync(dest, 0o644); }
   });
+  await check("independent 40/50/60 cash column, matched quarterly charts and CSV", async () => {
+    assert.equal(await page.locator(".comparison-card").count(), 3);
+    const expected = [[40, "+202.05%", "-40.91%"], [50, "+159.00%", "-36.13%"], [60, "+119.93%", "-31.12%"]];
+    for (const [cash, gain, dd] of expected) {
+      const card = page.locator(`.comparison-card[data-cash="${cash}"]`);
+      assert.equal(await card.locator(".comparison-total-return").innerText(), gain);
+      assert.equal(await card.locator('[data-metric="max_drawdown"]').innerText(), dd);
+    }
+    assert.match(await page.locator("#comparison-context").innerText(), /模拟数据.*100,000.*25 个季度/);
+    assert.equal(await page.locator("#comparison-chart path[fill='none']").count(), 3);
+    await page.locator("#cash-comparison").screenshot({path: path.join(evidence, "cash-comparison.png")});
+    if (process.env.CAPTURE_GUIDE === "1") { const dest = path.join(root, "web/assets/demo-cash-comparison.png"); fs.copyFileSync(path.join(evidence, "cash-comparison.png"), dest); fs.chmodSync(dest, 0o644); }
+    await page.locator("#comparison-slider").fill("1");
+    assert.match(await page.locator("#comparison-readout").innerText(), /40% 现金 · 收益 \+15.00%/);
+    assert.match(await page.locator("#comparison-readout").innerText(), /50% 现金 · 收益 \+12.50%/);
+    assert.match(await page.locator("#comparison-readout").innerText(), /60% 现金 · 收益 \+10.00%/);
+    await page.locator("#comparison-drawdown").click();
+    assert.equal(await page.locator("#comparison-drawdown").getAttribute("aria-pressed"), "true");
+    await page.locator("#comparison-slider").fill("9");
+    assert.match(await page.locator("#comparison-readout").innerText(), /40% 现金 · 回撤 -/);
+    await page.locator("#comparison-return").click();
+    const pending = page.waitForEvent("download");
+    await page.locator("#comparison-export").click();
+    const download = await pending;
+    assert.match(download.suggestedFilename(), /cash-comparison-DEMO/);
+    const output = path.join(evidence, download.suggestedFilename()); await download.saveAs(output);
+    const lines = fs.readFileSync(output, "utf8").trim().split(/\r?\n/);
+    assert.equal(lines.length, 4);
+    const headers = lines[0].split(","), cashIndex = headers.indexOf("cash_allocation_pct"), gainIndex = headers.indexOf("total_return");
+    assert(cashIndex >= 0 && gainIndex >= 0 && headers.includes("max_drawdown"));
+    assert.deepEqual(lines.slice(1).map((line) => Number(line.split(",")[cashIndex].replaceAll('"', ''))), [40, 50, 60]);
+    assert(Math.abs(Number(lines[1].split(",")[gainIndex].replaceAll('"', '')) - 2.0205228724545194) < 1e-10);
+  });
   await check("chart switching and quarter selection", async () => {
     await page.locator("#show-drawdown").click();
     assert.equal(await page.locator("#show-drawdown").getAttribute("aria-pressed"), "true");
@@ -88,16 +121,36 @@ async function main() {
   });
   await check("parameter edits mark old results and recompute", async () => {
     const old = await page.locator("#final-value").innerText();
+    const comparison = await page.locator("#comparison-cards").innerText();
     await page.locator("#allocation").fill("40");
     assert(await page.locator("#stale-note").isVisible());
     assert(await page.locator("#export").isDisabled());
+    assert(await page.locator("#comparison-export").isDisabled());
+    assert(await page.locator("#comparison-stale").isVisible());
     await page.locator("#run").click(); await complete();
     assert.notEqual(await page.locator("#final-value").innerText(), old);
     assert.match(await page.locator("#chart-subtitle").innerText(), /40% ETF \/ 60% 现金/);
+    assert.equal(await page.locator("#comparison-cards").innerText(), comparison);
+    assert(!(await page.locator("#comparison-stale").isVisible()));
     await page.getByRole("button", {name: "30 Down 再平衡", exact: true}).click();
     assert.match(await page.locator("#weight-after").innerText(), /ETF 40.00% \/ 现金 60.00%/);
     await page.locator('[data-step="2"]').click();
     assert.match(await page.locator("#process-formula").innerText(), /× 40%/);
+  });
+  await check("comparison uses shared capital, date window and growth rule", async () => {
+    await page.locator("#initial-capital").fill("200000");
+    await page.locator("#target-growth").fill("8");
+    await page.locator("#start-date").fill("2023-01-01");
+    await page.locator("#run").click(); await complete();
+    assert.match(await page.locator("#comparison-context").innerText(), /2023-03-31.*200,000.*8 个季度/);
+    assert.match(await page.locator("#comparison-rules").innerText(), /季度目标 8%/);
+    assert.match(await page.locator('.comparison-card[data-cash="50"]').innerText(), /初始现金 \$100,000/);
+    assert.equal(await page.locator("#comparison-slider").getAttribute("max"), "7");
+    const response = await page.request.post(`${baseURL}/api/compare`, {data: {start_date: "2023-01-01", config: {initial_capital: 200000, target_growth: 8}}});
+    assert(response.ok());
+    const computed = await response.json();
+    for (const strategy of computed.strategies) assert.equal(await page.locator(`.comparison-card[data-cash="${strategy.cash_allocation}"] .comparison-total-return`).innerText(), `${strategy.metrics.total_return >= 0 ? "+" : ""}${(strategy.metrics.total_return * 100).toFixed(2)}%`);
+    await page.locator("#reset").click(); await complete();
   });
   await check("CSV export contains all 25 quarterly records", async () => {
     const pending = page.waitForEvent("download");
@@ -133,6 +186,8 @@ async function main() {
     assert.equal(await page.locator("#quarter-table tr").count(), 5);
     assert.equal(await page.locator("#detail-trade").innerText(), "-192.0000");
     assert(await page.getByRole("button", {name: "30 Down 再平衡", exact: true}).isDisabled());
+    assert.match(await page.locator("#comparison-context").innerText(), /用户上传 CSV.*5 个季度/);
+    assert.equal(await page.locator("#comparison-slider").getAttribute("max"), "4");
   });
   await check("cash shortfall and buy-direction reset explain actual money flow", async () => {
     await page.locator("#csv-file").setInputFiles({name: "reset-buy.csv", mimeType: "text/csv", buffer: Buffer.from("Date,ETF_Price\n2024-03-31,100\n2024-06-30,20\n2024-09-30,41")});
@@ -151,6 +206,7 @@ async function main() {
     assert.match(await page.locator("#error").innerText(), /正数/);
     assert(await page.locator("#run").isDisabled());
     assert(await page.locator("#export").isDisabled());
+    assert(await page.locator("#comparison-export").isDisabled());
   });
   await check("network failure is visible and cannot export stale results", async () => {
     await page.locator("#reset").click(); await complete();
@@ -160,13 +216,16 @@ async function main() {
     await page.locator("#error").waitFor({state: "visible"});
     assert.match(await page.locator("#error").innerText(), /无法连接/);
     assert(await page.locator("#export").isDisabled());
+    assert(await page.locator("#comparison-export").isDisabled());
+    assert(await page.locator("#comparison-stale").isVisible());
     await page.unroute("**/api/backtest");
     await page.locator("#reset").click(); await complete();
   });
-  await check("full guide and all three real screenshots load", async () => {
+  await check("full guide and all four real screenshots load", async () => {
     await page.goto(`${baseURL}/guide`, {waitUntil: "networkidle"});
-    assert.equal(await page.locator(".guide-section").count(), 7);
+    assert.equal(await page.locator(".guide-section").count(), 8);
     assert.match(await page.locator("#rebalance").innerText(), /168.0619/);
+    assert.match(await page.locator("#cash-comparison").innerText(), /60% 现金 \+ 40% ETF/);
     for (const image of await page.locator(".guide-section img").all()) {
       await image.scrollIntoViewIfNeeded();
       await image.evaluate((el) => el.decode());
@@ -182,6 +241,14 @@ async function main() {
     await phone.goto(baseURL, {waitUntil: "networkidle"}); await complete(phone);
     await noOverflow(phone);
     await phone.screenshot({path: path.join(evidence, "mobile.png"), fullPage: true});
+    await phone.goto(`${baseURL}/?compare=1#cash-comparison`, {waitUntil: "networkidle"}); await complete(phone);
+    assert.equal(await phone.locator(".comparison-card").count(), 3);
+    await noOverflow(phone);
+    await phone.locator("#cash-comparison").screenshot({path: path.join(evidence, "mobile-cash-comparison.png")});
+    await phone.locator("#comparison-drawdown").click();
+    await phone.locator("#comparison-slider").fill("9");
+    assert.match(await phone.locator("#comparison-readout").innerText(), /60% 现金 · 回撤 -/);
+    await noOverflow(phone);
     await phone.goto(`${baseURL}/?rebalance=1#rebalance-panel`, {waitUntil: "networkidle"}); await complete(phone);
     assert.match(await phone.locator("#detail-title").innerText(), /2021 Q3/);
     await phone.locator('[data-step="3"]').click();

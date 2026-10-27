@@ -15,6 +15,7 @@
   <p class="nav-label">研究空间</p>
   <nav aria-label="主导航">
     <a class="nav-link active" href="/" aria-current="page"><span>▦</span> 回测工作台</a>
+    <a class="nav-link" href="#cash-comparison"><span>◫</span> 现金比例对比</a>
     <button class="nav-link" type="button" data-tour><span>▷</span> 跟着演示</button>
     <a class="nav-link" href="/?rebalance=1#rebalance-panel"><span>⇄</span> 再平衡过程</a>
     <a class="nav-link" href="/guide"><span>☷</span> 完整操作指南</a>
@@ -71,6 +72,23 @@
             <article class="metric"><span>季度最大回撤</span><strong id="max-drawdown">—</strong><small>仅按季末采样，非日内回撤</small></article>
             <article class="metric"><span>实际调仓次数</span><strong id="trade-count">—</strong><small id="quarter-count">首季仅记录</small></article>
           </div>
+          <section id="cash-comparison" class="panel cash-comparison" aria-labelledby="comparison-title">
+            <div class="panel-title"><div><p class="eyebrow">THREE CASH ALLOCATIONS</p><h2 id="comparison-title">现金比例对比 · 40% / 50% / 60%</h2></div><a class="small-link" href="/guide#cash-comparison">如何比较 ↗</a></div>
+            <div class="comparison-content">
+              <p id="comparison-context" class="comparison-context" role="status">正在计算三种现金配置…</p>
+              <p class="hint">共用左侧数据、区间、本金和特殊规则；分别使用 60% / 50% / 40% ETF。这里的现金比例用于初始配置及特殊规则重置，持有期间会随市场变化。</p>
+              <div id="comparison-stale" class="stale-note" hidden>设置已更改或本次计算未完成，以下对比仍是上一次结果。请重新运行；对比导出暂不可用。</div>
+              <div id="comparison-cards" class="comparison-cards"></div>
+              <div class="comparison-chart-heading"><h3>同一时期，收益与回撤一起看</h3><div class="segmented" role="group" aria-label="现金对比图表类型"><button id="comparison-return" class="selected" type="button" aria-pressed="true">累计收益</button><button id="comparison-drawdown" type="button" aria-pressed="false">回撤</button></div></div>
+              <div class="comparison-legend"><span><i class="cash-40"></i>40% 现金</span><span><i class="cash-50"></i>50% 现金</span><span><i class="cash-60"></i>60% 现金</span></div>
+              <svg id="comparison-chart" viewBox="0 0 900 320" role="img" aria-label="40%、50%、60% 现金策略的累计收益对比图"></svg>
+              <div class="comparison-timeline"><label for="comparison-slider">逐季对比</label><input id="comparison-slider" type="range" min="0" max="0" value="0" step="1"><strong id="comparison-quarter">—</strong></div>
+              <div id="comparison-readout" class="comparison-readout" aria-live="polite"></div>
+              <p id="comparison-rules" class="hint"></p>
+              <p class="hint">累计收益以初始本金计算；年化按实际天数计算，未满一年不显示。最大回撤仅取初始本金和季度末总资产采样，负值越接近 0，回撤越小。金额单位为 USD。</p>
+              <div class="comparison-actions"><span>修改左侧设置并“运行回测”，三组结果会一起更新。</span><button id="comparison-export" class="button secondary small" type="button" disabled>↓ 导出对比 CSV</button></div>
+            </div>
+          </section>
           <section id="chart-panel" class="panel chart-panel">
             <div class="panel-title"><div><h2>资产走势</h2><p id="chart-subtitle" class="hint">同一起点，观察两种持有方式</p></div><div class="segmented" role="group" aria-label="图表类型"><button id="show-value" class="selected" type="button" aria-pressed="true">资产</button><button id="show-drawdown" type="button" aria-pressed="false">回撤</button></div></div>
             <div class="chart-legend"><span><i class="legend-line strategy"></i>9Sig 策略</span><span><i class="legend-line benchmark"></i>100% ETF 买入持有</span><span id="cash-legend"><i class="legend-line cash"></i>策略现金</span></div>

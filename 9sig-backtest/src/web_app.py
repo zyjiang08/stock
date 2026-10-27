@@ -296,6 +296,34 @@ def body():
     return payload
 
 
+def compare_cash_allocations(payload, current=None):
+    """Run the same engine at 40/50/60% initial and reset cash allocations."""
+    _, parameters = config_from_json(payload.get("config", {}))
+    strategies = []
+    reference = None
+    for cash in (40, 50, 60):
+        config = {**parameters, "etf_allocation": 100 - cash}
+        result = current if current is not None and current["config"] == config else run_backtest({**payload, "config": config})
+        if reference is None:
+            reference = result
+        capital = config["initial_capital"]
+        strategies.append({
+            "cash_allocation": cash, "etf_allocation": 100 - cash,
+            "initial_cash": capital * cash / 100, "initial_etf": capital * (100 - cash) / 100,
+            "metrics": dict(result["strategy"]), "trade_count": result["trade_count"],
+            "series": [{
+                "date": row["date"], "quarter": row["quarter"],
+                "total_value": row["total_value"], "total_return": row["total_value"] / capital - 1,
+                "drawdown": row["drawdown"], "etf_value": row["etf_value"], "cash_value": row["cash_value"],
+            } for row in result["rows"]],
+        })
+    return {
+        "source": reference["source"], "period": reference["period"], "warnings": reference["warnings"],
+        "shared_config": {key: value for key, value in parameters.items() if key != "etf_allocation"},
+        "strategies": strategies,
+    }
+
+
 @app.after_request
 def headers(response):
     response.headers["X-Content-Type-Options"] = "nosniff"
@@ -346,4 +374,16 @@ def preview():
 
 @app.post("/api/backtest")
 def backtest():
-    return jsonify(run_backtest(body()))
+    payload = body()
+    include_comparison = payload.get("include_cash_comparison", False)
+    if not isinstance(include_comparison, bool):
+        raise ValueError("现金对比开关必须是布尔值。")
+    result = run_backtest(payload)
+    if include_comparison:
+        result["cash_comparison"] = compare_cash_allocations(payload, result)
+    return jsonify(result)
+
+
+@app.post("/api/compare")
+def compare():
+    return jsonify(compare_cash_allocations(body()))

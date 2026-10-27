@@ -6,6 +6,7 @@
 - Workspace: `/home/harry/swork/stock/9sig-backtest` (independent Git root).
 - Application: `http://192.168.124.107:8910/`.
 - Public entry: `http://183.23.140.51:8910/`.
+- Cash allocation comparison: `http://183.23.140.51:8910/?compare=1#cash-comparison`.
 - Rebalance walkthrough: `http://183.23.140.51:8910/?rebalance=1#rebalance-panel`.
 - Strategy details: `http://183.23.140.51:8910/guide#rebalance`.
 - Interactive walkthrough: `http://192.168.124.107:8910/?demo=1`.
@@ -30,6 +31,11 @@ before/after balances, cash flows and 30 Down counters from recorded actions;
 it does not independently execute trades. Sample prices are deterministic synthetic input. Uploaded
 CSV exists only in request memory. The image's build allowlist excludes Git
 metadata, local data, test evidence, private files and unrelated stock projects.
+
+`POST /api/compare` runs 40%, 50%, and 60% cash allocations with shared data,
+dates, capital and rule settings. `POST /api/backtest` can include this comparison
+atomically with `include_cash_comparison: true`, as used by the browser. Each
+variant uses the original engine and its own initial/reset allocation and state.
 
 ## Build and deploy
 

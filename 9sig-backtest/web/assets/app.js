@@ -3,7 +3,8 @@ const $ = (id) => document.getElementById(id);
 const money = (value, digits = 0) => Number.isFinite(value) ? new Intl.NumberFormat("en-US", {style: "currency", currency: "USD", maximumFractionDigits: digits, minimumFractionDigits: digits}).format(value) : "—";
 const percent = (value) => Number.isFinite(value) ? `${value >= 0 ? "+" : ""}${(value * 100).toFixed(2)}%` : "区间不足一年";
 const shares = (value) => Number.isFinite(value) ? `${value > 1e-8 ? "+" : ""}${Math.abs(value) < 1e-8 ? "0" : value.toFixed(4)}` : "—";
-const state = {source: "demo", csv: null, ready: false, result: null, selected: 1, chart: "value", revision: 0, busy: false, tour: -1, rebalanceStep: 0};
+const state = {source: "demo", csv: null, ready: false, result: null, selected: 1, chart: "value", revision: 0, busy: false, tour: -1, rebalanceStep: 0, comparisonChart: "total_return", comparisonIndex: 0};
+const comparisonColors = ["#176d60", "#526eb2", "#ad7133"];
 const weight = (value) => `${(value * 100).toFixed(2)}%`;
 const quantity = (value) => value.toLocaleString("en-US", {minimumFractionDigits: 4, maximumFractionDigits: 4});
 const parameterFields = {initial_capital: "initial-capital", etf_allocation: "allocation", target_growth: "target-growth", drawdown_threshold: "drawdown-threshold", lookback_quarters: "lookback", ignore_sell_signals: "ignore-signals", extreme_gain: "extreme-gain"};
@@ -39,6 +40,8 @@ function dirty() {
   state.revision++;
   $("stale-note").hidden = !state.result;
   $("export").disabled = true;
+  $("comparison-export").disabled = true;
+  $("comparison-stale").hidden = !state.result;
   if (state.result) $("result-status").textContent = "设置已更改 · 等待重新运行";
 }
 function sourcePayload() { return {source: state.source, ...(state.source === "upload" ? {csv: state.csv} : {})}; }
@@ -76,9 +79,10 @@ async function loadSource(source, text = null, filename = "") {
 async function runBacktest() {
   if (!state.ready || state.busy || !$("settings").reportValidity()) return false;
   const config = Object.fromEntries(Object.entries(parameterFields).map(([key, id]) => [key, Number($(id).value)]));
-  const payload = {...sourcePayload(), config, start_date: $("start-date").value, end_date: $("end-date").value};
+  const payload = {...sourcePayload(), config, start_date: $("start-date").value, end_date: $("end-date").value, include_cash_comparison: true};
   const revision = state.revision;
   setBusy(true); showError(""); $("export").disabled = true;
+  $("comparison-export").disabled = true; $("comparison-stale").hidden = !state.result;
   $("result-status").textContent = "正在计算季度信号…";
   try {
     const result = await api("/api/backtest", payload);
@@ -87,6 +91,8 @@ async function runBacktest() {
     renderResult();
     $("stale-note").hidden = true;
     $("export").disabled = false;
+    $("comparison-export").disabled = false;
+    $("comparison-stale").hidden = true;
     $("result-status").textContent = result.source.id === "demo" ? "演示回测已完成 · 模拟价格" : "CSV 回测已完成";
     return true;
   } catch (error) {
@@ -112,7 +118,100 @@ function renderResult() {
   $("strategy-growth").textContent = `${1 + r.config.target_growth / 100}`;
   $("strategy-allocation").textContent = `${r.config.etf_allocation}%`;
   $("quarter-slider").max = r.rows.length - 1;
+  renderCashComparison();
   renderTable(); renderNotes(); renderScenarios(); selectQuarter(state.selected); drawChart();
+}
+function renderCashComparison() {
+  const comparison = state.result.cash_comparison, c = comparison.shared_config;
+  $("comparison-context").textContent = `${comparison.source.id === "demo" ? "模拟数据演示 · 非真实历史收益" : "用户上传 CSV"} · ${comparison.period.start} — ${comparison.period.end} · 同额本金 ${money(c.initial_capital)} · ${comparison.period.quarters} 个季度`;
+  $("comparison-rules").textContent = `统一规则：季度目标 ${c.target_growth}%；回撤阈值 ${c.drawdown_threshold}%；回看 ${c.lookback_quarters} 季；忽略 ${c.ignore_sell_signals} 次卖出；单季大涨 ${c.extreme_gain}% 重置。现金无利息，不计税费与滑点。`;
+  const container = $("comparison-cards"); container.replaceChildren();
+  comparison.strategies.forEach((strategy, index) => {
+    const card = document.createElement("article"); card.className = "comparison-card"; card.dataset.cash = strategy.cash_allocation;
+    card.style.setProperty("--comparison-color", comparisonColors[index]);
+    const title = document.createElement("h3"); title.textContent = `${strategy.cash_allocation}% 现金`;
+    const subtitle = document.createElement("p"); subtitle.className = "hint"; subtitle.textContent = `${strategy.etf_allocation}% ETF · 初始现金 ${money(strategy.initial_cash)}`;
+    const label = document.createElement("span"); label.className = "comparison-return-label"; label.textContent = "累计收益";
+    const value = document.createElement("strong"); value.className = "comparison-total-return"; value.textContent = percent(strategy.metrics.total_return);
+    const dl = document.createElement("dl");
+    for (const [key, text, value] of [
+      ["max_drawdown", "季度最大回撤", percent(strategy.metrics.max_drawdown)],
+      ["cagr", "年化收益", percent(strategy.metrics.cagr)],
+      ["final_value", "期末总资产", money(strategy.metrics.final_value, 2)],
+      ["trade_count", "实际调仓", `${strategy.trade_count} 次`],
+    ]) {
+      const dt = document.createElement("dt"), dd = document.createElement("dd"); dt.textContent = text; dd.textContent = value; dd.dataset.metric = key; dl.append(dt, dd);
+    }
+    card.append(title, subtitle, label, value, dl); container.append(card);
+  });
+  $("comparison-slider").max = comparison.strategies[0].series.length - 1;
+  selectComparisonQuarter(comparison.strategies[0].series.length - 1);
+}
+function selectComparisonQuarter(index) {
+  const comparison = state.result?.cash_comparison;
+  if (!comparison) return;
+  state.comparisonIndex = Math.max(0, Math.min(Number(index), comparison.strategies[0].series.length - 1));
+  $("comparison-slider").value = state.comparisonIndex;
+  $("comparison-quarter").textContent = comparison.strategies[0].series[state.comparisonIndex].quarter;
+  $("comparison-readout").replaceChildren();
+  for (const strategy of comparison.strategies) {
+    const point = strategy.series[state.comparisonIndex], item = document.createElement("p");
+    item.textContent = `${strategy.cash_allocation}% 现金 · ${state.comparisonChart === "drawdown" ? "回撤" : "收益"} ${percent(point[state.comparisonChart])} · 总资产 ${money(point.total_value, 2)}`;
+    $("comparison-readout").append(item);
+  }
+  drawComparisonChart();
+}
+function drawComparisonChart() {
+  const comparison = state.result.cash_comparison, svg = $("comparison-chart"), field = state.comparisonChart;
+  const addInitial = comparison.strategies[0].series[0].date !== comparison.period.start;
+  const lines = comparison.strategies.map((strategy) => {
+    const series = strategy.series.map((row, i) => ({date: row.date, value: row[field], index: i}));
+    if (addInitial) series.unshift({date: comparison.period.start, value: 0, index: -1});
+    return series;
+  });
+  const values = lines.flatMap((line) => line.map((point) => point.value));
+  let low = Math.min(0, ...values), high = Math.max(0, ...values);
+  if (high === low) { low -= .01; high += .01; }
+  const padding = (high - low) * .08; low -= padding; high += padding;
+  const left = 68, top = 20, width = 810, height = 254;
+  const x = (i) => left + i / (lines[0].length - 1) * width;
+  const y = (v) => top + (high - v) / (high - low) * height;
+  svg.replaceChildren();
+  svg.setAttribute("aria-label", `40%、50%、60% 现金策略的${field === "drawdown" ? "回撤" : "累计收益"}对比，点击图表或使用下方滑块逐季查看`);
+  for (let i = 0; i <= 4; i++) {
+    const value = low + (high - low) * i / 4;
+    svg.append(svgElement("line", {x1: left, x2: left + width, y1: y(value), y2: y(value), stroke: "#e5ece8", "stroke-dasharray": "3 4"}));
+    svg.append(svgElement("text", {x: left - 10, y: y(value) + 4, "text-anchor": "end", fill: "#84928a", "font-size": 11}, `${(value * 100).toFixed(1)}%`));
+  }
+  const labels = [...new Set(Array.from({length: Math.min(5, lines[0].length)}, (_, i) => Math.round(i * (lines[0].length - 1) / Math.min(4, lines[0].length - 1))))];
+  for (const i of labels) svg.append(svgElement("text", {x: x(i), y: 306, "text-anchor": i === 0 ? "start" : i === lines[0].length - 1 ? "end" : "middle", fill: "#84928a", "font-size": 11}, lines[0][i].date.slice(0, 7)));
+  const selected = state.comparisonIndex + (addInitial ? 1 : 0);
+  svg.append(svgElement("line", {x1: x(selected), x2: x(selected), y1: top, y2: top + height, stroke: "#c1cec5", "stroke-dasharray": "3 4"}));
+  lines.forEach((line, index) => {
+    svg.append(svgElement("path", {d: line.map((p, i) => `${i ? "L" : "M"}${x(i)},${y(p.value)}`).join(" "), fill: "none", stroke: comparisonColors[index], "stroke-width": 2.5, "stroke-dasharray": ["none", "7 4", "2 4"][index], "stroke-linejoin": "round"}));
+    svg.append(svgElement("circle", {cx: x(selected), cy: y(line[selected].value), r: 4, fill: comparisonColors[index], stroke: "white", "stroke-width": 1.5}));
+  });
+  svg.onclick = (event) => {
+    const rect = svg.getBoundingClientRect();
+    const i = Math.round(((event.clientX - rect.left) / rect.width * 900 - left) / width * (lines[0].length - 1));
+    selectComparisonQuarter(i - (addInitial ? 1 : 0));
+  };
+}
+function exportCashComparison() {
+  if (!state.result || $("comparison-export").disabled) return;
+  const comparison = state.result.cash_comparison;
+  const rows = comparison.strategies.map((strategy) => ({
+    source: comparison.source.id, start_date: comparison.period.start, end_date: comparison.period.end,
+    cash_allocation_pct: strategy.cash_allocation, etf_allocation_pct: strategy.etf_allocation,
+    ...comparison.shared_config, ...strategy.metrics, trade_count: strategy.trade_count,
+    max_drawdown_sampling: "initial capital and quarter-end total assets",
+  }));
+  const fields = Object.keys(rows[0]), quote = (value) => `"${String(value ?? "").replaceAll('"', '""')}"`;
+  const csv = "\ufeff" + [fields.join(","), ...rows.map((row) => fields.map((field) => quote(row[field])).join(","))].join("\r\n");
+  const url = URL.createObjectURL(new Blob([csv], {type: "text/csv;charset=utf-8"}));
+  const link = document.createElement("a"); link.href = url;
+  link.download = `9sig-cash-comparison-${comparison.source.id === "demo" ? "DEMO-" : ""}${comparison.period.start}-${comparison.period.end}.csv`;
+  link.click(); setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 function renderNotes() {
   const r = state.result, box = $("result-notes");
@@ -355,6 +454,13 @@ $("rebalance-steps").addEventListener("click", (event) => { const button = event
 $("process-prev").addEventListener("click", () => { state.rebalanceStep = Math.max(0, state.rebalanceStep - 1); renderRebalance(); });
 $("process-next").addEventListener("click", () => { state.rebalanceStep = Math.min(4, state.rebalanceStep + 1); renderRebalance(); });
 $("export").addEventListener("click", exportResults);
+$("comparison-export").addEventListener("click", exportCashComparison);
+$("comparison-slider").addEventListener("input", (event) => selectComparisonQuarter(event.target.value));
+for (const [id, mode] of [["comparison-return", "total_return"], ["comparison-drawdown", "drawdown"]]) $(id).addEventListener("click", () => {
+  state.comparisonChart = mode;
+  for (const button of [$("comparison-return"), $("comparison-drawdown")]) { const active = button.id === id; button.classList.toggle("selected", active); button.setAttribute("aria-pressed", String(active)); }
+  selectComparisonQuarter(state.comparisonIndex);
+});
 for (const [id, mode] of [["show-value", "value"], ["show-drawdown", "drawdown"]]) $(id).addEventListener("click", () => {
   state.chart = mode;
   for (const button of [$("show-value"), $("show-drawdown")]) { const active = button.id === id; button.classList.toggle("selected", active); button.setAttribute("aria-pressed", String(active)); }
@@ -370,6 +476,7 @@ resetDefaults().then((ready) => {
   if (!ready) return;
   const query = new URLSearchParams(location.search);
   if (query.get("demo") === "1") showTour(0);
+  else if (query.get("compare") === "1") $("cash-comparison").scrollIntoView({block: "start"});
   else if (query.get("rebalance") === "1") {
     const index = state.result.rows.findIndex((row) => row.action === "30-Down Complete & Rebalance");
     if (index >= 0) selectQuarter(index);
