@@ -22,3 +22,11 @@ env/
 # OS-specific
 .DS_Store
 Thumbs.db
+
+# Web app sources and deterministic example data
+!web/**/*.html
+!data/demo_prices.csv
+!test/**/fixtures/*.csv
+.venv-web/
+node_modules/
+test/**/results/

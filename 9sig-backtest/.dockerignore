@@ -1,0 +1,10 @@
+**
+!requirements-web.txt
+!Dockerfile.web
+!src/
+!src/backtester.py
+!src/web_app.py
+!data/
+!data/demo_prices.csv
+!web/
+!web/**

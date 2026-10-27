@@ -1,5 +1,24 @@
 # 9sig Backtest
 
+## 中文网页版（107）
+
+- 工作台：<http://192.168.124.107:8910/>
+- 六步交互演示：<http://192.168.124.107:8910/?demo=1>
+- 详细图文操作指南：<http://192.168.124.107:8910/guide>
+
+网页复用本项目原 Python 回测引擎，提供 CSV 导入、资金与规则参数、日期筛选、
+策略与全仓 ETF 对照图、逐季交易解释及 CSV 下载。打开页面自动运行默认演示。
+原仓库没有附行情 CSV，内置的 25 个季度价格是**人工模拟数据，不是真实 TQQQ 行情**。
+导入的 CSV 仅用于请求内存计算；页面不接券商、不下单、不保存上传文件。
+
+快速操作：打开工作台 → “跟着演示一遍” → 按六步演示查看 192 股卖出与 30 Down →
+“导出 CSV” → 选择“上传自己的 CSV”并重新回测。全部细节与规则限制见页面指南。
+
+部署、服务管理和回滚命令见 [deploy/README.md](deploy/README.md)。
+验收入口与报告见 [test/README.md](test/README.md)。
+
+下面保留原命令行项目说明。
+
 A backtester for a specific, rules-based investment strategy.
 
 ## The strat

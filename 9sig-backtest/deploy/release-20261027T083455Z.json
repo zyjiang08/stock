@@ -1,0 +1,96 @@
+{
+  "release_id": "20261027T083455Z",
+  "image_tag": "9sig-backtest-web:20261027T083455Z",
+  "files": {
+    "Dockerfile.web": "697e88c0caac96d7362c2ada35b8137e2c22f34d732df50a6c5597c41660368d",
+    "compose.web.yaml": "eb32b23e18d30381f7ac1db99abaf6db13cddf8a9f6cf133abc02b0848cff399",
+    "data/demo_prices.csv": "675114d797b6160314ee1d3663a0deba336811a948072996c88bc0c30525f290",
+    "requirements-web.txt": "23afab8153ff85ebb2089665ac1fcbc3b5d3e3a94d3703c7de9e7aabb7bb5ef4",
+    "src/backtester.py": "676962ef2d64a8976eaab7be67e0d0ce26b371aa2da7c40655c7633cdfebd5f3",
+    "src/web_app.py": "a4347b406d5be2dd578fd01262e4278fe7c0f4f5ec39c3163496463987958df9",
+    "web/assets/app.js": "bcbe3c32186799e8e4a7a69c4760ebaae987cf46a208027a7e0d9231d3c2590f",
+    "web/assets/demo-overview.png": "e3a8168abda28cdbe2e15882c4338f9b3f59d0cf61cf8496a6df7742f6c0f102",
+    "web/assets/demo-quarter.png": "9cc3beed781d8366548c1733d327b9011553a046d7e3c3a5d31ff4f4accf868b",
+    "web/assets/favicon.svg": "52ecde4511f0f199ed6a4d974404538aab0e06517dd20e4f7ed281bf29f0e55d",
+    "web/assets/style.css": "137f3a4a2bbe03b27780e1af22d11007af2f9dd5a9773c0940532014273b647f",
+    "web/guide.html": "c892d8428914a531cafd495b841edddad5b6fff41bc5e67f84cfae27ba695aa0",
+    "web/index.html": "bac3527de6bc4be1981e63921b8cb8c7d1050a7369c2e24a42d17d30ecdffe45"
+  },
+  "baseline": {
+    "vibe-trading-vibe-trading-1": "1f107df7e738b156e2d21b9c40d39db9264997697e0475899080f1a8fe1fec09 2026-10-26T14:28:20.528041199Z",
+    "nexa-data-om-kafka-1": "6b47a23be70dbc92edb6a1d4a9a85072640a9aa6a221d19573e7e865695aa203 2026-10-14T12:28:08.317895894Z",
+    "nexa-data-om-clickhouse-1": "fab29b999751c25539cfda2492cc9854772ccd19eb73e52396119b9a55787b32 2026-10-14T12:28:08.318484187Z"
+  },
+  "image_id": "sha256:49e83bea3c161cd3995e6c18172cecea3a1e1df4809c3964840296e185e15c68",
+  "verified_utc": "2026-10-27T08:38:42.878741+00:00",
+  "http": {
+    "/": {
+      "status": 200,
+      "sha256": "bac3527de6bc4be1981e63921b8cb8c7d1050a7369c2e24a42d17d30ecdffe45"
+    },
+    "/guide": {
+      "status": 200,
+      "sha256": "c892d8428914a531cafd495b841edddad5b6fff41bc5e67f84cfae27ba695aa0"
+    },
+    "/api/sample.csv": {
+      "status": 200,
+      "sha256": "675114d797b6160314ee1d3663a0deba336811a948072996c88bc0c30525f290"
+    },
+    "/assets/app.js": {
+      "status": 200,
+      "sha256": "bcbe3c32186799e8e4a7a69c4760ebaae987cf46a208027a7e0d9231d3c2590f"
+    },
+    "/assets/demo-overview.png": {
+      "status": 200,
+      "sha256": "e3a8168abda28cdbe2e15882c4338f9b3f59d0cf61cf8496a6df7742f6c0f102"
+    },
+    "/assets/demo-quarter.png": {
+      "status": 200,
+      "sha256": "9cc3beed781d8366548c1733d327b9011553a046d7e3c3a5d31ff4f4accf868b"
+    },
+    "/assets/favicon.svg": {
+      "status": 200,
+      "sha256": "52ecde4511f0f199ed6a4d974404538aab0e06517dd20e4f7ed281bf29f0e55d"
+    },
+    "/assets/style.css": {
+      "status": 200,
+      "sha256": "137f3a4a2bbe03b27780e1af22d11007af2f9dd5a9773c0940532014273b647f"
+    }
+  },
+  "runtime_packages": [
+    "blinker==1.9.0",
+    "click==8.5.0",
+    "Flask==3.1.2",
+    "gunicorn==23.0.0",
+    "itsdangerous==2.2.0",
+    "Jinja2==3.1.6",
+    "markdown-it-py==4.2.0",
+    "MarkupSafe==3.0.4",
+    "mdurl==0.1.2",
+    "numpy==1.26.4",
+    "packaging==26.3",
+    "pandas==2.2.2",
+    "plotly==5.24.1",
+    "Pygments==2.21.0",
+    "python-dateutil==3.0.0",
+    "pytz==2026.5",
+    "rich==13.7.1",
+    "six==1.17.0",
+    "tenacity==9.2.1",
+    "tzdata==2026.5",
+    "Werkzeug==3.1.9"
+  ],
+  "container_health": "healthy",
+  "shared_containers_unchanged": true,
+  "remote_lan_check": {
+    "source_host": "192.168.124.112",
+    "hostname": "coturn-OMEN-16L-Gaming-Desktop-TG03-0xxx",
+    "pages_and_assets_checked": 8,
+    "http_statuses": 200,
+    "quarters": 25,
+    "sale_shares": -191.99999999999977,
+    "status": "PASS",
+    "transport": "SSH public-key login, direct HTTP via urllib ProxyHandler({})"
+  },
+  "test_report": "test/web/reports/20261027T083634379765Z-production.md"
+}
